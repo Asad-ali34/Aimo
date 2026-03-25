@@ -1,0 +1,29 @@
+{
+  "bot": "outage",
+  "lavalink": "outage",
+  "commands": "degraded",
+  "playlists": "operational",
+  "spotify": "operational",
+  "ai": "operational",
+  "website": "operational",
+  "database": "operational",
+  "api": "operational",
+  "filters": "operational",
+  "lyrics": "operational",
+  "maintenance": false,
+  "announcement": "Hi",
+  "reasons": {
+    "bot": "Bot is currently offline for unexpected restarts.",
+    "lavalink": "Music server is temporarily unavailable.",
+    "commands": "Some slash commands may respond slowly.",
+    "playlists": "",
+    "spotify": "",
+    "ai": "",
+    "website": "",
+    "database": "",
+    "api": "",
+    "filters": "",
+    "lyrics": ""
+  },
+  "updated_at": "2026-03-24T12:00:00Z"
+}
