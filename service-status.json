@@ -3,7 +3,7 @@
   "lavalink": "outage",
   "commands": "degraded",
   "playlists": "operational",
-  "spotify": "operational",
+  "Last.fm": "degraded",
   "ai": "operational",
   "website": "operational",
   "database": "operational",
