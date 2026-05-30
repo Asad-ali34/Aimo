@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Owner Panel — Aimo</title>
+  <link rel="icon" type="image/webp" href="/logo.webp"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    .owner-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--grad-hero);padding:40px 20px;}
+    .owner-card{background:white;border-radius:24px;padding:48px 40px;max-width:720px;width:100%;box-shadow:var(--sh-xl);border:1.5px solid var(--border-lt);text-align:center;}
+    .owner-icon{width:72px;height:72px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-size:1.8rem;color:white;box-shadow:0 6px 24px rgba(124,58,237,.35);}
+    .owner-card h2{font-size:1.5rem;margin-bottom:6px;}
+    .owner-card>div>p{color:var(--text-muted);font-size:.9rem;margin-bottom:28px;}
+    .owner-input-wrap{position:relative;margin-bottom:18px;}
+    .owner-input{width:100%;padding:14px 46px 14px 16px;border-radius:12px;border:2px solid var(--border);font-size:1rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;text-align:center;letter-spacing:.2em;color:var(--text);}
+    .owner-input:focus{border-color:var(--purple);}
+    .owner-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:.95rem;}
+    .owner-btn{width:100%;padding:14px;background:var(--gradient);color:white;border:none;border-radius:12px;font-size:1rem;font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,.35);transition:var(--t);margin-bottom:12px;}
+    .owner-btn:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(124,58,237,.48);}
+    .owner-error{color:#EF4444;font-size:.85rem;margin-top:8px;display:none;}
+    .owner-panel{display:none;}
+    .owner-panel.visible{display:block;}
+    .panel-section{margin-top:32px;text-align:left;}
+    .panel-section h3{font-size:1rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .dl-btn{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg-alt);border:1.5px solid var(--border-lt);border-radius:12px;cursor:pointer;transition:var(--t);text-decoration:none;color:var(--text);width:100%;margin-bottom:10px;font-family:'Inter',sans-serif;}
+    .dl-btn:hover{border-color:var(--purple);background:var(--purple-xp);color:var(--purple);}
+    .dl-btn i{font-size:1.2rem;color:var(--purple);flex-shrink:0;}
+    .dl-btn-info{flex:1;}
+    .dl-btn-name{font-weight:700;font-size:.9rem;}
+    .dl-btn-desc{font-size:.77rem;color:var(--text-muted);margin-top:2px;}
+    .dl-badge{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:100px;background:var(--gradient);color:white;}
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;}
+    .stat-box{background:var(--bg-alt);border-radius:12px;padding:16px;text-align:center;border:1.5px solid var(--border-lt);}
+    .stat-box .val{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.4rem;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .stat-box .lbl{font-size:.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+    .log-box{background:var(--bg-alt);border-radius:12px;padding:16px;border:1.5px solid var(--border-lt);max-height:240px;overflow-y:auto;font-size:.78rem;color:var(--text-body);font-family:monospace;line-height:1.8;}
+    .cluster-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+    .cluster-item{background:var(--bg-alt);border-radius:10px;padding:12px 14px;border:1.5px solid var(--border-lt);}
+    .cluster-item .k{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:3px;}
+    .cluster-item .v{font-weight:700;font-size:.9rem;color:var(--text);}
+    /* Visit log table */
+    .visit-table-wrap{overflow-x:auto;border-radius:12px;border:1.5px solid var(--border-lt);}
+    .visit-table{width:100%;border-collapse:collapse;font-size:.76rem;}
+    .visit-table th{background:var(--bg-alt);color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);}
+    .visit-table td{padding:9px 12px;border-bottom:1px solid var(--border-lt);color:var(--text-body);vertical-align:middle;}
+    .visit-table tr:last-child td{border-bottom:none;}
+    .visit-table tr:hover td{background:var(--purple-xp);}
+    .page-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.7rem;font-weight:700;background:var(--gradient);color:white;font-family:'Poppins',sans-serif;}
+    .songs-count-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:var(--gradient);color:white;border-radius:100px;font-size:.78rem;font-weight:700;font-family:'Poppins',sans-serif;margin-top:8px;}
+    .ref-btn{width:auto;padding:10px 22px;margin-top:10px;}
+  </style>
+</head>
+<body>
+<div class="owner-wrap">
+  <div class="owner-card">
+    <div id="login-section">
+      <div class="owner-icon"><i class="fas fa-shield-halved"></i></div>
+      <h2>Owner Panel</h2>
+      <p>Enter your owner password to access the control panel.</p>
+      <div class="owner-input-wrap">
+        <input type="password" class="owner-input" id="pass-input" placeholder="••••" maxlength="20" onkeydown="if(event.key==='Enter')login()"/>
+        <button class="owner-toggle" onclick="togglePass()" id="toggle-btn"><i class="fas fa-eye" id="eye-icon"></i></button>
+      </div>
+      <button class="owner-btn" onclick="login()"><i class="fas fa-unlock"></i> Enter Panel</button>
+      <div class="owner-error" id="err-msg"><i class="fas fa-circle-xmark"></i> Wrong password. Try again.</div>
+    </div>
+
+    <div class="owner-panel" id="panel-section">
+      <div class="owner-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a)"><i class="fas fa-check"></i></div>
+      <h2>Welcome, Owner 👑</h2>
+      <p style="color:var(--text-muted);font-size:.88rem;margin-bottom:0;">Full access granted. Your Aimo website control panel.</p>
+
+      <!-- SONGS COUNT -->
+      <div style="text-align:center;margin:14px 0 0;">
+        <span class="songs-count-badge" id="songs-badge"><i class="fas fa-music"></i> Loading songs...</span>
+      </div>
+
+      <!-- STATS ROW -->
+      <div class="panel-section">
+        <h3><i class="fas fa-chart-bar" style="color:var(--purple)"></i> Website Stats</h3>
+        <div class="stats-row">
+          <div class="stat-box"><div class="val" id="sv-total">—</div><div class="lbl">Total Visits</div></div>
+          <div class="stat-box"><div class="val" id="sv-songs">—</div><div class="lbl">Songs</div></div>
+          <div class="stat-box"><div class="val" id="sv-countries">—</div><div class="lbl">Countries</div></div>
+        </div>
+      </div>
+
+      <!-- CLUSTER INFO -->
+      <div class="panel-section">
+        <h3><i class="fas fa-server" style="color:var(--purple)"></i> Server Info</h3>
+        <div class="cluster-grid">
+          <div class="cluster-item"><div class="k">Status</div><div class="v" style="color:#22c55e">● Online</div></div>
+          <div class="cluster-item"><div class="k">Uptime</div><div class="v" id="cl-uptime">—</div></div>
+          <div class="cluster-item"><div class="k">Shards</div><div class="v" id="cl-shards">1 / 1</div></div>
+          <div class="cluster-item"><div class="k">Server Time</div><div class="v" id="cl-time" style="font-size:.72rem">—</div></div>
+        </div>
+      </div>
+
+      <!-- TOP COUNTRIES & PAGES -->
+      <div class="panel-section">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div>
+            <h3><i class="fas fa-globe" style="color:var(--purple)"></i> Top Countries</h3>
+            <div class="log-box" id="countries-log">Loading...</div>
+          </div>
+          <div>
+            <h3><i class="fas fa-file" style="color:var(--purple)"></i> Top Pages</h3>
+            <div class="log-box" id="pages-log">Loading...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REAL VISIT LOG -->
+      <div class="panel-section">
+        <h3><i class="fas fa-list-check" style="color:var(--purple)"></i> Recent Visit Log <span style="font-size:.72rem;color:var(--text-muted);font-weight:400;font-family:'Inter',sans-serif;">(last 50)</span></h3>
+        <div class="visit-table-wrap">
+          <table class="visit-table" id="visit-table">
+            <thead>
+              <tr>
+                <th>Page</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Device</th>
+                <th>Browser</th>
+                <th>Referer</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody id="visit-tbody">
+              <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">Loading visit log...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- DOWNLOAD -->
+      <div class="panel-section">
+        <h3><i class="fas fa-download" style="color:var(--purple)"></i> Download Website Files</h3>
+        <a class="dl-btn" href="#" onclick="downloadAll(event)">
+          <i class="fas fa-file-zipper"></i>
+          <div class="dl-btn-info">
+            <div class="dl-btn-name">Download All Files <span class="dl-badge">ZIP</span></div>
+            <div class="dl-btn-desc">index.html · songs.html · albums.html · artist.html · profile.html · settings.html · commands.html · premium.html · privacy.html · terms.html · owner.html · 404.html · style.css · server.js · package.json</div>
+          </div>
+          <i class="fas fa-arrow-down" style="font-size:.9rem;color:var(--purple)"></i>
+        </a>
+      </div>
+
+      <div style="text-align:center;margin-top:20px;">
+        <button class="owner-btn ref-btn" onclick="refreshStats()">
+          <i class="fas fa-rotate"></i> Refresh All Stats
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let ownerPass = '';
+
+function togglePass(){
+  const inp=document.getElementById('pass-input'), ico=document.getElementById('eye-icon');
+  if(inp.type==='password'){inp.type='text';ico.className='fas fa-eye-slash';}
+  else{inp.type='password';ico.className='fas fa-eye';}
+}
+
+function login(){
+  const pass=document.getElementById('pass-input').value.trim();
+  ownerPass=pass;
+  fetch(`/api/owner/check?pass=${encodeURIComponent(pass)}`)
+    .then(r=>{
+      if(r.ok) showPanel();
+      else{ document.getElementById('err-msg').style.display='block'; document.getElementById('pass-input').value=''; }
+    })
+    .catch(()=>{
+      if(pass==='0785') showPanel();
+      else document.getElementById('err-msg').style.display='block';
+    });
+}
+
+function showPanel(){
+  document.getElementById('login-section').style.display='none';
+  document.getElementById('panel-section').classList.add('visible');
+  refreshStats();
+}
+
+function downloadAll(e){
+  e.preventDefault();
+  window.location.href=`/api/owner/download?pass=${encodeURIComponent(ownerPass)}`;
+}
+
+function refreshStats(){
+  // Cluster info
+  fetch('/api/cluster').then(r=>r.json()).then(d=>{
+    document.getElementById('cl-uptime').textContent  = d.uptime||'—';
+    document.getElementById('cl-shards').textContent  = `${d.shards} / ${d.totalShards}`;
+    document.getElementById('cl-time').textContent    = (d.serverTime||'').split(' ').slice(1,5).join(' ');
+    document.getElementById('sv-total').textContent   = d.totalVisits||0;
+    document.getElementById('sv-songs').textContent   = d.songsInLibrary||'—';
+    document.getElementById('sv-countries').textContent = (d.topCountries||[]).length;
+    document.getElementById('songs-badge').innerHTML  = `<i class="fas fa-music"></i> ${d.songsInLibrary||0} Songs in Library`;
+
+    const clog=document.getElementById('countries-log');
+    clog.innerHTML=(d.topCountries||[]).length
+      ? d.topCountries.map(([c,n])=>`🌍 <b>${c}</b> — ${n} visit${n===1?'':'s'}`).join('<br>')
+      : 'No data yet.';
+
+    const plog=document.getElementById('pages-log');
+    plog.innerHTML=(d.topPages||[]).length
+      ? d.topPages.map(([p,n])=>`📄 <b>/${p||'home'}</b> — ${n} view${n===1?'':'s'}`).join('<br>')
+      : 'No data yet.';
+  }).catch(()=>{});
+
+  // Visit log
+  fetch(`/api/owner/visits?pass=${encodeURIComponent(ownerPass)}`)
+    .then(r=>r.json())
+    .then(logs=>{
+      const tbody=document.getElementById('visit-tbody');
+      if(!logs||!logs.length){ tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">No visits recorded yet.</td></tr>'; return; }
+      tbody.innerHTML=logs.slice(0,50).map(v=>{
+        const t=new Date(v.time); const ts=t.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' '+t.toLocaleDateString([],{month:'short',day:'numeric'});
+        const ref=(v.referer||'Direct').replace(/^https?:\/\//,'').slice(0,22);
+        return `<tr>
+          <td><span class="page-badge">/${v.page||'home'}</span></td>
+          <td>${v.country||'?'}</td>
+          <td>${v.city||'?'}</td>
+          <td>${v.device||'—'}</td>
+          <td>${v.browser||'—'}</td>
+          <td style="color:var(--text-muted);font-size:.71rem">${ref}</td>
+          <td style="color:var(--text-muted);font-size:.71rem;white-space:nowrap">${ts}</td>
+        </tr>`;
+      }).join('');
+    }).catch(()=>{});
+}
+
+document.getElementById('pass-input').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
+</script>
+</body>
+</html>

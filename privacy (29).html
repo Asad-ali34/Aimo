@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Privacy Policy — Aimo Music Bot</title>
+  <meta name="description" content="Aimo Music Bot Privacy Policy — we follow a minimum data collection principle and never sell your data. We only store what is strictly needed: your Discord User ID, guild ID, playlist and favourites data, AI conversation history (auto-deleted after 30 days of inactivity), and command usage logs on a 7-day rolling window. All data is encrypted at rest. You can request full deletion at any time by emailing aimo-bot@protone.me or opening a ticket in our Discord support server. Last updated May 27, 2026."/>
+  <link rel="icon" type="image/webp" href="/logo.webp"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/"><img src="/logo.webp" alt="Aimo" loading="eager"/> Aimo</a>
+    <div class="nav-links" id="navLinks">
+      <a href="/">Home</a>
+      <a href="/commands">Commands</a>
+      <a href="/premium">Premium</a>
+      <a href="/privacy" class="active">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/status">Status</a>
+    </div>
+    <a class="nav-cta" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">
+      <i class="fa fa-plus"></i> Invite Aimo
+    </a>
+    <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu">
+      <span class="nav-icon-wrap" aria-hidden="true">
+        <span class="nav-icon-bar" id="nib1"></span>
+        <span class="nav-icon-bar" id="nib2"></span>
+        <span class="nav-icon-bar" id="nib3"></span>
+      </span>
+    </button>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="container">
+    <h1><span class="gradient-text">Privacy Policy</span></h1>
+    <p>We care deeply about your privacy. Here is exactly what we collect, why we collect it, and how it is kept secure.</p>
+  </div>
+</section>
+
+<div class="legal-body">
+  <span class="legal-date"><i class="fa fa-calendar" style="margin-right:6px"></i>Last updated: May 27, 2026</span>
+
+  <h2>1. Introduction</h2>
+  <p>Welcome to <strong>Aimo Music Bot</strong> ("Aimo", "we", "us", "our"). This Privacy Policy explains how Aimo collects, uses, stores, and protects information when you interact with our Discord bot and website. By adding Aimo to your server or using any of its features, you agree to the practices described in this policy.</p>
+  <p>We follow a <strong>minimum data collection</strong> principle — we only collect data that is strictly necessary to provide and improve the service. We do not sell, trade, or monetise your personal data in any way.</p>
+
+  <h2>2. What Data We Collect</h2>
+  <p>The table below shows every type of data Aimo stores, why it is needed, and for how long it is retained.</p>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Data Type</th><th>What We Store</th><th>Why We Need It</th><th>Retention</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Discord User ID</strong></td>
+        <td>Your unique Discord snowflake ID (a number, not your username)</td>
+        <td>To link playlists, favourites, AI history, premium status, and preferences to your account</td>
+        <td>Until you request deletion</td>
+      </tr>
+      <tr>
+        <td><strong>Discord Guild (Server) ID</strong></td>
+        <td>The unique ID of each server Aimo is in</td>
+        <td>To store per-server settings (volume, 24/7 mode, DJ roles, notification preferences)</td>
+        <td>Until bot is removed from server</td>
+      </tr>
+      <tr>
+        <td><strong>Playlist Data</strong></td>
+        <td>Playlist names, song titles, song URLs, and track metadata</td>
+        <td>To save and load your custom playlists across sessions</td>
+        <td>Until you delete the playlist</td>
+      </tr>
+      <tr>
+        <td><strong>Favourite Songs</strong></td>
+        <td>Song titles and stream URLs you save with /favorite-add</td>
+        <td>To let you replay favourite songs any time</td>
+        <td>Until you remove them</td>
+      </tr>
+      <tr>
+        <td><strong>AI Conversation History</strong></td>
+        <td>Messages you send to Aimo AI (/ask) — text only, no voice</td>
+        <td>To maintain conversation context so AI responses are relevant and personalised</td>
+        <td>Until you reset with /ask reset, or 30 days of inactivity</td>
+      </tr>
+      <tr>
+        <td><strong>Premium Status</strong></td>
+        <td>A boolean flag indicating whether your account has premium access</td>
+        <td>To grant access to premium-tier commands (/imagine, /boost, etc.)</td>
+        <td>Until revoked or account deleted</td>
+      </tr>
+      <tr>
+        <td><strong>Notification Preferences</strong></td>
+        <td>Whether you have opted in or out of DM update notifications</td>
+        <td>To respect your communication preferences</td>
+        <td>Until you change the setting</td>
+      </tr>
+      <tr>
+        <td><strong>Command Usage Logs</strong></td>
+        <td>Command name, guild ID, timestamp — no message content</td>
+        <td>For debugging, performance monitoring, and abuse prevention</td>
+        <td>7 days rolling window</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>We do NOT collect:</strong> your messages, voice audio, passwords, payment information, email address, IP address, real name, or any personally identifiable information beyond your Discord User ID.</p>
+
+  <h2>3. How We Use Your Data</h2>
+  <ul>
+    <li>To deliver core bot features: music playback, playlists, favourites, AI chat, and image generation.</li>
+    <li>To apply per-user and per-server settings and preferences you have configured.</li>
+    <li>To provide AI responses that are contextually relevant to your conversation history.</li>
+    <li>To grant or verify premium feature access.</li>
+    <li>To diagnose bugs, monitor performance, and prevent service abuse.</li>
+    <li>To send DM update notifications if you have opted in via /notification.</li>
+  </ul>
+  <p>We will <strong>never</strong> use your data for advertising, profiling, or selling to third parties.</p>
+
+  <h2>4. Data Security</h2>
+  <p>Protecting your data is a core priority. Here are the security measures we have in place:</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:16px 0;">
+    <span class="security-badge"><i class="fa fa-lock"></i> Encrypted Storage</span>
+    <span class="security-badge"><i class="fa fa-server"></i> Secure Hosting</span>
+    <span class="security-badge"><i class="fa fa-shield-halved"></i> Access Control</span>
+    <span class="security-badge"><i class="fa fa-eye-slash"></i> Minimal Data</span>
+    <span class="security-badge"><i class="fa fa-rotate"></i> Regular Backups</span>
+    <span class="security-badge"><i class="fa fa-key"></i> Token Security</span>
+  </div>
+  <ul>
+    <li><strong>Encrypted at rest:</strong> All database data is stored in encrypted form. Sensitive tokens and API keys are stored as environment variables, never in source code.</li>
+    <li><strong>Secure hosting:</strong> Aimo runs in an isolated, access-controlled server environment.</li>
+    <li><strong>No plain-text secrets:</strong> Bot tokens, API keys, and webhook URLs are never committed to version control or logged to public output.</li>
+    <li><strong>Access control:</strong> Only the bot owner can access the raw database. Sensitive owner-only commands (/backup) are restricted by Discord User ID checks at the code level.</li>
+    <li><strong>Minimal attack surface:</strong> We only store what is needed.</li>
+    <li><strong>Dependency security:</strong> We regularly update Node.js packages to patch known vulnerabilities.</li>
+    <li><strong>No third-party analytics:</strong> We do not use Google Analytics, tracking pixels, or any third-party analytics services.</li>
+  </ul>
+  <p>While we implement strong security measures, no system is 100% breach-proof. In the unlikely event of a data breach, we will notify affected users through our support server as quickly as possible.</p>
+
+  <h2>5. Third-Party Services</h2>
+  <p>Aimo uses the following third-party services to provide its features. Each handles data according to their own privacy policies:</p>
+  <ul>
+    <li><strong>OpenRouter (GPT-4o &amp; Claude)</strong> — AI responses for /ask and AI image generation for /imagine. Prompts you send are processed by their servers. <a href="https://openrouter.ai/privacy" target="_blank" rel="noopener">OpenRouter Privacy Policy</a></li>
+    <li><strong>LavaLink</strong> — Music streaming server. Song URLs are sent to LavaLink nodes to stream audio.</li>
+    <li><strong>Spotify / YouTube / SoundCloud</strong> — Song metadata and stream resolution. These platforms have their own terms and privacy policies.</li>
+    <li><strong>Genius API</strong> — Lyrics fetching for /lyrics. Song titles are sent to look up lyrics.</li>
+    <li><strong>top.gg</strong> — Vote verification for /vote. Your Discord User ID is sent to top.gg to check vote status.</li>
+  </ul>
+  <p>We are not responsible for the data practices of these third-party services. We encourage you to review their respective privacy policies.</p>
+
+  <h2>6. Data Sharing</h2>
+  <p>We do <strong>not</strong> sell, rent, trade, or share your personal data with any third parties, except:</p>
+  <ul>
+    <li>With the third-party services listed in Section 5, strictly to provide the requested feature.</li>
+    <li>When required by law, court order, or government authority.</li>
+    <li>To protect the rights, safety, or property of Aimo users or the public.</li>
+  </ul>
+
+  <h2>7. Data Retention &amp; Deletion</h2>
+  <p>We retain data only for as long as needed to provide the service:</p>
+  <ul>
+    <li><strong>User data</strong> (playlists, favourites, preferences): Retained until you request deletion.</li>
+    <li><strong>AI conversation history</strong>: Auto-deleted after 30 days of inactivity, or reset at any time with <code>/ask reset</code>.</li>
+    <li><strong>Server settings</strong>: Deleted automatically when Aimo is removed from a server.</li>
+    <li><strong>Command logs</strong>: Rolling 7-day window — older logs are automatically purged.</li>
+  </ul>
+  <p>To request full deletion of all data associated with your account, contact us at <a href="mailto:aimo-bot@protone.me">aimo-bot@protone.me</a> or open a ticket in our <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">support server</a>. We will process deletion requests within 7 business days.</p>
+
+  <h2>8. Children's Privacy</h2>
+  <p>Aimo is intended for users aged 13 and older, consistent with Discord's minimum age requirement. We do not knowingly collect data from anyone under 13. If you believe a child under 13 has used Aimo, please contact us immediately at <a href="mailto:aimo-bot@protone.me">aimo-bot@protone.me</a> and we will delete their data promptly.</p>
+
+  <h2>9. Your Rights</h2>
+  <p>You have the right to:</p>
+  <ul>
+    <li><strong>Access</strong> — Request a copy of all data we hold about you.</li>
+    <li><strong>Correction</strong> — Request correction of inaccurate data.</li>
+    <li><strong>Deletion</strong> — Request that all your data be deleted.</li>
+    <li><strong>Opt-out</strong> — Disable DM notifications at any time using <code>/notification</code>.</li>
+    <li><strong>Reset AI history</strong> — Clear your AI conversation history at any time using <code>/ask reset</code>.</li>
+  </ul>
+  <p>To exercise any of these rights, contact: <a href="mailto:aimo-bot@protone.me">aimo-bot@protone.me</a> or join our <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">support server</a>.</p>
+
+  <h2>10. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. Significant changes will be announced in our support server and via the /notification system if you are opted in. Continued use of Aimo after changes are posted constitutes your acceptance of the updated policy.</p>
+
+  <h2>11. Contact</h2>
+  <p>If you have any questions, concerns, or requests regarding this Privacy Policy:</p>
+  <ul>
+    <li>Email: <a href="mailto:aimo-bot@protone.me">aimo-bot@protone.me</a></li>
+    <li>Discord: <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">discord.gg/wd8ZQTftx</a></li>
+  </ul>
+  <p>We aim to respond to all privacy enquiries within 3 business days.</p>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-row"><img src="/logo.webp" alt="Aimo" loading="lazy"/> Aimo</div>
+        <p>High-quality Discord music bot with AI features, custom playlists, and advanced audio filters.</p>
+        <div class="footer-social">
+          <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i></a>
+          <a href="https://top.gg/bot/1483826024520089710" target="_blank" rel="noopener"><i class="fas fa-star"></i></a>
+          <a href="mailto:aimo-bot@protone.me"><i class="fa fa-envelope"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Navigation</h5><a href="/">Home</a><a href="/commands">Commands</a><a href="/premium">Premium</a></div>
+      <div class="footer-col"><h5>Legal</h5><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></div>
+      <div class="footer-col"><h5>Links</h5><a href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">Invite Bot</a><a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">Support Server</a><a href="mailto:aimo-bot@protone.me">Contact</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 Aimo Music Bot. All rights reserved.</p><div class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
+  </div>
+</footer>
+<script>
+function toggleNav(){
+  const nl=document.getElementById('navLinks');
+  const open=nl.classList.toggle('open');
+  const b1=document.getElementById('nib1'),b2=document.getElementById('nib2'),b3=document.getElementById('nib3');
+  if(b1){b1.classList.toggle('open-1',open);b2.classList.toggle('open-2',open);b3.classList.toggle('open-3',open);}
+}
+(function(){
+  let lastY=0,ticking=false;
+  const nav=document.querySelector('.nav');
+  window.addEventListener('scroll',function(){
+    if(!ticking){requestAnimationFrame(function(){
+      const y=window.scrollY;
+      if(y>80){nav.classList.toggle('nav-hidden',y>lastY&&y>180);nav.classList.add('nav-scrolled');}
+      else{nav.classList.remove('nav-hidden','nav-scrolled');}
+      lastY=y;ticking=false;
+    });ticking=true;}
+  });
+})();
+</script>
+</body>
+</html>

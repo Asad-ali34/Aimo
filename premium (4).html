@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Premium — Aimo Music Bot</title>
+  <meta name="description" content="Unlock the full power of Aimo with Premium. Get AI image generation with Flux Realism and Flux Anime (/imagine), playback speed control from 0.5× to 3× (/speed), deep bass boost (/boost), concert-hall reverb and echo (/reverb), spatial stereo widening (/stereo), and classic Nightcore mode (/nightcore). Premium is linked directly to your Discord User ID and includes priority support, early feature access, and a premium profile badge. Contact us on Discord or by email to get access."/>
+  <link rel="icon" type="image/webp" href="/logo.webp"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/"><img src="/logo.webp" alt="Aimo" loading="eager"/> Aimo</a>
+    <div class="nav-links" id="navLinks">
+      <a href="/">Home</a>
+      <a href="/commands">Commands</a>
+      <a href="/premium" class="active">Premium</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/status">Status</a>
+    </div>
+    <a class="nav-cta" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener"><i class="fa fa-plus"></i> Invite Aimo</a>
+    <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu">
+      <span class="nav-icon-wrap" aria-hidden="true">
+        <span class="nav-icon-bar" id="nib1"></span>
+        <span class="nav-icon-bar" id="nib2"></span>
+        <span class="nav-icon-bar" id="nib3"></span>
+      </span>
+    </button>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="hero-badge" style="margin-bottom:18px;display:inline-flex;align-items:center;gap:7px;padding:7px 20px;background:var(--gradient);color:white;border-radius:100px;font-size:.78rem;font-weight:600;font-family:'Poppins',sans-serif;box-shadow:0 3px 14px rgba(124,58,237,.28);">
+      <i class="fas fa-star"></i> Aimo Premium
+    </div>
+    <h1>Unlock <span class="gradient-text">Premium Features</span></h1>
+    <p>Take your music experience to the next level with exclusive features built for power users.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Choose Your <span class="gradient-text">Plan</span></h2>
+      <p>Start free, upgrade when you're ready.</p>
+    </div>
+    <div class="pricing-wrap">
+      <div class="pricing-card">
+        <div class="pricing-tier">For Everyone</div>
+        <div class="pricing-name">Free</div>
+        <div class="pricing-price">$0<span> / forever</span></div>
+        <div class="pricing-sub">No credit card · No sign-up required</div>
+        <ul class="pricing-list">
+          <li><span class="check"><i class="fas fa-check"></i></span> High-quality music (YouTube, Spotify, SC)</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Full queue management (shuffle, loop, clear)</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Playlists &amp; favourites saved to account</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Basic audio filters (10+ options)</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Aimo AI chat — /ask (GPT-4o)</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> All 6 mini games</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Lyrics, weather, utilities &amp; more</li>
+          <li class="off"><span class="check"><i class="fas fa-times"></i></span> AI image generation (/imagine)</li>
+          <li class="off"><span class="check"><i class="fas fa-times"></i></span> Playback speed control</li>
+          <li class="off"><span class="check"><i class="fas fa-times"></i></span> Advanced bass boost</li>
+          <li class="off"><span class="check"><i class="fas fa-times"></i></span> Reverb / echo effect</li>
+          <li class="off"><span class="check"><i class="fas fa-times"></i></span> Stereo widening</li>
+          <li class="off"><span class="check"><i class="fas fa-times"></i></span> Nightcore mode</li>
+        </ul>
+        <a class="btn btn-outline" style="width:100%;justify-content:center;" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">
+          <i class="fa fa-plus"></i> Add for Free
+        </a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-ribbon"><i class="fas fa-star"></i> Most Popular</div>
+        <div class="pricing-tier">For Power Users</div>
+        <div class="pricing-name gradient-text">Premium</div>
+        <div class="pricing-price gradient-text">Custom<span> / contact us</span></div>
+        <div class="pricing-sub">Contact via Discord or email to get access</div>
+        <ul class="pricing-list">
+          <li><span class="check"><i class="fas fa-check"></i></span> <strong>Everything in Free, plus:</strong></li>
+          <li><span class="check"><i class="fas fa-check"></i></span> <strong>AI image generation (/imagine)</strong></li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Playback speed — 0.5× to 3×</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Advanced bass boost (/boost)</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Reverb &amp; echo effect (/reverb)</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Stereo widening (/stereo)</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Nightcore mode (/nightcore)</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Priority support response</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Early access to new features</li>
+          <li><span class="check"><i class="fas fa-check"></i></span> Premium badge on your profile</li>
+        </ul>
+        <a class="btn btn-primary" style="width:100%;justify-content:center;" href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">
+          <i class="fab fa-discord"></i> Get Premium — Join Discord
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>What Premium <span class="gradient-text">Unlocks</span></h2>
+      <p>Six powerful features made for the most dedicated Aimo users.</p>
+    </div>
+    <div class="perks-grid">
+      <div class="perk-card">
+        <div class="perk-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <h4>AI Image Generation</h4>
+        <p>Generate stunning AI images via /imagine. Powered by paid premium AI APIs. Auto-selects Flux Realism or Flux Anime, enhances your prompt automatically. 30s cooldown.</p>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon"><i class="fas fa-gauge-high"></i></div>
+        <h4>Speed Control</h4>
+        <p>Adjust playback speed from 0.5× to 3.0× without affecting pitch using /speed. Perfect for studying, podcasts, or remix listening.</p>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon"><i class="fas fa-wave-square"></i></div>
+        <h4>Advanced Bass Boost</h4>
+        <p>Apply a deep, powerful bass boost with /boost that far surpasses the standard /filter options. Feel every beat.</p>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon"><i class="fas fa-water"></i></div>
+        <h4>Reverb &amp; Echo</h4>
+        <p>Transform any song into a spacious concert-hall experience with /reverb. A cinematic, dreamy echo effect.</p>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon"><i class="fas fa-headphones"></i></div>
+        <h4>Stereo Widening</h4>
+        <p>Expand the audio field with /stereo for a wider, spatial soundstage. Makes every track feel like it surrounds you.</p>
+      </div>
+      <div class="perk-card">
+        <div class="perk-icon"><i class="fas fa-moon"></i></div>
+        <h4>Nightcore Mode</h4>
+        <p>Enable the classic Nightcore effect with /nightcore — sped-up tempo and raised pitch, the signature anime AMV sound.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cta-box">
+      <div style="font-size:2.5rem;margin-bottom:16px;color:var(--purple)"><i class="fab fa-discord"></i></div>
+      <h3>How to Get <span class="gradient-text">Premium</span></h3>
+      <p>Join our Discord support server and open a ticket or message an admin to request Premium access. It is granted manually and linked to your Discord User ID.</p>
+      <div class="cta-btns">
+        <a class="btn btn-primary" href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Join Support Server</a>
+        <a class="btn btn-outline" href="mailto:aimo-bot@protone.me"><i class="fas fa-envelope"></i> Email Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-row"><img src="/logo.webp" alt="Aimo"/> Aimo</div>
+        <p>High-quality Discord music bot with AI features, custom playlists, and advanced audio filters.</p>
+        <div class="footer-social">
+          <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i></a>
+          <a href="https://top.gg/bot/1483826024520089710" target="_blank" rel="noopener"><i class="fas fa-star"></i></a>
+          <a href="mailto:aimo-bot@protone.me"><i class="fa fa-envelope"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Navigation</h5><a href="/">Home</a><a href="/commands">Commands</a><a href="/premium">Premium</a></div>
+      <div class="footer-col"><h5>Legal</h5><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></div>
+      <div class="footer-col"><h5>Links</h5><a href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">Invite Bot</a><a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">Support Server</a><a href="mailto:aimo-bot@protone.me">Contact</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 Aimo Music Bot. All rights reserved.</p><div class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div>
+  </div>
+</footer>
+<script>
+function toggleNav(){
+  const nl=document.getElementById('navLinks');
+  const open=nl.classList.toggle('open');
+  const b1=document.getElementById('nib1'),b2=document.getElementById('nib2'),b3=document.getElementById('nib3');
+  if(b1){b1.classList.toggle('open-1',open);b2.classList.toggle('open-2',open);b3.classList.toggle('open-3',open);}
+}
+(function(){
+  let lastY=0,ticking=false;
+  const nav=document.querySelector('.nav');
+  window.addEventListener('scroll',function(){
+    if(!ticking){requestAnimationFrame(function(){
+      const y=window.scrollY;
+      if(y>80){nav.classList.toggle('nav-hidden',y>lastY&&y>180);nav.classList.add('nav-scrolled');}
+      else{nav.classList.remove('nav-hidden','nav-scrolled');}
+      lastY=y;ticking=false;
+    });ticking=true;}
+  });
+})();
+(function(){
+  function addRipple(el){el.classList.add('ripple-host');el.addEventListener('click',function(e){const r=el.getBoundingClientRect(),size=Math.max(r.width,r.height)*1.8;const w=document.createElement('span');w.className='ripple-wave';w.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(e.clientX-r.left-size/2)+'px;top:'+(e.clientY-r.top-size/2)+'px';el.appendChild(w);setTimeout(()=>w.remove(),580);});}
+  document.querySelectorAll('.btn,.nav-cta').forEach(addRipple);
+})();
+</script>
+</body>
+</html>
