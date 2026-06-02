@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Aimo — Premium Discord Music Bot</title>
+  <meta name="description" content="Aimo is a premium Discord music bot used by thousands of servers. Play from YouTube, Spotify, SoundCloud, Apple Music & Deezer. Features 67 slash commands, AI chat, AI image generation, live synced lyrics, custom playlists, 10+ audio filters, 6 mini games, and 24/7 mode. Free to use — invite now."/>
+  <meta property="og:title" content="Aimo — Premium Discord Music Bot"/>
+  <meta property="og:description" content="Crystal-clear music from YouTube, Spotify & more. 67 commands, AI chat, AI images, live lyrics, custom playlists, audio filters, mini games — all free. Invite Aimo to your Discord server today."/>
+  <meta property="og:image" content="/aimo-char.jpg"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://aimo-bot.replit.app"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="Aimo — Premium Discord Music Bot"/>
+  <meta name="twitter:description" content="Crystal-clear audio, AI chat, live lyrics, 67 commands, custom playlists, audio filters, mini games — free Discord music bot."/>
+  <meta name="twitter:image" content="/aimo-char.jpg"/>
+  <link rel="icon" type="image/jpeg" href="/aimo-char.jpg"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    /* ── ANNOUNCEMENT MODAL ──────────────────────── */
+    .ann-modal-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(240,234,255,.72);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .ann-modal-overlay.show { opacity: 1; pointer-events: all; }
+    .ann-modal {
+      background: #fff; border-radius: 28px;
+      max-width: 440px; width: 100%;
+      box-shadow: 0 24px 80px rgba(124,58,237,.22), 0 4px 16px rgba(0,0,0,.08);
+      overflow: hidden; transform: translateY(24px) scale(.97);
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+      opacity: 0;
+    }
+    .ann-modal-overlay.show .ann-modal { transform: none; opacity: 1; }
+    .ann-modal-header {
+      padding: 32px 28px 24px; text-align: center;
+      position: relative;
+    }
+    .ann-modal-header.info        { background: linear-gradient(160deg,#EFF6FF,#F5F3FF); }
+    .ann-modal-header.warning     { background: linear-gradient(160deg,#FFFBEB,#FEF9C3); }
+    .ann-modal-header.success     { background: linear-gradient(160deg,#F0FDF4,#DCFCE7); }
+    .ann-modal-header.error       { background: linear-gradient(160deg,#FEF2F2,#FEE2E2); }
+    .ann-modal-header.maintenance { background: linear-gradient(160deg,#EFF6FF,#DBEAFE); }
+    .ann-modal-header.notice      { background: linear-gradient(160deg,#F5F3FF,#EDE9FE); }
+    .ann-modal-icon-wrap {
+      width: 68px; height: 68px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; font-size: 1.7rem; color: white;
+    }
+    .ann-modal-icon-wrap.info        { background: linear-gradient(135deg,#3b82f6,#1d4ed8); }
+    .ann-modal-icon-wrap.warning     { background: linear-gradient(135deg,#f59e0b,#d97706); }
+    .ann-modal-icon-wrap.success     { background: linear-gradient(135deg,#22c55e,#16a34a); }
+    .ann-modal-icon-wrap.error       { background: linear-gradient(135deg,#ef4444,#dc2626); }
+    .ann-modal-icon-wrap.maintenance { background: linear-gradient(135deg,#3b82f6,#6366f1); }
+    .ann-modal-icon-wrap.notice      { background: linear-gradient(135deg,#7C3AED,#EC4899); }
+    .ann-modal-type-badge {
+      display: inline-block; padding: 4px 12px; border-radius: 100px;
+      font-size: .7rem; font-weight: 700; font-family: 'Poppins',sans-serif;
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px;
+    }
+    .ann-modal-type-badge.info        { background: #DBEAFE; color: #1d4ed8; }
+    .ann-modal-type-badge.warning     { background: #FEF9C3; color: #b45309; }
+    .ann-modal-type-badge.success     { background: #DCFCE7; color: #16a34a; }
+    .ann-modal-type-badge.error       { background: #FEE2E2; color: #dc2626; }
+    .ann-modal-type-badge.maintenance { background: #DBEAFE; color: #2563eb; }
+    .ann-modal-type-badge.notice      { background: #EDE9FE; color: #7C3AED; }
+    .ann-modal-title { font-family: 'Poppins',sans-serif; font-weight: 800; font-size: 1.25rem; color: #1A0E2E; line-height: 1.25; }
+    .ann-modal-body { padding: 20px 28px; }
+    .ann-modal-msg { font-size: .92rem; color: #4B5563; line-height: 1.65; text-align: center; }
+    .ann-modal-actions { padding: 0 28px 28px; display: flex; flex-direction: column; gap: 10px; }
+    .ann-modal-cta {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px; border-radius: 14px; background: var(--gradient);
+      color: white; font-weight: 700; font-family: 'Poppins',sans-serif; font-size: .92rem;
+      text-decoration: none; transition: var(--t); box-shadow: 0 4px 16px rgba(124,58,237,.3);
+    }
+    .ann-modal-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(124,58,237,.42); color: white; }
+    .ann-modal-dismiss {
+      background: none; border: none; cursor: pointer;
+      font-size: .84rem; color: #9CA3AF; font-family: 'Inter',sans-serif;
+      transition: color .2s; padding: 6px;
+    }
+    .ann-modal-dismiss:hover { color: #4B5563; }
+    .ann-modal-close-x {
+      position: absolute; top: 14px; right: 14px;
+      width: 32px; height: 32px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,.7); cursor: pointer; color: #9CA3AF;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem; transition: background .2s, color .2s;
+    }
+    .ann-modal-close-x:hover { background: #fff; color: #1A0E2E; }
+
+    /* ── VINYL / NOW PLAYING ─────────────────────── */
+    .music-showcase { background: linear-gradient(160deg, #F5F3FF 0%, #FDF2F8 100%); }
+    .music-showcase-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    }
+    @media(max-width:768px){ .music-showcase-inner { grid-template-columns: 1fr; gap: 32px; } }
+
+    /* Vinyl record */
+    .vinyl-wrapper {
+      width: 140px; height: 140px; position: relative; margin: 0 auto 8px; flex-shrink: 0;
+    }
+    .vinyl-disc {
+      width: 140px; height: 140px; border-radius: 50%; position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 50% 50%, #fff 0%, #fff 14%, transparent 14.5%),
+        repeating-radial-gradient(circle at 50% 50%, #2D1B69 0px, #1e0f4a 4px, #2D1B69 8px, #1a0b40 12px, #2D1B69 16px),
+        linear-gradient(135deg, #7C3AED, #EC4899);
+      animation: vinyl-spin 3s linear infinite;
+      box-shadow: 0 8px 32px rgba(124,58,237,.4), inset 0 0 0 2px rgba(255,255,255,.08);
+    }
+    .vinyl-center {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 54px; height: 54px; border-radius: 50%;
+      background: linear-gradient(135deg, #7C3AED, #EC4899);
+      z-index: 2;
+      box-shadow: 0 3px 14px rgba(124,58,237,.55);
+      transition: background .5s ease;
+    }
+    .vinyl-hole {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 8px; height: 8px; border-radius: 50%; background: #fff; z-index: 3;
+    }
+    @keyframes vinyl-spin { to { transform: rotate(360deg); } }
+
+    /* Now Playing Card */
+    .now-playing-card {
+      background: #fff; border-radius: 24px; padding: 24px;
+      box-shadow: 0 16px 60px rgba(124,58,237,.15);
+      border: 1.5px solid #EDE9FE; position: relative; overflow: hidden;
+      margin-bottom: 18px;
+    }
+    .now-playing-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #7C3AED, #EC4899, #7C3AED);
+      background-size: 200%; animation: shimmer 3s linear infinite;
+    }
+    @keyframes shimmer { from{background-position:0%} to{background-position:200%} }
+    .np-top { display: flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+    .np-live-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0;
+      animation: np-pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes np-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+    .np-live-label { font-size: .7rem; font-weight: 700; color: #22c55e; font-family: 'Poppins',sans-serif; text-transform: uppercase; letter-spacing: .1em; }
+
+    .np-album-row { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+    .np-track-info { flex: 1; min-width: 0; }
+    .np-song { font-family: 'Poppins',sans-serif; font-weight: 700; font-size: 1rem; color: #1A0E2E; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .np-artist { font-size: .82rem; color: #9CA3AF; margin-top: 3px; }
+    .np-source { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: .7rem; font-weight: 600; color: #4B5563; background: #F3F4F6; padding: 3px 8px; border-radius: 100px; }
+
+    .np-progress-wrap { margin-bottom: 16px; }
+    .np-progress-bar { height: 4px; background: #F3F4F6; border-radius: 100px; overflow: hidden; }
+    .np-progress-fill { height: 100%; background: linear-gradient(90deg, #7C3AED, #EC4899); border-radius: 100px; width: 38%; transition: width .5s linear; }
+    .np-times { display: flex; justify-content: space-between; font-size: .72rem; color: #9CA3AF; margin-top: 6px; }
+
+    .np-controls { display: flex; align-items: center; justify-content: space-between; }
+    .np-ctrl-center { display: flex; align-items: center; gap: 16px; }
+    .np-ctrl-btn { background: none; border: none; color: #9CA3AF; font-size: 1rem; cursor: pointer; transition: color .2s, transform .2s; padding: 4px; }
+    .np-ctrl-btn:hover { color: #7C3AED; transform: scale(1.15); }
+    .np-play-btn {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, #7C3AED, #EC4899);
+      border: none; color: white; font-size: .95rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 14px rgba(124,58,237,.4); transition: transform .2s, box-shadow .2s;
+    }
+    .np-play-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(124,58,237,.5); }
+    .np-queue-pill {
+      display: inline-flex; align-items: center; gap: 5px; margin-top: 14px;
+      font-size: .72rem; color: var(--text-muted); background: var(--bg-alt);
+      padding: 4px 10px; border-radius: 100px; border: 1px solid var(--border-lt);
+    }
+    .np-queue-pill i { color: var(--purple); }
+
+    /* Lyrics Card */
+    .lyrics-card {
+      background: #fff; border-radius: 24px; padding: 24px;
+      box-shadow: 0 16px 60px rgba(124,58,237,.12);
+      border: 1.5px solid #EDE9FE;
+    }
+    .lyr-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .lyr-title { font-family: 'Poppins',sans-serif; font-weight: 700; font-size: .95rem; color: #1A0E2E; display: flex; align-items: center; gap: 8px; }
+    .lyr-title i { color: var(--purple); }
+    .lyr-source-badge { font-size: .68rem; font-weight: 700; padding: 3px 8px; border-radius: 100px; background: #F5F3FF; color: #7C3AED; }
+    .lyr-lines { display: flex; flex-direction: column; gap: 1px; }
+    .lyr-line { font-size: .87rem; color: #C4B5FD; line-height: 1.85; transition: color .4s, font-size .4s, font-weight .4s; padding: 1px 0; }
+    .lyr-line.active { color: #1A0E2E; font-weight: 800; font-size: .95rem; }
+    .lyr-line.near { color: #4B5563; font-weight: 500; }
+    .lyr-powered { font-size: .7rem; color: #9CA3AF; margin-top: 14px; text-align: center; }
+    .lyr-powered i { color: #EC4899; }
+
+    /* Section text side */
+    .music-feature-list { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .music-feature-list li { display: flex; align-items: flex-start; gap: 12px; font-size: .9rem; color: var(--text-body); line-height: 1.5; }
+    .mfl-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: .82rem; flex-shrink: 0; margin-top: 1px; }
+    .mfl-text strong { display: block; font-family: 'Poppins',sans-serif; font-weight: 700; font-size: .88rem; color: var(--text); margin-bottom: 2px; }
+  </style>
+</head>
+<body>
+
+<!-- ══ ANNOUNCEMENT MODAL ════════════════════════════════════════════ -->
+<div class="ann-modal-overlay" id="annModalOverlay">
+  <div class="ann-modal" id="annModal">
+    <div class="ann-modal-header info" id="annModalHeader">
+      <button class="ann-modal-close-x" onclick="closeAnnModal()" aria-label="Close"><i class="fas fa-xmark"></i></button>
+      <div class="ann-modal-icon-wrap info" id="annModalIconWrap"><i class="fas fa-circle-info" id="annModalIcon"></i></div>
+      <div class="ann-modal-type-badge info" id="annModalBadge">Info</div>
+      <div class="ann-modal-title" id="annModalTitle">Announcement</div>
+    </div>
+    <div class="ann-modal-body">
+      <p class="ann-modal-msg" id="annModalMsg"></p>
+    </div>
+    <div class="ann-modal-actions">
+      <a class="ann-modal-cta" href="#" id="annModalCta" style="display:none"></a>
+      <button class="ann-modal-dismiss" onclick="closeAnnModal()">Got it — dismiss</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOP ANNOUNCEMENT BAR (thin, for secondary notices) -->
+<div class="ann-bar" id="annBar" style="display:none">
+  <span class="ann-icon" id="annIcon"></span>
+  <span class="ann-body"><span class="ann-title" id="annTitle"></span><span id="annMsg"></span></span>
+  <button class="ann-close" onclick="closeAnn()" aria-label="Dismiss">✕</button>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/"><img src="/aimo-char.jpg" alt="Aimo" loading="eager" style="border-radius:50%;object-fit:cover;width:34px;height:34px;"/> Aimo</a>
+    <div class="nav-links" id="navLinks">
+      <a href="/" class="active">Home</a>
+      <a href="/commands">Commands</a>
+      <a href="/premium">Premium</a>
+      <a href="/status">Status</a>
+      <a href="/changelogs">Changelog</a>
+      <a href="/privacy">Privacy</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-cta nav-cta-hide-mobile" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">
+        <i class="fa fa-plus"></i> Invite Aimo
+      </a>
+      <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu" id="navToggleBtn">
+        <span class="nav-icon-wrap" aria-hidden="true">
+          <span class="nav-icon-bar" id="nib1"></span>
+          <span class="nav-icon-bar" id="nib2"></span>
+          <span class="nav-icon-bar" id="nib3"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <img class="hero-logo" src="/aimo-char.jpg" alt="Aimo Music Bot" loading="eager" style="border-radius:50%;object-fit:cover;"/>
+    <div class="hero-badge"><i class="fas fa-music"></i> Premium Music Experience</div>
+    <h1><span class="gradient-text">Aimo</span> Music Bot</h1>
+    <p>High-quality music from YouTube, Spotify, SoundCloud & more. AI chat, live lyrics, custom playlists, and advanced audio filters — all in one beautiful Discord bot, free forever.</p>
+    <div class="hero-btns">
+      <a class="btn btn-primary" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">
+        <i class="fa fa-plus"></i> Add to Discord — Free
+      </a>
+      <a class="btn btn-discord" href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">
+        <i class="fab fa-discord"></i> Support Server
+      </a>
+      <a class="btn btn-outline" href="/commands">
+        <i class="fa fa-terminal"></i> All Commands
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item"><div class="stat-num stat-fixed">67</div><div class="stat-lbl">Slash Commands</div></div>
+      <div class="stat-item"><div class="stat-num stat-fixed">10+</div><div class="stat-lbl">Audio Filters</div></div>
+      <div class="stat-item"><div class="stat-num stat-fixed">24/7</div><div class="stat-lbl">Always Online</div></div>
+      <div class="stat-item"><div class="stat-num stat-fixed">5</div><div class="stat-lbl">Music Platforms</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Everything You Need, <span class="gradient-text">In One Bot</span></h2>
+      <p>Aimo brings a full studio music experience, AI assistant, mini games, and live lyrics to your Discord server — completely free.</p>
+    </div>
+    <div class="features-grid">
+
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-music"></i></div>
+        <h3>Crystal Clear Audio</h3>
+        <p>Stream from YouTube, Spotify, SoundCloud and more with near-zero latency.</p>
+        <div class="feat-reveal">
+          <strong>Crystal Clear Audio</strong>
+          High-quality music streaming powered by our own private LavaLink node. Supports YouTube, Spotify, SoundCloud, Apple Music and Deezer — near-zero latency and automatic failover.
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-robot"></i></div>
+        <h3>Aimo AI Assistant</h3>
+        <p>Chat with our AI — music recs, bot help, or just conversation. Context-aware.</p>
+        <div class="feat-reveal">
+          <strong>Aimo AI Assistant</strong>
+          Ask anything with <code>/ask</code>. Aimo remembers your full conversation history per user, making responses contextual and personal. Our AI is powered by industry-leading language models with an intelligent backup system.
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <h3>AI Image Generation</h3>
+        <p>Generate photorealistic or anime-style images with a single prompt via <code>/imagine</code>.</p>
+        <div class="feat-reveal">
+          <strong>AI Image Generation</strong>
+          Use <code>/imagine</code> for stunning AI images — automatic prompt enhancement and smart model selection. Supports photorealistic and illustration styles.
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-compact-disc"></i></div>
+        <h3>Playlists &amp; Favourites</h3>
+        <p>Save, share, import, and load custom playlists. Synced to your Discord account.</p>
+        <div class="feat-reveal">
+          <strong>Playlists &amp; Favourites</strong>
+          12 playlist commands let you create, rename, share, import, and manage playlists. Favourites let you save individual songs. Everything is tied to your Discord User ID.
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-sliders"></i></div>
+        <h3>Advanced Audio Filters</h3>
+        <p>8D, Vaporwave, Karaoke, Vibrato, Bassboost, Nightcore, Reverb and more.</p>
+        <div class="feat-reveal">
+          <strong>Advanced Audio Filters</strong>
+          10+ built-in EQ filters including 8D, Vaporwave, Karaoke, Vibrato, and Tremolo. Premium users unlock Bass Boost, Reverb, Stereo Widening, Nightcore, and Speed control.
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-gamepad"></i></div>
+        <h3>Built-in Mini Games</h3>
+        <p>Snake, Minesweeper, Trivia, RPS, Tic Tac Toe, and Hangman inside Discord.</p>
+        <div class="feat-reveal">
+          <strong>Built-in Mini Games</strong>
+          Six fully playable games using Discord buttons — Snake, Minesweeper, Trivia, Rock Paper Scissors, Tic Tac Toe, and Hangman. Challenge friends or play solo.
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-clock"></i></div>
+        <h3>24/7 Mode</h3>
+        <p>Aimo stays in your voice channel permanently — always ready, never leaves.</p>
+        <div class="feat-reveal">
+          <strong>24/7 Mode</strong>
+          Toggle with <code>/247</code> — Aimo will stay in the voice channel even when everyone leaves. Perfect for always-on music rooms and server radio setups.
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-microphone-lines"></i></div>
+        <h3>Live Lyrics</h3>
+        <p>Synced, real-time lyrics displayed as the song plays — always finds what you need.</p>
+        <div class="feat-reveal">
+          <strong>Live Lyrics</strong>
+          Use <code>/lyrics</code> to pull up the full lyrics of any currently playing song. Multiple providers with automatic fallback ensure lyrics are always found. Beautifully formatted and paginated for long tracks.
+        </div>
+      </div>
+
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-bolt"></i></div>
+        <h3>Lightning Fast</h3>
+        <p>Sub-second responses, instant autocomplete, and our own private music node.</p>
+        <div class="feat-reveal">
+          <strong>Lightning Fast</strong>
+          Optimised from the ground up — slash command autocomplete, instant track loading from cache, sub-second response times, and our own private LavaLink backend.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Works With All Your <span class="gradient-text">Favourite Platforms</span></h2>
+      <p>Play from wherever your music lives — no accounts, no setup, no fuss.</p>
+    </div>
+    <div class="sources-row">
+      <div class="src-pill reveal"><span class="src-icon"><i class="fab fa-youtube" style="color:#FF0000;font-size:1.4rem"></i></span> YouTube</div>
+      <div class="src-pill reveal"><span class="src-icon"><i class="fab fa-spotify" style="color:#1DB954;font-size:1.3rem"></i></span> Spotify</div>
+      <div class="src-pill reveal"><span class="src-icon"><i class="fab fa-soundcloud" style="color:#FF5500;font-size:1.3rem"></i></span> SoundCloud</div>
+      <div class="src-pill reveal"><span class="src-icon" style="color:#FC3C44;font-size:1.1rem;font-weight:900;font-family:'Poppins',sans-serif">♪</span> Apple Music</div>
+      <div class="src-pill reveal"><span class="src-icon" style="font-size:1rem;font-weight:900;color:#FE6116;font-family:'Poppins',sans-serif">dz</span> Deezer</div>
+      <div class="src-pill reveal"><span class="src-icon"><i class="fab fa-youtube" style="color:#CC0000;font-size:1.3rem"></i></span> YouTube Music</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NOW PLAYING + LYRICS SHOWCASE ═══════════════════════════════════ -->
+<section class="section music-showcase">
+  <div class="container">
+    <div class="music-showcase-inner">
+
+      <!-- Left: Cards -->
+      <div class="reveal">
+        <!-- Now Playing Card -->
+        <div class="now-playing-card">
+          <div class="np-top">
+            <div class="np-live-dot"></div>
+            <span class="np-live-label">Now Playing</span>
+          </div>
+          <div class="np-album-row">
+            <!-- Vinyl record -->
+            <div class="vinyl-wrapper">
+              <div class="vinyl-disc"></div>
+              <div class="vinyl-center" id="npAlbumArt"></div>
+              <div class="vinyl-hole"></div>
+            </div>
+            <div class="np-track-info">
+              <div class="np-song" id="npSongTitle">Blinding Lights</div>
+              <div class="np-artist" id="npArtist">The Weeknd</div>
+              <div class="np-source">
+                <i class="fab fa-spotify" style="color:#1DB954"></i> Spotify
+              </div>
+            </div>
+          </div>
+          <div class="np-progress-wrap">
+            <div class="np-progress-bar">
+              <div class="np-progress-fill" id="npFill"></div>
+            </div>
+            <div class="np-times">
+              <span id="npTime">0:00</span>
+              <span id="npDuration">4:22</span>
+            </div>
+          </div>
+          <div class="np-controls">
+            <button class="np-ctrl-btn" style="font-size:.85rem"><i class="fas fa-shuffle"></i></button>
+            <div class="np-ctrl-center">
+              <button class="np-ctrl-btn" style="font-size:1.1rem" onclick="prevSong()"><i class="fas fa-backward-step"></i></button>
+              <button class="np-play-btn" id="npPlayBtn" onclick="toggleYT()"><i class="fas fa-play" id="npPlayIcon"></i></button>
+              <button class="np-ctrl-btn" style="font-size:1.1rem" onclick="nextSong()"><i class="fas fa-forward-step"></i></button>
+            </div>
+            <button class="np-ctrl-btn" style="font-size:.85rem"><i class="fas fa-repeat"></i></button>
+          </div>
+          <div>
+            <span class="np-queue-pill"><i class="fas fa-music"></i> 12 songs in queue &nbsp;·&nbsp; <i class="fas fa-volume-high"></i> 80%</span>
+          </div>
+        </div>
+
+        <!-- Lyrics Card -->
+        <div class="lyrics-card">
+          <div class="lyr-header">
+            <div class="lyr-title"><i class="fas fa-microphone-lines"></i> Live Lyrics</div>
+            <span class="lyr-source-badge">Live Synced</span>
+          </div>
+          <div class="lyr-lines" id="lyrLines"></div>
+        </div>
+
+        <!-- Music Player (shown when play is clicked) -->
+        <div id="ytPlayerWrap" style="display:none;margin-top:14px;border-radius:16px;overflow:hidden;border:1.5px solid #EDE9FE;box-shadow:0 8px 32px rgba(124,58,237,.14);">
+          <div style="background:linear-gradient(135deg,#F5F3FF,#FDF2F8);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #EDE9FE;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;animation:np-pulse 1.6s ease-in-out infinite;flex-shrink:0;"></div>
+              <i class="fab fa-spotify" style="color:#1DB954;font-size:.95rem;"></i>
+              <span id="npPlayerTitle" style="font-size:.74rem;font-weight:700;color:#7C3AED;font-family:'Poppins',sans-serif;text-transform:uppercase;letter-spacing:.06em;">Now Playing · Blinding Lights</span>
+            </div>
+            <button onclick="toggleYT()" style="background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:.8rem;padding:2px 6px;border-radius:6px;font-family:'Inter',sans-serif;" title="Close player">✕ Close</button>
+          </div>
+          <iframe id="ytPlayer" width="100%" height="152" style="display:block;border-radius:0 0 14px 14px;" frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <!-- Right: Text -->
+      <div class="music-text reveal">
+        <div class="section-header" style="text-align:left;">
+          <h2>Real-time Music Cards<br><span class="gradient-text">&amp; Live Lyrics</span></h2>
+          <p style="text-align:left;">Aimo shows beautiful now-playing cards and live synced lyrics right inside Discord — no extra apps, no configuration needed.</p>
+        </div>
+        <ul class="music-feature-list">
+          <li>
+            <div class="mfl-icon"><i class="fas fa-compact-disc"></i></div>
+            <div class="mfl-text">
+              <strong>Rich Now-Playing Cards</strong>
+              Beautiful embeds with album art, track progress, queue info, and playback controls — all in Discord.
+            </div>
+          </li>
+          <li>
+            <div class="mfl-icon"><i class="fas fa-microphone-lines"></i></div>
+            <div class="mfl-text">
+              <strong>Multi-Source Lyrics</strong>
+              Multiple lyrics providers with automatic fallback — always finds the right lyrics.
+            </div>
+          </li>
+          <li>
+            <div class="mfl-icon"><i class="fas fa-clock-rotate-left"></i></div>
+            <div class="mfl-text">
+              <strong>Time-Synced Lyrics</strong>
+              LRC-format synced lyrics highlight the current line in real time as the music plays.
+            </div>
+          </li>
+          <li>
+            <div class="mfl-icon"><i class="fas fa-wave-square"></i></div>
+            <div class="mfl-text">
+              <strong>Private LavaLink Node</strong>
+              Our dedicated streaming node delivers crystal-clear audio with near-zero latency.
+            </div>
+          </li>
+        </ul>
+        <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;">
+          <a class="btn btn-primary" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">
+            <i class="fa fa-plus"></i> Try it Free
+          </a>
+          <a class="btn btn-outline" href="/commands">
+            <i class="fas fa-terminal"></i> View Commands
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PREMIUM TEASER -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Go Further with <span class="gradient-text">Aimo Premium</span></h2>
+      <p>Unlock exclusive features for the most dedicated music lovers and power users.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-image"></i></div>
+        <h3>AI Image Generation</h3>
+        <p>Unlimited AI images via <code>/imagine</code> — photorealistic and anime styles.</p>
+        <div class="feat-reveal">
+          <strong>Premium AI Images</strong>
+          Generate unlimited stunning images with automatically enhanced prompts. Smart model selection picks the right AI style for your prompt automatically.
+        </div>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-gauge-high"></i></div>
+        <h3>Speed &amp; Pitch Control</h3>
+        <p>Adjust playback speed from 0.5× to 3× independently from pitch.</p>
+        <div class="feat-reveal">
+          <strong>Speed Control</strong>
+          Use <code>/speed</code> to set any rate between 0.5× and 3.0× without affecting pitch. Perfect for studying, podcasts, or slowing down complex solos.
+        </div>
+      </div>
+      <div class="feat-card reveal">
+        <div class="feat-icon"><i class="fas fa-headphones"></i></div>
+        <h3>Premium Audio Effects</h3>
+        <p>Deep bass boost, reverb, stereo widening, and Nightcore mode exclusive to Premium.</p>
+        <div class="feat-reveal">
+          <strong>Premium Effects</strong>
+          Four exclusive audio effects: <code>/boost</code> (deep bass), <code>/reverb</code> (concert hall echo), <code>/stereo</code> (spatial widening), <code>/nightcore</code>.
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:34px;">
+      <a class="btn btn-primary" href="/premium"><i class="fas fa-star"></i> View Premium Plans</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="cta-box reveal">
+      <img src="/aimo-char.jpg" alt="Aimo" loading="lazy" style="border-radius:50%;object-fit:cover;"/>
+      <h3>Ready to bring <span class="gradient-text">Aimo</span> to your server?</h3>
+      <p>Join thousands of Discord servers already enjoying premium music, AI chat, live lyrics, and more. Free to get started — no setup required.</p>
+      <div class="cta-btns">
+        <a class="btn btn-primary" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">
+          <i class="fa fa-plus"></i> Add to Discord — Free
+        </a>
+        <a class="btn btn-discord" href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">
+          <i class="fab fa-discord"></i> Join Support Server
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-row"><img src="/aimo-char.jpg" alt="Aimo" style="border-radius:50%;object-fit:cover;"/> Aimo</div>
+        <p>Premium Discord music bot — crystal-clear audio, AI chat, live lyrics, custom playlists, mini games, and advanced audio filters. Free for all servers.</p>
+        <div class="footer-social">
+          <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener" title="Discord"><i class="fab fa-discord"></i></a>
+          <a href="https://top.gg/bot/1483826024520089710" target="_blank" rel="noopener" title="top.gg"><i class="fas fa-star"></i></a>
+          <a href="mailto:aimo-bot@protone.me" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Navigation</h5>
+        <a href="/">Home</a>
+        <a href="/commands">Commands</a>
+        <a href="/premium">Premium</a>
+        <a href="/changelogs">Changelog</a>
+        <a href="/status">Status</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+      </div>
+      <div class="footer-col">
+        <h5>Links</h5>
+        <a href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">Invite Bot</a>
+        <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">Support Server</a>
+        <a href="https://top.gg/bot/1483826024520089710/vote" target="_blank" rel="noopener">Vote on top.gg</a>
+        <a href="mailto:aimo-bot@protone.me">Contact Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Aimo Music Bot. All rights reserved. Made with <i class="fas fa-heart" style="color:var(--pink)"></i> for Discord communities.</p>
+      <div class="footer-links">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/status">Status</a>
+        <a href="mailto:aimo-bot@protone.me">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Nav ── */
+function toggleNav(){
+  const nl=document.getElementById('navLinks');
+  const open=nl.classList.toggle('open');
+  const b1=document.getElementById('nib1'),b2=document.getElementById('nib2'),b3=document.getElementById('nib3');
+  if(b1){b1.classList.toggle('open-1',open);b2.classList.toggle('open-2',open);b3.classList.toggle('open-3',open);}
+}
+(function(){
+  let lastY=0,ticking=false;
+  const nav=document.querySelector('.nav');
+  window.addEventListener('scroll',function(){
+    if(!ticking){requestAnimationFrame(function(){
+      const y=window.scrollY;
+      if(y>80){nav.classList.toggle('nav-hidden',y>lastY&&y>180);nav.classList.add('nav-scrolled');}
+      else{nav.classList.remove('nav-hidden','nav-scrolled');}
+      lastY=y;ticking=false;
+    });ticking=true;}
+  });
+})();
+(function(){
+  function addRipple(el){
+    el.classList.add('ripple-host');
+    el.addEventListener('click',function(e){
+      const r=el.getBoundingClientRect(),size=Math.max(r.width,r.height)*1.8;
+      const w=document.createElement('span');
+      w.className='ripple-wave';
+      w.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(e.clientX-r.left-size/2)+'px;top:'+(e.clientY-r.top-size/2)+'px';
+      el.appendChild(w);setTimeout(()=>w.remove(),580);
+    });
+  }
+  document.querySelectorAll('.btn,.nav-cta,.cat-tab').forEach(addRipple);
+})();
+document.querySelectorAll('.feat-icon').forEach(function(el){
+  el.addEventListener('click',function(){el.classList.remove('icon-click');void el.offsetWidth;el.classList.add('icon-click');});
+});
+const revealObs=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('revealed'),i*55);revealObs.unobserve(e.target);}});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+/* ═══════════════════════════════════════════════
+   PLAYLIST — add / remove songs here
+   ═══════════════════════════════════════════════ */
+const PLAYLIST=[
+  {
+    title:'Blinding Lights', artist:'The Weeknd', dur:4*60+22,
+    color:'linear-gradient(135deg,#7C3AED,#EC4899)',
+    spotifyId:'0VjIjW4GlUZAMYd2vXMi3b',
+    lyrics:[
+      {t:0,  s:"♪  ♪  ♪"},
+      {t:22, s:"I've been tryna call"},
+      {t:25, s:"I've been on my own for long enough"},
+      {t:29, s:"Maybe you can show me how to love, maybe"},
+      {t:33, s:"I'm going through changes"},
+      {t:37, s:"Baby, you're like lightning in a bottle"},
+      {t:40, s:"I can't let you go now that I got it"},
+      {t:44, s:"And all I know is I said I love you"},
+      {t:47, s:"I ain't got nothing left to show"},
+      {t:52, s:"I said, ooh, I'm blinded by the lights"},
+      {t:56, s:"No, I can't sleep until I feel your touch"},
+      {t:60, s:"I said, ooh, I'm drowning in the night"},
+      {t:64, s:"Oh, when I'm like this, you're the one I trust"},
+      {t:69, s:"I'm blinded by the lights"},
+      {t:73, s:"No, I can't sleep until I feel your touch"},
+      {t:82, s:"I look around and Sin City's cold and empty"},
+      {t:87, s:"No one's around to judge me"},
+      {t:91, s:"I can't see clearly when you're gone"},
+      {t:95, s:"Baby, you're like lightning in a bottle"},
+      {t:99, s:"I can't let you go now that I got it"},
+      {t:102,s:"And all I know is I said I love you"},
+      {t:106,s:"I ain't got nothing left to show"},
+      {t:111,s:"I said, ooh, I'm blinded by the lights"},
+      {t:115,s:"No, I can't sleep until I feel your touch"},
+      {t:118,s:"I said, ooh, I'm drowning in the night"},
+      {t:122,s:"Oh, when I'm like this, you're the one I trust"},
+      {t:127,s:"I'm blinded by the lights"},
+      {t:131,s:"No, I can't sleep until I feel your touch"},
+      {t:142,s:"I'm running out of time"},
+      {t:146,s:"'Cause I can see the sun light up the sky"},
+      {t:150,s:"So I hit the road in overdrive, baby"},
+      {t:158,s:"Oh, the city's cold and empty (Oh)"},
+      {t:163,s:"No one's around to judge me (Oh)"},
+      {t:167,s:"I can't see clearly when you're gone"},
+      {t:171,s:"I said, ooh, I'm blinded by the lights"},
+      {t:175,s:"No, I can't sleep until I feel your touch"},
+      {t:178,s:"I said, ooh, I'm drowning in the night"},
+      {t:182,s:"Oh, when I'm like this, you're the one I trust"},
+      {t:187,s:"I'm blinded by the lights"},
+      {t:191,s:"No, I can't sleep until I feel your touch"},
+      {t:200,s:"I said, ooh, I'm blinded by the lights"},
+      {t:204,s:"No, I can't sleep until I feel your touch"},
+      {t:208,s:"I said, ooh, I'm drowning in the night"},
+      {t:212,s:"Oh, when I'm like this, you're the one I trust"},
+      {t:217,s:"I'm blinded by the lights"},
+      {t:221,s:"No, I can't sleep until I feel your touch"},
+      {t:249,s:"I can't sleep until I feel your touch"},
+      {t:256,s:"I can't sleep"},
+      {t:260,s:"♪"},
+    ]
+  },
+  {
+    title:'Moonlight', artist:'XXXTENTACION', dur:2*60+15,
+    color:'linear-gradient(135deg,#1e1b4b,#4338ca)',
+    spotifyId:'7dt6x5M1931YFPoAToDP7g',
+    lyrics:[
+      {t:0,  s:"♪  ♪  ♪"},
+      {t:8,  s:"She told me put my heart in the bag"},
+      {t:12, s:"And nobody gets hurt"},
+      {t:16, s:"Now I'm running from her love"},
+      {t:20, s:"I'm not fast enough"},
+      {t:24, s:"We were doing fine without them"},
+      {t:28, s:"What happened to it though?"},
+      {t:33, s:"Oh, she stood there lovely in her skin"},
+      {t:38, s:"Oh, I held my tears as I grinned"},
+      {t:43, s:"She said, 'Don't you dare let go'"},
+      {t:48, s:"She said, 'Just hold me close'"},
+      {t:53, s:"Under the moonlight"},
+      {t:57, s:"Under the moonlight"},
+      {t:62, s:"Under the moonlight"},
+      {t:67, s:"She told me put my heart in the bag"},
+      {t:72, s:"And nobody gets hurt"},
+      {t:77, s:"Now I'm running from her love"},
+      {t:81, s:"I'm not fast enough"},
+      {t:86, s:"We were doing fine without them"},
+      {t:90, s:"What happened to it though?"},
+      {t:95, s:"Oh, I held my tears as I grinned"},
+      {t:100,s:"She said, 'Don't you dare let go'"},
+      {t:105,s:"She said, 'Just hold me close'"},
+      {t:110,s:"Under the moonlight"},
+      {t:114,s:"Under the moonlight"},
+      {t:118,s:"Under the moonlight"},
+      {t:125,s:"♪  ♪  ♪"},
+    ]
+  },
+  {
+    title:'SAD!', artist:'XXXTENTACION', dur:2*60+46,
+    color:'linear-gradient(135deg,#7f1d1d,#ef4444)',
+    spotifyId:'3ee8Jmje8o58CHK66QrVC2',
+    lyrics:[
+      {t:0,  s:"♪  ♪  ♪"},
+      {t:6,  s:"Who am I? Someone that's afraid to let go"},
+      {t:11, s:"You decide if you're ever gonna let me know"},
+      {t:16, s:"Suicide if you ever try to let go"},
+      {t:21, s:"I'm sad, I know, yeah, I'm sad, I know, yeah"},
+      {t:28, s:"When you hold me in your arms so tight"},
+      {t:33, s:"You let me know everything's all right"},
+      {t:38, s:"I'm sad, I know, yeah, I'm sad, I know, yeah"},
+      {t:45, s:"I look to you, and I see nothing"},
+      {t:50, s:"I look to you to find the something"},
+      {t:55, s:"Taking time with the ones I shouldn't"},
+      {t:60, s:"Wasting time on the ones I shouldn't"},
+      {t:66, s:"I am way too good at goodbyes"},
+      {t:71, s:"I am way too good at goodbyes"},
+      {t:77, s:"Who am I? Someone that's afraid to let go"},
+      {t:82, s:"You decide if you're ever gonna let me know"},
+      {t:87, s:"Suicide if you ever try to let go"},
+      {t:92, s:"I'm sad, I know, yeah, I'm sad, I know, yeah"},
+      {t:99, s:"When you hold me in your arms so tight"},
+      {t:104,s:"You let me know everything's all right"},
+      {t:109,s:"I'm sad, I know, yeah, I'm sad, I know, yeah"},
+      {t:116,s:"♪  ♪  ♪"},
+      {t:130,s:"Who am I? Someone that's afraid to let go"},
+      {t:135,s:"I'm sad, I know, yeah, I'm sad, I know, yeah"},
+      {t:142,s:"♪"},
+    ]
+  },
+  {
+    title:'Lucid Dreams', artist:'Juice WRLD', dur:3*60+59,
+    color:'linear-gradient(135deg,#0c4a6e,#0891b2)',
+    spotifyId:'284soLkoLlEPwS7yxADHPL',
+    lyrics:[
+      {t:0,  s:"♪  ♪  ♪"},
+      {t:17, s:"I still see your shadows in my room"},
+      {t:21, s:"Can't take back the love that I gave you"},
+      {t:25, s:"It's to the point where I love and I hate you"},
+      {t:30, s:"And I cannot change you so I must replace you, oh"},
+      {t:35, s:"Easier said than done"},
+      {t:39, s:"I thought you were the one"},
+      {t:43, s:"Listening to my heart instead of my head"},
+      {t:47, s:"You found another one, but I am the better one"},
+      {t:51, s:"I won't let you forget me"},
+      {t:57, s:"I have lucid dreams where I can't move a thing"},
+      {t:61, s:"Thinking of you in my bed"},
+      {t:65, s:"You were my everything"},
+      {t:69, s:"Thoughts of a wedding ring"},
+      {t:73, s:"Now I'm just blabbering"},
+      {t:77, s:"Sometimes I think way too much"},
+      {t:81, s:"I need to cut loose from things"},
+      {t:85, s:"I still see your shadows in my room"},
+      {t:89, s:"Can't take back the love that I gave you"},
+      {t:93, s:"It's to the point where I love and I hate you"},
+      {t:98, s:"And I cannot change you so I must replace you"},
+      {t:103,s:"Easier said than done"},
+      {t:107,s:"I thought you were the one"},
+      {t:111,s:"Listening to my heart instead of my head"},
+      {t:115,s:"You found another one, but I am the better one"},
+      {t:119,s:"I won't let you forget me"},
+      {t:125,s:"I have lucid dreams where I can't move a thing"},
+      {t:129,s:"Thinking of you in my bed"},
+      {t:133,s:"You were my everything"},
+      {t:137,s:"Thoughts of a wedding ring"},
+      {t:141,s:"Now I'm just blabbering"},
+      {t:158,s:"♪  ♪  ♪"},
+    ]
+  },
+  {
+    title:'Starboy', artist:'The Weeknd', dur:3*60+50,
+    color:'linear-gradient(135deg,#78350f,#f59e0b)',
+    spotifyId:'5aAx2yezTd8zXrkmtKl66Z',
+    lyrics:[
+      {t:0,  s:"♪  ♪  ♪"},
+      {t:21, s:"I'm tryna put you in the worst mood"},
+      {t:26, s:"Made your whole year in a week too"},
+      {t:31, s:"I'm a motherfucking Starboy"},
+      {t:36, s:"Every day a nigga work might bob"},
+      {t:41, s:"Look what you've done, I'm a Starboy"},
+      {t:48, s:"House so empty, need a centerpiece"},
+      {t:52, s:"Twenty racks a table cut from ebony"},
+      {t:56, s:"Cut that ivory into skinny pieces"},
+      {t:62, s:"I can't live a normal life"},
+      {t:67, s:"I was raised by the strip"},
+      {t:72, s:"So I glamorize the kill, I was raised by the strip"},
+      {t:78, s:"I'm a Starboy"},
+      {t:83, s:"Let a nigga Brad Pitt"},
+      {t:87, s:"Legend of the fall took the year like a bandit"},
+      {t:93, s:"Bought mama a crib and a brand new wagon"},
+      {t:98, s:"Now she hit the grocery shop looking lavish"},
+      {t:104,s:"Star Trek roof in my foreign car"},
+      {t:109,s:"All my diamonds born in Africa"},
+      {t:114,s:"I'm a Starboy"},
+      {t:120,s:"♪  ♪  ♪"},
+    ]
+  },
+];
+
+/* ═══════════════════════════════════════════════
+   PLAYER STATE
+   ═══════════════════════════════════════════════ */
+let currentIdx=0, songElapsed=0, songTimer=null, ytActive=false;
+
+function fmt(s){return Math.floor(s/60)+':'+(s%60<10?'0':'')+s%60;}
+
+/* ── Update card UI for current song ── */
+function updateCard(){
+  const song=PLAYLIST[currentIdx];
+  const el=id=>document.getElementById(id);
+  if(el('npSongTitle'))  el('npSongTitle').textContent=song.title;
+  if(el('npArtist'))     el('npArtist').textContent=song.artist;
+  if(el('npDuration'))   el('npDuration').textContent=fmt(song.dur);
+  if(el('npPlayerTitle'))el('npPlayerTitle').textContent='Now Playing · '+song.title;
+  /* album art colour per song */
+  const art=document.getElementById('npAlbumArt');
+  if(art&&song.color) art.style.background=song.color;
+  /* vinyl disc hue shift */
+  const hues=['270','290','200','180','30'];
+  const disc=document.querySelector('.vinyl-disc');
+  if(disc) disc.style.filter='hue-rotate('+(hues[currentIdx]||'270')+'deg)';
+}
+
+/* ── Update progress bar + time display ── */
+function updateProgress(){
+  const song=PLAYLIST[currentIdx];
+  const fill=document.getElementById('npFill');
+  const time=document.getElementById('npTime');
+  if(fill) fill.style.width=(songElapsed/song.dur*100)+'%';
+  if(time) time.textContent=fmt(songElapsed);
+}
+
+/* ── Lyrics idle placeholder (shown before play is clicked) ── */
+function showLyricsIdle(){
+  const container=document.getElementById('lyrLines');
+  if(!container) return;
+  container.innerHTML=`<div style="text-align:center;padding:28px 0 18px;">
+    <i class="fas fa-play-circle" style="font-size:2.2rem;color:#DDD6FE;display:block;margin-bottom:10px;"></i>
+    <span style="font-size:.83rem;color:#C4B5FD;font-family:'Inter',sans-serif;">Click ▶ to see live synced lyrics</span>
+  </div>`;
+}
+
+/* ── Lyrics renderer ── */
+function renderLyrics(secs){
+  const container=document.getElementById('lyrLines');
+  if(!container) return;
+  const lyr=PLAYLIST[currentIdx].lyrics;
+  let activeIdx=0;
+  for(let i=0;i<lyr.length;i++){if(lyr[i].t<=secs) activeIdx=i;}
+  const VISIBLE=9, half=Math.floor(VISIBLE/2);
+  let start=Math.max(0,activeIdx-half);
+  let end=Math.min(lyr.length,start+VISIBLE);
+  if(end-start<VISIBLE) start=Math.max(0,end-VISIBLE);
+  container.innerHTML=lyr.slice(start,end).map((l,i)=>{
+    const gi=start+i;
+    const cls=gi===activeIdx?'lyr-line active':Math.abs(gi-activeIdx)===1?'lyr-line near':'lyr-line';
+    return `<div class="${cls}">${l.s}</div>`;
+  }).join('');
+}
+
+/* ── Start / stop the 1-second tick ── */
+function startTimer(){
+  if(songTimer) clearInterval(songTimer);
+  songTimer=setInterval(()=>{
+    const dur=PLAYLIST[currentIdx].dur;
+    if(songElapsed<dur){songElapsed++;updateProgress();renderLyrics(songElapsed);}
+    else{/* loop: reset to 0 */songElapsed=0;}
+  },1000);
+}
+function stopTimer(){if(songTimer){clearInterval(songTimer);songTimer=null;}}
+
+/* ── Load a song by index ── */
+function loadSong(idx){
+  currentIdx=(idx+PLAYLIST.length)%PLAYLIST.length;
+  songElapsed=0;
+  stopTimer();
+  updateCard();
+  updateProgress();
+  if(ytActive){
+    /* swap iframe immediately — user gesture already captured */
+    const iframe=document.getElementById('ytPlayer');
+    if(iframe) iframe.src='https://www.youtube.com/embed/'+PLAYLIST[currentIdx].ytId+'?autoplay=1&mute=0&rel=0&modestbranding=1';
+    renderLyrics(0);
+    startTimer();
+  } else {
+    showLyricsIdle();
+  }
+}
+
+/* ── Play / Pause toggle ── */
+function toggleYT(){
+  const wrap=document.getElementById('ytPlayerWrap');
+  const iframe=document.getElementById('ytPlayer');
+  const icon=document.getElementById('npPlayIcon');
+  const btn=document.getElementById('npPlayBtn');
+  const disc=document.querySelector('.vinyl-disc');
+  if(!ytActive){
+    iframe.src='https://www.youtube.com/embed/'+PLAYLIST[currentIdx].ytId+'?autoplay=1&mute=0&rel=0&modestbranding=1';
+    wrap.style.display='block';
+    setTimeout(()=>wrap.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
+    icon.className='fas fa-pause';
+    btn.style.background='linear-gradient(135deg,#22c55e,#16a34a)';
+    if(disc) disc.style.animationPlayState='running';
+    renderLyrics(songElapsed);
+    startTimer();
+    ytActive=true;
+  } else {
+    iframe.src='about:blank';
+    setTimeout(()=>{wrap.style.display='none';},120);
+    icon.className='fas fa-play';
+    btn.style.background='';
+    if(disc) disc.style.animationPlayState='paused';
+    stopTimer();
+    showLyricsIdle();
+    ytActive=false;
+  }
+}
+
+/* ── Next / Prev ── */
+function nextSong(){
+  const wasActive=ytActive;
+  if(!wasActive){
+    /* not playing — just update the card silently */
+    loadSong(currentIdx+1);
+  } else {
+    loadSong(currentIdx+1);
+  }
+}
+function prevSong(){
+  /* if more than 3 s in, restart current song; else go to previous */
+  if(songElapsed>3){
+    songElapsed=0; updateProgress(); renderLyrics(0);
+    if(ytActive){
+      const iframe=document.getElementById('ytPlayer');
+      if(iframe) iframe.src='https://www.youtube.com/embed/'+PLAYLIST[currentIdx].ytId+'?autoplay=1&mute=0&rel=0&modestbranding=1';
+    }
+  } else {
+    loadSong(currentIdx-1);
+  }
+}
+
+/* ── Boot: start vinyl paused, show lyrics idle ── */
+(function(){
+  const disc=document.querySelector('.vinyl-disc');
+  if(disc) disc.style.animationPlayState='paused';
+  updateCard();
+  updateProgress();
+  showLyricsIdle();
+})();
+
+/* ── Announcement modal ── */
+const ANN_TYPE_LABELS = { info:'Info', warning:'Warning', success:'Success', error:'Alert', maintenance:'Maintenance', notice:'Notice' };
+const ANN_TYPE_ICONS  = { info:'fa-circle-info', warning:'fa-triangle-exclamation', success:'fa-circle-check', error:'fa-circle-exclamation', maintenance:'fa-wrench', notice:'fa-megaphone' };
+
+function closeAnnModal(){
+  const o=document.getElementById('annModalOverlay');
+  if(!o) return;
+  o.classList.remove('show');
+  try{ sessionStorage.setItem('ann_modal_id', String(window._annModalId||'')); }catch{}
+}
+function closeAnn(){
+  const b=document.getElementById('annBar'); if(b) b.style.display='none';
+  try{ sessionStorage.setItem('ann_closed_id', String(document._lastAnnId||'')); }catch{}
+}
+
+(async function(){
+  try{
+    const r=await fetch('/api/status-config');
+    if(!r.ok) return;
+    const cfg=await r.json();
+    const anns=(cfg.announcements||[]).filter(a=>a.active).sort((a,b)=>(b.priority||1)-(a.priority||1));
+    if(!anns.length) return;
+    const active=anns[0];
+
+    const dismissed=sessionStorage.getItem('ann_modal_id');
+    if(dismissed && dismissed===String(active.id)) return;
+
+    window._annModalId=active.id;
+    const type=active.type||'info';
+    const icon=active.icon||(ANN_TYPE_ICONS[type]||'fa-circle-info');
+    const label=ANN_TYPE_LABELS[type]||'Info';
+
+    const hdr=document.getElementById('annModalHeader');
+    const iconWrap=document.getElementById('annModalIconWrap');
+    const iconEl=document.getElementById('annModalIcon');
+    const badge=document.getElementById('annModalBadge');
+    const title=document.getElementById('annModalTitle');
+    const msg=document.getElementById('annModalMsg');
+    const cta=document.getElementById('annModalCta');
+    const overlay=document.getElementById('annModalOverlay');
+
+    if(hdr){ hdr.className='ann-modal-header '+type; }
+    if(iconWrap){ iconWrap.className='ann-modal-icon-wrap '+type; }
+    if(iconEl){ iconEl.className='fas '+icon; }
+    if(badge){ badge.className='ann-modal-type-badge '+type; badge.textContent=label; }
+    if(title){ title.textContent=active.title||'Announcement'; }
+    if(msg){ msg.textContent=active.message||''; }
+
+    if(cta && active.cta && active.cta.label){
+      cta.href=active.cta.url||'#';
+      cta.innerHTML='<i class="fas fa-arrow-right"></i> '+active.cta.label;
+      cta.style.display='flex';
+    }
+
+    if(overlay){
+      setTimeout(()=>{ overlay.classList.add('show'); }, 600);
+    }
+
+    // Close on overlay click
+    if(overlay){
+      overlay.addEventListener('click', function(e){
+        if(e.target===overlay) closeAnnModal();
+      });
+    }
+
+  }catch(e){}
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Commands — Aimo Music Bot</title>
+  <meta name="description" content="Browse all 67 slash commands available in Aimo — the premium Discord music bot. Music, Queue, Filters, AI, Playlists, Games, and Utility categories."/>
+  <link rel="icon" type="image/jpeg" href="/aimo-char.jpg"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    /* ── HERO ── */
+    .cm-hero{
+      background:linear-gradient(160deg,#F5F3FF 0%,#FDF2F8 100%);
+      border-bottom:1.5px solid #EDE9FE;padding:64px 20px 52px;text-align:center;
+    }
+    .cm-hero-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;
+      padding:8px 22px;border-radius:100px;font-size:.78rem;font-weight:700;
+      font-family:'Poppins',sans-serif;margin-bottom:20px;
+      box-shadow:0 4px 16px rgba(124,58,237,.3);letter-spacing:.03em;
+    }
+    .cm-hero h1{font-family:'Poppins',sans-serif;font-weight:900;font-size:clamp(1.8rem,4vw,2.6rem);color:#1A0E2E;margin-bottom:12px;}
+    .cm-hero p{color:#6B7280;font-size:.95rem;max-width:480px;margin:0 auto 28px;line-height:1.65;}
+
+    /* ── SEARCH ── */
+    .cm-search-wrap{
+      position:relative;max-width:480px;margin:0 auto;
+    }
+    .cm-search-icon{
+      position:absolute;left:16px;top:50%;transform:translateY(-50%);
+      color:#9CA3AF;font-size:.9rem;pointer-events:none;
+    }
+    .cm-search{
+      width:100%;padding:14px 16px 14px 44px;
+      border:2px solid #EDE9FE;border-radius:14px;
+      font-size:.9rem;font-family:'Inter',sans-serif;color:#1A0E2E;
+      background:#fff;outline:none;transition:.2s;
+      box-shadow:0 4px 20px rgba(124,58,237,.08);
+    }
+    .cm-search:focus{border-color:#7C3AED;box-shadow:0 4px 20px rgba(124,58,237,.18);}
+    .cm-search-clear{
+      position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      background:none;border:none;cursor:pointer;color:#9CA3AF;
+      font-size:.85rem;display:none;padding:4px;transition:.2s;
+    }
+    .cm-search-clear:hover{color:#7C3AED;}
+    .cm-search-clear.visible{display:block;}
+
+    /* ── MAIN LAYOUT ── */
+    .cm-layout{display:grid;grid-template-columns:220px 1fr;gap:28px;max-width:1100px;margin:0 auto;padding:36px 20px 80px;}
+    @media(max-width:860px){.cm-layout{grid-template-columns:1fr;}}
+
+    /* ── SIDEBAR ── */
+    .cm-sidebar{position:sticky;top:80px;align-self:start;}
+    @media(max-width:860px){.cm-sidebar{position:static;}}
+    .cm-sidebar-inner{background:#fff;border:1.5px solid #EDE9FE;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(124,58,237,.06);}
+    .cm-sidebar-head{
+      padding:14px 18px;background:linear-gradient(135deg,#F5F3FF,#FDF2F8);
+      border-bottom:1.5px solid #EDE9FE;
+      font-family:'Poppins',sans-serif;font-weight:700;font-size:.76rem;
+      color:#9CA3AF;text-transform:uppercase;letter-spacing:.08em;
+    }
+    .cm-sidebar-link{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:11px 18px;cursor:pointer;transition:.15s;border-bottom:1px solid #F9F5FF;
+      text-decoration:none;
+    }
+    .cm-sidebar-link:last-child{border-bottom:none;}
+    .cm-sidebar-link:hover{background:#F9F5FF;}
+    .cm-sidebar-link.active{background:#F5F3FF;}
+    .cm-sidebar-left{display:flex;align-items:center;gap:9px;}
+    .cm-sidebar-left i{font-size:.84rem;color:#9CA3AF;width:16px;text-align:center;}
+    .cm-sidebar-link.active .cm-sidebar-left i{color:#7C3AED;}
+    .cm-sidebar-label{font-size:.85rem;font-family:'Inter',sans-serif;color:#4B5563;font-weight:500;}
+    .cm-sidebar-link.active .cm-sidebar-label{color:#7C3AED;font-weight:700;}
+    .cm-sidebar-count{
+      font-size:.67rem;font-weight:700;padding:2px 7px;border-radius:100px;
+      background:#F3F4F6;color:#9CA3AF;font-family:'Poppins',sans-serif;
+    }
+    .cm-sidebar-link.active .cm-sidebar-count{background:#EDE9FE;color:#7C3AED;}
+    /* Mobile tabs */
+    .cm-mobile-tabs{display:none;overflow-x:auto;gap:8px;padding:0 20px 4px;scrollbar-width:none;}
+    .cm-mobile-tabs::-webkit-scrollbar{display:none;}
+    @media(max-width:860px){.cm-mobile-tabs{display:flex;}.cm-sidebar{display:none;}}
+    .cm-mobile-tab{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:8px 16px;border-radius:100px;border:1.5px solid #EDE9FE;
+      background:#fff;font-size:.8rem;font-weight:600;font-family:'Poppins',sans-serif;
+      color:#6B7280;cursor:pointer;white-space:nowrap;transition:.2s;flex-shrink:0;
+    }
+    .cm-mobile-tab.active{background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;border-color:transparent;box-shadow:0 3px 12px rgba(124,58,237,.28);}
+
+    /* ── COMMANDS AREA ── */
+    .cm-main{}
+    .cm-cat-section{display:none;}
+    .cm-cat-section.active{display:block;}
+    .cm-cat-header{margin-bottom:20px;}
+    .cm-cat-title{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.3rem;color:#1A0E2E;display:flex;align-items:center;gap:10px;}
+    .cm-cat-title i{font-size:1rem;color:#7C3AED;}
+    .cm-cat-desc{font-size:.85rem;color:#9CA3AF;margin-top:5px;line-height:1.5;}
+    .cm-cat-count-pill{
+      display:inline-flex;align-items:center;gap:5px;
+      font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:100px;
+      background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;
+      font-family:'Poppins',sans-serif;margin-top:8px;
+    }
+
+    /* ── COMMAND GRID ── */
+    .cm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+    .cm-card{
+      background:#fff;border:1.5px solid #EDE9FE;border-radius:16px;
+      padding:0;overflow:hidden;transition:.25s;cursor:default;
+      border-left:4px solid #EDE9FE;
+    }
+    .cm-card:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(124,58,237,.12);border-left-color:#7C3AED;}
+    .cm-card.premium-cmd{border-left-color:#EC4899;}
+    .cm-card.premium-cmd:hover{box-shadow:0 10px 32px rgba(236,72,153,.15);}
+    .cm-card.owner-cmd{border-left-color:#EF4444;}
+    .cm-card-inner{padding:16px 18px;}
+    .cm-cmd-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;}
+    .cm-cmd-name{
+      font-family:'Poppins',sans-serif;font-weight:700;font-size:.92rem;color:#1A0E2E;
+      display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+    }
+    .cm-badge-premium{
+      display:inline-flex;align-items:center;gap:3px;
+      font-size:.62rem;font-weight:800;padding:2px 8px;border-radius:100px;
+      background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;
+      font-family:'Poppins',sans-serif;white-space:nowrap;
+    }
+    .cm-badge-owner{
+      display:inline-flex;align-items:center;gap:3px;
+      font-size:.62rem;font-weight:800;padding:2px 8px;border-radius:100px;
+      background:#FEE2E2;color:#DC2626;font-family:'Poppins',sans-serif;white-space:nowrap;
+    }
+    .cm-copy-btn{
+      background:none;border:1.5px solid #EDE9FE;border-radius:7px;
+      padding:4px 8px;cursor:pointer;color:#9CA3AF;font-size:.72rem;
+      transition:.2s;white-space:nowrap;flex-shrink:0;font-family:'Inter',sans-serif;
+    }
+    .cm-copy-btn:hover{background:#F5F3FF;border-color:#C4B5FD;color:#7C3AED;}
+    .cm-cmd-desc{font-size:.82rem;color:#6B7280;line-height:1.55;}
+
+    /* ── SEARCH RESULTS ── */
+    .cm-search-results{display:none;}
+    .cm-search-results.active{display:block;}
+    .cm-no-results{
+      text-align:center;padding:64px 20px;
+    }
+    .cm-no-icon{font-size:2.5rem;color:#EDE9FE;margin-bottom:16px;}
+    .cm-no-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;color:#9CA3AF;margin-bottom:6px;}
+    .cm-no-sub{font-size:.84rem;color:#C4B5FD;}
+
+    /* ── HIDDEN FOR SEARCH ── */
+    .cm-card[data-hidden="true"]{display:none;}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/"><img src="/aimo-char.jpg" alt="Aimo" loading="eager" style="border-radius:50%;object-fit:cover;width:34px;height:34px;"/> Aimo</a>
+    <div class="nav-links" id="navLinks">
+      <a href="/">Home</a>
+      <a href="/commands" class="active">Commands</a>
+      <a href="/premium">Premium</a>
+      <a href="/status">Status</a>
+      <a href="/changelogs">Changelog</a>
+      <a href="/privacy">Privacy</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-cta nav-cta-hide-mobile" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener"><i class="fa fa-plus"></i> Invite Aimo</a>
+      <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu" id="navToggleBtn">
+        <span class="nav-icon-wrap" aria-hidden="true">
+          <span class="nav-icon-bar" id="nib1"></span>
+          <span class="nav-icon-bar" id="nib2"></span>
+          <span class="nav-icon-bar" id="nib3"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="cm-hero">
+  <div class="cm-hero-badge"><i class="fas fa-terminal"></i> 67 Slash Commands</div>
+  <h1><span class="gradient-text">All Commands</span></h1>
+  <p>Browse every command Aimo has, organised by category. Search to find exactly what you need.</p>
+  <div class="cm-search-wrap">
+    <i class="fas fa-magnifying-glass cm-search-icon"></i>
+    <input class="cm-search" id="searchInput" type="text" placeholder="Search commands… e.g. playlist, skip, /ask" autocomplete="off" oninput="handleSearch(this.value)"/>
+    <button class="cm-search-clear" id="searchClear" onclick="clearSearch()"><i class="fas fa-xmark"></i></button>
+  </div>
+</section>
+
+<!-- MOBILE TABS -->
+<div class="cm-mobile-tabs" id="mobileTabs">
+  <button class="cm-mobile-tab active" onclick="showCat('playback',this)"><i class="fas fa-music"></i> Music</button>
+  <button class="cm-mobile-tab" onclick="showCat('queue',this)"><i class="fas fa-list"></i> Queue</button>
+  <button class="cm-mobile-tab" onclick="showCat('settings',this)"><i class="fas fa-sliders"></i> Filters</button>
+  <button class="cm-mobile-tab" onclick="showCat('favorites',this)"><i class="fas fa-heart"></i> Favourites</button>
+  <button class="cm-mobile-tab" onclick="showCat('playlists',this)"><i class="fas fa-folder-open"></i> Playlists</button>
+  <button class="cm-mobile-tab" onclick="showCat('ai',this)"><i class="fas fa-robot"></i> AI</button>
+  <button class="cm-mobile-tab" onclick="showCat('utility',this)"><i class="fas fa-wrench"></i> Utility</button>
+  <button class="cm-mobile-tab" onclick="showCat('games',this)"><i class="fas fa-gamepad"></i> Games</button>
+</div>
+
+<!-- LAYOUT -->
+<div class="cm-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="cm-sidebar">
+    <div class="cm-sidebar-inner">
+      <div class="cm-sidebar-head">Categories</div>
+      <div class="cm-sidebar-link active" onclick="showCat('playback',this)">
+        <div class="cm-sidebar-left"><i class="fas fa-music"></i><span class="cm-sidebar-label">Music</span></div>
+        <span class="cm-sidebar-count">13</span>
+      </div>
+      <div class="cm-sidebar-link" onclick="showCat('queue',this)">
+        <div class="cm-sidebar-left"><i class="fas fa-list"></i><span class="cm-sidebar-label">Queue</span></div>
+        <span class="cm-sidebar-count">5</span>
+      </div>
+      <div class="cm-sidebar-link" onclick="showCat('settings',this)">
+        <div class="cm-sidebar-left"><i class="fas fa-sliders"></i><span class="cm-sidebar-label">Filters</span></div>
+        <span class="cm-sidebar-count">11</span>
+      </div>
+      <div class="cm-sidebar-link" onclick="showCat('favorites',this)">
+        <div class="cm-sidebar-left"><i class="fas fa-heart"></i><span class="cm-sidebar-label">Favourites</span></div>
+        <span class="cm-sidebar-count">4</span>
+      </div>
+      <div class="cm-sidebar-link" onclick="showCat('playlists',this)">
+        <div class="cm-sidebar-left"><i class="fas fa-folder-open"></i><span class="cm-sidebar-label">Playlists</span></div>
+        <span class="cm-sidebar-count">12</span>
+      </div>
+      <div class="cm-sidebar-link" onclick="showCat('ai',this)">
+        <div class="cm-sidebar-left"><i class="fas fa-robot"></i><span class="cm-sidebar-label">AI &amp; Art</span></div>
+        <span class="cm-sidebar-count">2</span>
+      </div>
+      <div class="cm-sidebar-link" onclick="showCat('utility',this)">
+        <div class="cm-sidebar-left"><i class="fas fa-wrench"></i><span class="cm-sidebar-label">Utility</span></div>
+        <span class="cm-sidebar-count">19</span>
+      </div>
+      <div class="cm-sidebar-link" onclick="showCat('games',this)">
+        <div class="cm-sidebar-left"><i class="fas fa-gamepad"></i><span class="cm-sidebar-label">Games</span></div>
+        <span class="cm-sidebar-count">6</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- COMMANDS MAIN -->
+  <main class="cm-main">
+
+    <!-- SEARCH RESULTS -->
+    <div class="cm-search-results" id="searchResults">
+      <div class="cm-cat-header">
+        <div class="cm-cat-title"><i class="fas fa-magnifying-glass"></i> Search Results</div>
+        <div class="cm-cat-desc" id="searchResultsDesc">Searching…</div>
+      </div>
+      <div class="cm-grid" id="searchGrid"></div>
+      <div class="cm-no-results" id="noResults" style="display:none;">
+        <div class="cm-no-icon"><i class="fas fa-face-frown-open"></i></div>
+        <div class="cm-no-title">No commands found</div>
+        <div class="cm-no-sub">Try a different search term</div>
+      </div>
+    </div>
+
+    <!-- MUSIC -->
+    <div class="cm-cat-section active" id="cat-playback">
+      <div class="cm-cat-header">
+        <div class="cm-cat-title"><i class="fas fa-music"></i> Music Playback</div>
+        <div class="cm-cat-desc">Control music playback in your voice channel</div>
+        <div class="cm-cat-count-pill"><i class="fas fa-terminal"></i> 13 commands</div>
+      </div>
+      <div class="cm-grid">
+        <div class="cm-card" data-cmd="/play" data-desc="Play a song or add it to the queue — supports YouTube, Spotify, SoundCloud, Apple Music links and plain search"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/play</div><button class="cm-copy-btn" onclick="copyCmd(this,'/play')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Play a song or add it to the queue — supports YouTube, Spotify, SoundCloud, Apple Music links and plain search</div></div></div>
+        <div class="cm-card" data-cmd="/search" data-desc="Search for songs and choose from an interactive list of results before adding to the queue"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/search</div><button class="cm-copy-btn" onclick="copyCmd(this,'/search')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Search for songs and choose from an interactive list of results before adding to the queue</div></div></div>
+        <div class="cm-card" data-cmd="/pause" data-desc="Pause the currently playing song — use /resume to continue"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/pause</div><button class="cm-copy-btn" onclick="copyCmd(this,'/pause')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Pause the currently playing song — use /resume to continue</div></div></div>
+        <div class="cm-card" data-cmd="/resume" data-desc="Resume a paused song and continue playback from where it stopped"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/resume</div><button class="cm-copy-btn" onclick="copyCmd(this,'/resume')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Resume a paused song and continue playback from where it stopped</div></div></div>
+        <div class="cm-card" data-cmd="/skip" data-desc="Skip the current song and immediately play the next one in the queue"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/skip</div><button class="cm-copy-btn" onclick="copyCmd(this,'/skip')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Skip the current song and immediately play the next one in the queue</div></div></div>
+        <div class="cm-card" data-cmd="/back" data-desc="Go back and replay the previous song from the beginning"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/back</div><button class="cm-copy-btn" onclick="copyCmd(this,'/back')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Go back and replay the previous song from the beginning</div></div></div>
+        <div class="cm-card" data-cmd="/stop" data-desc="Stop all music playback and clear the entire queue permanently"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/stop</div><button class="cm-copy-btn" onclick="copyCmd(this,'/stop')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Stop all music playback and clear the entire queue permanently</div></div></div>
+        <div class="cm-card" data-cmd="/disconnect" data-desc="Disconnect Aimo from the voice channel and clear the session"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/disconnect</div><button class="cm-copy-btn" onclick="copyCmd(this,'/disconnect')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Disconnect Aimo from the voice channel and clear the session</div></div></div>
+        <div class="cm-card" data-cmd="/nowplaying" data-desc="Show the currently playing song with progress bar, artwork, source, and interactive controls"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/nowplaying</div><button class="cm-copy-btn" onclick="copyCmd(this,'/nowplaying')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Show the currently playing song with progress bar, artwork, source, and interactive controls</div></div></div>
+        <div class="cm-card" data-cmd="/forward" data-desc="Skip forward by a specified number of seconds in the currently playing track"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/forward</div><button class="cm-copy-btn" onclick="copyCmd(this,'/forward')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Skip forward by a specified number of seconds in the currently playing track</div></div></div>
+        <div class="cm-card" data-cmd="/backward" data-desc="Skip backward by a specified number of seconds in the currently playing track"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/backward</div><button class="cm-copy-btn" onclick="copyCmd(this,'/backward')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Skip backward by a specified number of seconds in the currently playing track</div></div></div>
+        <div class="cm-card" data-cmd="/247" data-desc="Toggle 24/7 mode — Aimo stays in the voice channel permanently, even when all users leave"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/247</div><button class="cm-copy-btn" onclick="copyCmd(this,'/247')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Toggle 24/7 mode — Aimo stays in the voice channel permanently, even when all users leave</div></div></div>
+        <div class="cm-card" data-cmd="/vcstatus" data-desc="Enable or disable the voice channel status that displays what is currently playing"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/vcstatus</div><button class="cm-copy-btn" onclick="copyCmd(this,'/vcstatus')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Enable or disable the voice channel status that displays what is currently playing</div></div></div>
+      </div>
+    </div>
+
+    <!-- QUEUE -->
+    <div class="cm-cat-section" id="cat-queue">
+      <div class="cm-cat-header">
+        <div class="cm-cat-title"><i class="fas fa-list"></i> Queue Management</div>
+        <div class="cm-cat-desc">Manage songs in the queue</div>
+        <div class="cm-cat-count-pill"><i class="fas fa-terminal"></i> 5 commands</div>
+      </div>
+      <div class="cm-grid">
+        <div class="cm-card" data-cmd="/queue" data-desc="View the full queue with pagination — see all upcoming songs with their duration and position"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/queue</div><button class="cm-copy-btn" onclick="copyCmd(this,'/queue')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">View the full queue with pagination — see all upcoming songs with their duration and position</div></div></div>
+        <div class="cm-card" data-cmd="/shuffle" data-desc="Randomly shuffle the order of all songs currently in the queue"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/shuffle</div><button class="cm-copy-btn" onclick="copyCmd(this,'/shuffle')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Randomly shuffle the order of all songs currently in the queue</div></div></div>
+        <div class="cm-card" data-cmd="/clear" data-desc="Remove all songs from the current queue without stopping the playing song"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/clear</div><button class="cm-copy-btn" onclick="copyCmd(this,'/clear')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Remove all songs from the current queue without stopping the playing song</div></div></div>
+        <div class="cm-card" data-cmd="/remove" data-desc="Remove a specific song from the queue by its position number"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/remove</div><button class="cm-copy-btn" onclick="copyCmd(this,'/remove')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Remove a specific song from the queue by its position number</div></div></div>
+        <div class="cm-card" data-cmd="/move" data-desc="Move a track from one queue position to another to rearrange the order"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/move</div><button class="cm-copy-btn" onclick="copyCmd(this,'/move')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Move a track from one queue position to another to rearrange the order</div></div></div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="cm-cat-section" id="cat-settings">
+      <div class="cm-cat-header">
+        <div class="cm-cat-title"><i class="fas fa-sliders"></i> Audio Filters</div>
+        <div class="cm-cat-desc">Audio settings, EQ filters, and playback controls — <span style="color:#EC4899;font-weight:600;">⭐ = Premium only</span></div>
+        <div class="cm-cat-count-pill"><i class="fas fa-terminal"></i> 11 commands</div>
+      </div>
+      <div class="cm-grid">
+        <div class="cm-card" data-cmd="/filter" data-desc="Apply an audio EQ filter — Bassboost, Nightcore, 8D, Vaporwave, Karaoke, Vibrato, Tremolo and more"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/filter</div><button class="cm-copy-btn" onclick="copyCmd(this,'/filter')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Apply an audio EQ filter — Bassboost, Nightcore, 8D, Vaporwave, Karaoke, Vibrato, Tremolo and more</div></div></div>
+        <div class="cm-card" data-cmd="/loop" data-desc="Set the repeat mode: Off, repeat current Track, or repeat the entire Queue"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/loop</div><button class="cm-copy-btn" onclick="copyCmd(this,'/loop')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Set the repeat mode: Off, repeat current Track, or repeat the entire Queue</div></div></div>
+        <div class="cm-card" data-cmd="/autoplay" data-desc="Toggle autoplay — automatically queues related songs when the queue empties"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/autoplay</div><button class="cm-copy-btn" onclick="copyCmd(this,'/autoplay')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Toggle autoplay — automatically queues related songs when the queue empties</div></div></div>
+        <div class="cm-card" data-cmd="/volume" data-desc="Set the playback volume from 1% to 200% — 100% is the default level"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/volume</div><button class="cm-copy-btn" onclick="copyCmd(this,'/volume')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Set the playback volume from 1% to 200% — 100% is the default level</div></div></div>
+        <div class="cm-card" data-cmd="/seek" data-desc="Jump to a specific timestamp in the currently playing song (format: mm:ss)"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/seek</div><button class="cm-copy-btn" onclick="copyCmd(this,'/seek')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Jump to a specific timestamp in the currently playing song (format: mm:ss)</div></div></div>
+        <div class="cm-card" data-cmd="/source" data-desc="Set your preferred default music search source (YouTube or SoundCloud)"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/source</div><button class="cm-copy-btn" onclick="copyCmd(this,'/source')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Set your preferred default music search source (YouTube or SoundCloud)</div></div></div>
+        <div class="cm-card premium-cmd" data-cmd="/speed" data-desc="Change playback speed from 0.5× to 3× without affecting pitch — great for studying or remixes"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/speed <span class="cm-badge-premium"><i class="fas fa-star"></i> Premium</span></div><button class="cm-copy-btn" onclick="copyCmd(this,'/speed')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Change playback speed from 0.5× to 3× without affecting pitch — great for studying or remixes</div></div></div>
+        <div class="cm-card premium-cmd" data-cmd="/boost" data-desc="Apply a deep, powerful bass boost that goes far beyond the standard filter options"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/boost <span class="cm-badge-premium"><i class="fas fa-star"></i> Premium</span></div><button class="cm-copy-btn" onclick="copyCmd(this,'/boost')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Apply a deep, powerful bass boost that goes far beyond the standard filter options</div></div></div>
+        <div class="cm-card premium-cmd" data-cmd="/reverb" data-desc="Add a reverb and echo effect for a spacious, concert-hall listening experience"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/reverb <span class="cm-badge-premium"><i class="fas fa-star"></i> Premium</span></div><button class="cm-copy-btn" onclick="copyCmd(this,'/reverb')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Add a reverb and echo effect for a spacious, concert-hall listening experience</div></div></div>
+        <div class="cm-card premium-cmd" data-cmd="/stereo" data-desc="Apply stereo widening to expand the audio field and create a spatial soundstage"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/stereo <span class="cm-badge-premium"><i class="fas fa-star"></i> Premium</span></div><button class="cm-copy-btn" onclick="copyCmd(this,'/stereo')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Apply stereo widening to expand the audio field and create a spatial soundstage</div></div></div>
+        <div class="cm-card premium-cmd" data-cmd="/nightcore" data-desc="Enable Nightcore mode — speeds up tempo and raises pitch for the classic anime AMV sound"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/nightcore <span class="cm-badge-premium"><i class="fas fa-star"></i> Premium</span></div><button class="cm-copy-btn" onclick="copyCmd(this,'/nightcore')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Enable Nightcore mode — speeds up tempo and raises pitch for the classic anime AMV sound</div></div></div>
+      </div>
+    </div>
+
+    <!-- FAVOURITES -->
+    <div class="cm-cat-section" id="cat-favorites">
+      <div class="cm-cat-header">
+        <div class="cm-cat-title"><i class="fas fa-heart"></i> Favourites</div>
+        <div class="cm-cat-desc">Save your favourite songs to your account</div>
+        <div class="cm-cat-count-pill"><i class="fas fa-terminal"></i> 4 commands</div>
+      </div>
+      <div class="cm-grid">
+        <div class="cm-card" data-cmd="/favorite-add" data-desc="Add the currently playing song (or a specific URL) to your personal favourites list"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/favorite-add</div><button class="cm-copy-btn" onclick="copyCmd(this,'/favorite-add')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Add the currently playing song (or a specific URL) to your personal favourites list</div></div></div>
+        <div class="cm-card" data-cmd="/favorite-list" data-desc="View all songs saved in your favourites list with pagination support"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/favorite-list</div><button class="cm-copy-btn" onclick="copyCmd(this,'/favorite-list')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">View all songs saved in your favourites list with pagination support</div></div></div>
+        <div class="cm-card" data-cmd="/favorite-play" data-desc="Add all your favourite songs to the queue and start playing them automatically"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/favorite-play</div><button class="cm-copy-btn" onclick="copyCmd(this,'/favorite-play')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Add all your favourite songs to the queue and start playing them automatically</div></div></div>
+        <div class="cm-card" data-cmd="/favorite-remove" data-desc="Remove a specific song from your favourites list by selecting from your saved songs"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/favorite-remove</div><button class="cm-copy-btn" onclick="copyCmd(this,'/favorite-remove')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Remove a specific song from your favourites list by selecting from your saved songs</div></div></div>
+      </div>
+    </div>
+
+    <!-- PLAYLISTS -->
+    <div class="cm-cat-section" id="cat-playlists">
+      <div class="cm-cat-header">
+        <div class="cm-cat-title"><i class="fas fa-folder-open"></i> Playlists</div>
+        <div class="cm-cat-desc">Create, manage, and share custom playlists</div>
+        <div class="cm-cat-count-pill"><i class="fas fa-terminal"></i> 12 commands</div>
+      </div>
+      <div class="cm-grid">
+        <div class="cm-card" data-cmd="/playlist-create" data-desc="Create a new empty playlist with a custom name"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-create</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-create')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Create a new empty playlist with a custom name</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-save" data-desc="Save the entire current queue as a new named playlist for later use"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-save</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-save')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Save the entire current queue as a new named playlist for later use</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-load" data-desc="Load an entire saved playlist into the queue — replaces the current queue"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-load</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-load')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Load an entire saved playlist into the queue — replaces the current queue</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-append" data-desc="Append all songs from a saved playlist to the current queue without clearing it"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-append</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-append')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Append all songs from a saved playlist to the current queue without clearing it</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-list" data-desc="View all of your saved playlists with their names and track counts"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-list</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-list')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">View all of your saved playlists with their names and track counts</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-delete" data-desc="Permanently delete one of your saved playlists"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-delete</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-delete')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Permanently delete one of your saved playlists</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-rename" data-desc="Rename one of your existing playlists to a new name"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-rename</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-rename')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Rename one of your existing playlists to a new name</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-share" data-desc="Generate a shareable import code for any of your playlists"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-share</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-share')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Generate a shareable import code for any of your playlists</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-import" data-desc="Import a playlist from a share code sent by another Aimo user"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-import</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-import')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Import a playlist from a share code sent by another Aimo user</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-track-add" data-desc="Add a single song directly into one of your existing playlists"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-track-add</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-track-add')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Add a single song directly into one of your existing playlists</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-track-list" data-desc="Browse all tracks saved inside a specific playlist"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-track-list</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-track-list')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Browse all tracks saved inside a specific playlist</div></div></div>
+        <div class="cm-card" data-cmd="/playlist-track-remove" data-desc="Remove a specific track from one of your playlists"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/playlist-track-remove</div><button class="cm-copy-btn" onclick="copyCmd(this,'/playlist-track-remove')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Remove a specific track from one of your playlists</div></div></div>
+      </div>
+    </div>
+
+    <!-- AI -->
+    <div class="cm-cat-section" id="cat-ai">
+      <div class="cm-cat-header">
+        <div class="cm-cat-title"><i class="fas fa-robot"></i> AI &amp; Art</div>
+        <div class="cm-cat-desc">AI chat and image generation</div>
+        <div class="cm-cat-count-pill"><i class="fas fa-terminal"></i> 2 commands</div>
+      </div>
+      <div class="cm-grid">
+        <div class="cm-card" data-cmd="/ask" data-desc="Chat with Aimo AI powered by GPT-4o — music recommendations, bot help, general knowledge. Remembers your full conversation history per user. Type /ask reset to clear history."><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/ask</div><button class="cm-copy-btn" onclick="copyCmd(this,'/ask')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Chat with Aimo AI powered by GPT-4o — music recommendations, bot help, general knowledge. Remembers your full conversation history per user.</div></div></div>
+        <div class="cm-card premium-cmd" data-cmd="/imagine" data-desc="Generate enhanced AI images with automatic prompt boosting and model selection. Powered by paid premium AI APIs. 30-second cooldown per user."><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/imagine <span class="cm-badge-premium"><i class="fas fa-star"></i> Premium</span></div><button class="cm-copy-btn" onclick="copyCmd(this,'/imagine')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Generate enhanced AI images with automatic prompt boosting and model selection. Powered by paid premium AI APIs. 30-second cooldown per user.</div></div></div>
+      </div>
+    </div>
+
+    <!-- UTILITY -->
+    <div class="cm-cat-section" id="cat-utility">
+      <div class="cm-cat-header">
+        <div class="cm-cat-title"><i class="fas fa-wrench"></i> Utility</div>
+        <div class="cm-cat-desc">General utilities and bot information commands</div>
+        <div class="cm-cat-count-pill"><i class="fas fa-terminal"></i> 19 commands</div>
+      </div>
+      <div class="cm-grid">
+        <div class="cm-card" data-cmd="/avatar" data-desc="Display the full-size avatar of any user in the server"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/avatar</div><button class="cm-copy-btn" onclick="copyCmd(this,'/avatar')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Display the full-size avatar of any user in the server</div></div></div>
+        <div class="cm-card" data-cmd="/banner" data-desc="Display the full-size profile banner of any Discord user"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/banner</div><button class="cm-copy-btn" onclick="copyCmd(this,'/banner')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Display the full-size profile banner of any Discord user</div></div></div>
+        <div class="cm-card" data-cmd="/badges" data-desc="View all Discord badges earned on any user's account"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/badges</div><button class="cm-copy-btn" onclick="copyCmd(this,'/badges')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">View all Discord badges earned on any user's account</div></div></div>
+        <div class="cm-card" data-cmd="/profile" data-desc="View a detailed profile card for any user including account info, badges, and join date"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/profile</div><button class="cm-copy-btn" onclick="copyCmd(this,'/profile')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">View a detailed profile card for any user including account info, badges, and join date</div></div></div>
+        <div class="cm-card" data-cmd="/uptime" data-desc="Check how long Aimo has been running continuously since last restart"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/uptime</div><button class="cm-copy-btn" onclick="copyCmd(this,'/uptime')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Check how long Aimo has been running continuously since last restart</div></div></div>
+        <div class="cm-card" data-cmd="/invite" data-desc="Get the invite link to add Aimo to any Discord server you manage"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/invite</div><button class="cm-copy-btn" onclick="copyCmd(this,'/invite')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Get the invite link to add Aimo to any Discord server you manage</div></div></div>
+        <div class="cm-card" data-cmd="/vote" data-desc="Vote for Aimo on top.gg to support the bot and help it grow to more servers"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/vote</div><button class="cm-copy-btn" onclick="copyCmd(this,'/vote')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Vote for Aimo on top.gg to support the bot and help it grow to more servers</div></div></div>
+        <div class="cm-card" data-cmd="/ping" data-desc="Check Aimo's current Discord API latency and WebSocket response time"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/ping</div><button class="cm-copy-btn" onclick="copyCmd(this,'/ping')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Check Aimo's current Discord API latency and WebSocket response time</div></div></div>
+        <div class="cm-card" data-cmd="/weather" data-desc="Get the current weather conditions and forecast for any city in the world"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/weather</div><button class="cm-copy-btn" onclick="copyCmd(this,'/weather')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Get the current weather conditions and forecast for any city in the world</div></div></div>
+        <div class="cm-card" data-cmd="/quote" data-desc="Get a random inspiring, motivational, or funny quote"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/quote</div><button class="cm-copy-btn" onclick="copyCmd(this,'/quote')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Get a random inspiring, motivational, or funny quote</div></div></div>
+        <div class="cm-card" data-cmd="/wikipedia" data-desc="Search Wikipedia and get a concise summary of any topic with a link to the full article"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/wikipedia</div><button class="cm-copy-btn" onclick="copyCmd(this,'/wikipedia')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Search Wikipedia and get a concise summary of any topic with a link to the full article</div></div></div>
+        <div class="cm-card" data-cmd="/calc" data-desc="Evaluate any math expression safely — supports all standard operators and functions"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/calc</div><button class="cm-copy-btn" onclick="copyCmd(this,'/calc')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Evaluate any math expression safely — supports all standard operators and functions</div></div></div>
+        <div class="cm-card" data-cmd="/shorturl" data-desc="Shorten any long URL to a compact, easily shareable link"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/shorturl</div><button class="cm-copy-btn" onclick="copyCmd(this,'/shorturl')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Shorten any long URL to a compact, easily shareable link</div></div></div>
+        <div class="cm-card" data-cmd="/stats" data-desc="View detailed Aimo statistics including server count, uptime, memory usage, and node info"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/stats</div><button class="cm-copy-btn" onclick="copyCmd(this,'/stats')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">View detailed Aimo statistics including server count, uptime, memory usage, and node info</div></div></div>
+        <div class="cm-card" data-cmd="/lyrics" data-desc="Show the full lyrics of the currently playing song with time-synced highlighting"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/lyrics</div><button class="cm-copy-btn" onclick="copyCmd(this,'/lyrics')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Show the full lyrics of the currently playing song with time-synced highlighting</div></div></div>
+        <div class="cm-card" data-cmd="/notification" data-desc="Toggle whether Aimo sends you DM notifications for important updates"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/notification</div><button class="cm-copy-btn" onclick="copyCmd(this,'/notification')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Toggle whether Aimo sends you DM notifications for important updates</div></div></div>
+        <div class="cm-card" data-cmd="/nodeinfo" data-desc="Check the current LavaLink node status, latency, and music server statistics"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/nodeinfo</div><button class="cm-copy-btn" onclick="copyCmd(this,'/nodeinfo')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Check the current LavaLink node status, latency, and music server statistics</div></div></div>
+        <div class="cm-card" data-cmd="/help" data-desc="Open the interactive help menu inside Discord to browse all commands by category"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/help</div><button class="cm-copy-btn" onclick="copyCmd(this,'/help')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Open the interactive help menu inside Discord to browse all commands by category</div></div></div>
+        <div class="cm-card owner-cmd" data-cmd="/backup" data-desc="Create a full backup of all bot source code and send it to the owner's DMs (bot owner only)"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/backup <span class="cm-badge-owner">🔒 Owner</span></div><button class="cm-copy-btn" onclick="copyCmd(this,'/backup')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Create a full backup of all bot source code and send it to the owner's DMs (bot owner only)</div></div></div>
+      </div>
+    </div>
+
+    <!-- GAMES -->
+    <div class="cm-cat-section" id="cat-games">
+      <div class="cm-cat-header">
+        <div class="cm-cat-title"><i class="fas fa-gamepad"></i> Mini Games</div>
+        <div class="cm-cat-desc">Play directly inside Discord using interactive buttons — no external apps needed</div>
+        <div class="cm-cat-count-pill"><i class="fas fa-terminal"></i> 6 games</div>
+      </div>
+      <div class="cm-grid">
+        <div class="cm-card" data-cmd="/games snake" data-desc="Play the classic Snake game — use direction buttons to move, eat food, and avoid walls and your tail"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/games snake</div><button class="cm-copy-btn" onclick="copyCmd(this,'/games snake')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Play the classic Snake game — use direction buttons to move, eat food, and avoid walls and your tail</div></div></div>
+        <div class="cm-card" data-cmd="/games minesweeper" data-desc="Play Minesweeper — uncover all safe tiles on the board without detonating a hidden mine"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/games minesweeper</div><button class="cm-copy-btn" onclick="copyCmd(this,'/games minesweeper')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Play Minesweeper — uncover all safe tiles on the board without detonating a hidden mine</div></div></div>
+        <div class="cm-card" data-cmd="/games trivia" data-desc="Answer trivia questions across multiple categories and difficulty levels"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/games trivia</div><button class="cm-copy-btn" onclick="copyCmd(this,'/games trivia')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Answer trivia questions across multiple categories and difficulty levels</div></div></div>
+        <div class="cm-card" data-cmd="/games rps" data-desc="Play Rock Paper Scissors against the bot or challenge another user in the server"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/games rps</div><button class="cm-copy-btn" onclick="copyCmd(this,'/games rps')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Play Rock Paper Scissors against the bot or challenge another user in the server</div></div></div>
+        <div class="cm-card" data-cmd="/games tictactoe" data-desc="Play Tic Tac Toe using interactive Discord buttons — challenge a friend or play against the bot"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/games tictactoe</div><button class="cm-copy-btn" onclick="copyCmd(this,'/games tictactoe')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Play Tic Tac Toe using interactive Discord buttons — challenge a friend or play against the bot</div></div></div>
+        <div class="cm-card" data-cmd="/games hangman" data-desc="Play Hangman — guess the hidden word letter by letter before you run out of attempts"><div class="cm-card-inner"><div class="cm-cmd-top"><div class="cm-cmd-name">/games hangman</div><button class="cm-copy-btn" onclick="copyCmd(this,'/games hangman')"><i class="fas fa-copy"></i> Copy</button></div><div class="cm-cmd-desc">Play Hangman — guess the hidden word letter by letter before you run out of attempts</div></div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="cta-box">
+      <img src="/aimo-char.jpg" alt="Aimo" loading="lazy" style="border-radius:50%;object-fit:cover;"/>
+      <h3>Ready to try all these <span class="gradient-text">commands?</span></h3>
+      <p>Add Aimo to your server in seconds — completely free, no configuration required.</p>
+      <div class="cta-btns">
+        <a class="btn btn-primary" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener"><i class="fa fa-plus"></i> Add to Discord</a>
+        <a class="btn btn-discord" href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Support Server</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-row"><img src="/aimo-char.jpg" alt="Aimo" style="border-radius:50%;object-fit:cover;"/> Aimo</div>
+        <p>High-quality Discord music bot with AI features, custom playlists, and advanced audio filters.</p>
+        <div class="footer-social">
+          <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i></a>
+          <a href="https://top.gg/bot/1483826024520089710" target="_blank" rel="noopener"><i class="fas fa-star"></i></a>
+          <a href="mailto:aimo-bot@protone.me"><i class="fa fa-envelope"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Navigation</h5><a href="/">Home</a><a href="/commands">Commands</a><a href="/premium">Premium</a><a href="/changelogs">Changelog</a><a href="/status">Status</a></div>
+      <div class="footer-col"><h5>Legal</h5><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></div>
+      <div class="footer-col"><h5>Links</h5><a href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">Invite Bot</a><a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">Support Server</a><a href="https://top.gg/bot/1483826024520089710/vote" target="_blank" rel="noopener">Vote on top.gg</a><a href="mailto:aimo-bot@protone.me">Contact</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 Aimo Music Bot. All rights reserved. Made with <i class="fas fa-heart" style="color:#EC4899"></i> for Discord communities.</p><div class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/status">Status</a><a href="/changelogs">Changelog</a></div></div>
+  </div>
+</footer>
+
+<script>
+/* ── Nav ── */
+function toggleNav(){
+  const nl=document.getElementById('navLinks');
+  const open=nl.classList.toggle('open');
+  ['nib1','nib2','nib3'].forEach((id,i)=>{
+    const b=document.getElementById(id);
+    if(b)b.classList.toggle(['open-1','open-2','open-3'][i],open);
+  });
+}
+(function(){
+  let lastY=0,ticking=false;const nav=document.querySelector('.nav');
+  window.addEventListener('scroll',function(){
+    if(!ticking){requestAnimationFrame(function(){
+      const y=window.scrollY;
+      if(y>80){nav.classList.toggle('nav-hidden',y>lastY&&y>180);nav.classList.add('nav-scrolled');}
+      else{nav.classList.remove('nav-hidden','nav-scrolled');}
+      lastY=y;ticking=false;
+    });ticking=true;}
+  });
+})();
+
+/* ── Category switching ── */
+function showCat(id, btn){
+  document.querySelectorAll('.cm-cat-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.cm-sidebar-link,.cm-mobile-tab').forEach(b=>b.classList.remove('active'));
+  const sec=document.getElementById('cat-'+id);
+  if(sec)sec.classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('searchResults').classList.remove('active');
+  document.getElementById('searchInput').value='';
+  document.getElementById('searchClear').classList.remove('visible');
+}
+
+/* ── Search ── */
+const ALL_CARDS=[];
+function buildSearchIndex(){
+  document.querySelectorAll('.cm-card').forEach(card=>{
+    ALL_CARDS.push({
+      el:card,
+      cmd:(card.dataset.cmd||'').toLowerCase(),
+      desc:(card.dataset.desc||'').toLowerCase()
+    });
+  });
+}
+buildSearchIndex();
+
+function handleSearch(val){
+  const clear=document.getElementById('searchClear');
+  const results=document.getElementById('searchResults');
+  const desc=document.getElementById('searchResultsDesc');
+  const grid=document.getElementById('searchGrid');
+  const noRes=document.getElementById('noResults');
+  const q=val.trim().toLowerCase();
+
+  clear.classList.toggle('visible',val.length>0);
+
+  if(!q){
+    results.classList.remove('active');
+    const firstCat=document.querySelector('.cm-cat-section');
+    if(firstCat){
+      document.querySelectorAll('.cm-cat-section').forEach(s=>s.classList.remove('active'));
+      document.getElementById('cat-playback').classList.add('active');
+    }
+    document.querySelectorAll('.cm-sidebar-link,.cm-mobile-tab').forEach((b,i)=>{if(i===0)b.classList.add('active');else b.classList.remove('active');});
+    return;
+  }
+
+  document.querySelectorAll('.cm-cat-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.cm-sidebar-link,.cm-mobile-tab').forEach(b=>b.classList.remove('active'));
+  results.classList.add('active');
+
+  const matched=ALL_CARDS.filter(c=>c.cmd.includes(q)||c.desc.includes(q));
+  desc.textContent=matched.length?`Found ${matched.length} command${matched.length===1?'':'s'} matching "${val}"`:`No results for "${val}"`;
+
+  if(!matched.length){
+    grid.innerHTML='';
+    noRes.style.display='block';
+    return;
+  }
+  noRes.style.display='none';
+  grid.innerHTML='';
+  matched.forEach(c=>{
+    const clone=c.el.cloneNode(true);
+    grid.appendChild(clone);
+  });
+}
+
+function clearSearch(){
+  const inp=document.getElementById('searchInput');
+  inp.value='';
+  handleSearch('');
+  inp.focus();
+}
+
+/* ── Copy command ── */
+function copyCmd(btn, cmd){
+  navigator.clipboard.writeText(cmd).then(()=>{
+    const orig=btn.innerHTML;
+    btn.innerHTML='<i class="fas fa-check"></i> Copied!';
+    btn.style.background='#EDE9FE';btn.style.borderColor='#C4B5FD';btn.style.color='#7C3AED';
+    setTimeout(()=>{btn.innerHTML=orig;btn.style.background='';btn.style.borderColor='';btn.style.color='';},1500);
+  }).catch(()=>{});
+}
+
+/* ── Ripple ── */
+(function(){
+  function addRipple(el){
+    el.classList.add('ripple-host');
+    el.addEventListener('click',function(e){
+      const r=el.getBoundingClientRect(),size=Math.max(r.width,r.height)*1.8;
+      const w=document.createElement('span');w.className='ripple-wave';
+      w.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(e.clientX-r.left-size/2)+'px;top:'+(e.clientY-r.top-size/2)+'px';
+      el.appendChild(w);setTimeout(()=>w.remove(),580);
+    });
+  }
+  document.querySelectorAll('.btn,.nav-cta').forEach(addRipple);
+})();
+</script>
+</body>
+</html>

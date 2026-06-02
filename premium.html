@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Premium — Aimo Music Bot</title>
+  <meta name="description" content="Unlock the full power of Aimo with Premium. AI image generation, speed control, bass boost, reverb, stereo widening, and Nightcore mode."/>
+  <meta property="og:title" content="Aimo Premium — Unlock Exclusive Features"/>
+  <meta property="og:image" content="/aimo-char.jpg"/>
+  <link rel="icon" type="image/jpeg" href="/aimo-char.jpg"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    /* ── HERO ── */
+    .pm-hero{
+      position:relative;overflow:hidden;
+      background:linear-gradient(160deg,#F5F3FF 0%,#FDF2F8 60%,#EFF6FF 100%);
+      border-bottom:1.5px solid #EDE9FE;
+      padding:100px 20px 80px;text-align:center;
+    }
+    .pm-hero::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse at 25% 60%,rgba(196,181,253,.35) 0%,transparent 60%),
+                 radial-gradient(ellipse at 75% 20%,rgba(249,168,212,.22) 0%,transparent 55%);
+      pointer-events:none;
+    }
+    .pm-hero-glow{
+      position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+      width:500px;height:500px;border-radius:50%;
+      background:radial-gradient(circle,rgba(196,181,253,.18) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .pm-star-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:linear-gradient(135deg,#7C3AED,#EC4899);
+      border-radius:100px;
+      padding:8px 22px;font-size:.78rem;font-weight:700;
+      font-family:'Poppins',sans-serif;color:white;
+      margin-bottom:24px;letter-spacing:.04em;
+      box-shadow:0 4px 16px rgba(124,58,237,.28);
+    }
+    .pm-star-badge i{color:#FDE68A;}
+    .pm-hero h1{
+      font-family:'Poppins',sans-serif;font-weight:900;
+      font-size:clamp(2rem,5vw,3.2rem);color:#1A0E2E;
+      margin-bottom:16px;line-height:1.1;
+    }
+    .pm-hero h1 span{
+      background:linear-gradient(90deg,#7C3AED,#EC4899,#7C3AED);
+      background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;animation:txt-shine 4s linear infinite;
+    }
+    @keyframes txt-shine{0%{background-position:0%}100%{background-position:200%}}
+    .pm-hero p{
+      color:#6B7280;font-size:1.05rem;max-width:520px;
+      margin:0 auto 36px;line-height:1.65;
+    }
+    .pm-hero-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+    .pm-btn-primary{
+      display:inline-flex;align-items:center;gap:9px;
+      background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;
+      padding:14px 30px;border-radius:14px;font-weight:700;font-size:.96rem;
+      font-family:'Poppins',sans-serif;text-decoration:none;
+      box-shadow:0 6px 28px rgba(124,58,237,.35);transition:.25s;
+    }
+    .pm-btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(124,58,237,.48);color:white;}
+    .pm-btn-ghost{
+      display:inline-flex;align-items:center;gap:9px;
+      background:#fff;color:#7C3AED;
+      padding:14px 28px;border-radius:14px;font-weight:600;font-size:.94rem;
+      font-family:'Poppins',sans-serif;text-decoration:none;
+      border:1.5px solid #EDE9FE;transition:.25s;
+    }
+    .pm-btn-ghost:hover{background:#F5F3FF;border-color:#C4B5FD;transform:translateY(-2px);}
+
+    /* ── FLOATING CARDS ── */
+    .pm-floating-cards{
+      position:absolute;pointer-events:none;inset:0;overflow:hidden;
+    }
+    .pm-float-card{
+      position:absolute;background:rgba(255,255,255,.85);
+      backdrop-filter:blur(10px);border:1.5px solid #EDE9FE;
+      border-radius:16px;padding:12px 16px;color:#4B5563;font-size:.8rem;
+      display:flex;align-items:center;gap:9px;font-family:'Inter',sans-serif;
+      box-shadow:0 4px 20px rgba(124,58,237,.1);
+    }
+    .pm-float-card i{font-size:1rem;color:#7C3AED;}
+    .pm-float-card-a{top:20%;left:6%;animation:float-a 6s ease-in-out infinite;}
+    .pm-float-card-b{top:30%;right:6%;animation:float-b 7s ease-in-out infinite;}
+    .pm-float-card-c{bottom:18%;left:12%;animation:float-a 8s ease-in-out infinite 1s;}
+    .pm-float-card-d{bottom:22%;right:10%;animation:float-b 6.5s ease-in-out infinite 0.5s;}
+    @keyframes float-a{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes float-b{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+    @media(max-width:768px){.pm-floating-cards{display:none;}}
+
+    /* ── SECTIONS ── */
+    .pm-section{padding:72px 20px;}
+    .pm-section-alt{padding:72px 20px;background:linear-gradient(160deg,#F5F3FF 0%,#FDF2F8 100%);}
+    .pm-container{max-width:1100px;margin:0 auto;}
+    .pm-section-header{text-align:center;margin-bottom:52px;}
+    .pm-section-header h2{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(1.6rem,3.5vw,2.2rem);color:#1A0E2E;margin-bottom:12px;}
+    .pm-section-header p{color:#6B7280;font-size:.95rem;max-width:520px;margin:0 auto;line-height:1.65;}
+
+    /* ── PRICING CARDS ── */
+    .pm-pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:820px;margin:0 auto;}
+    @media(max-width:640px){.pm-pricing-grid{grid-template-columns:1fr;}}
+    .pm-plan{
+      background:#fff;border:2px solid #EDE9FE;border-radius:24px;
+      padding:36px 32px;position:relative;overflow:hidden;
+      transition:.3s;
+    }
+    .pm-plan:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(124,58,237,.12);}
+    .pm-plan.featured{
+      border-color:transparent;
+      background:linear-gradient(#fff,#fff) padding-box,
+                 linear-gradient(135deg,#7C3AED,#EC4899) border-box;
+      box-shadow:0 16px 56px rgba(124,58,237,.18);
+    }
+    .pm-plan-ribbon{
+      position:absolute;top:20px;right:20px;
+      background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;
+      font-size:.68rem;font-weight:800;font-family:'Poppins',sans-serif;
+      padding:4px 12px;border-radius:100px;letter-spacing:.04em;
+    }
+    .pm-tier{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9CA3AF;margin-bottom:10px;font-family:'Poppins',sans-serif;}
+    .pm-plan-name{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.6rem;color:#1A0E2E;margin-bottom:6px;}
+    .pm-plan-name.gradient{background:linear-gradient(135deg,#7C3AED,#EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .pm-price{font-family:'Poppins',sans-serif;font-weight:800;font-size:2.6rem;color:#1A0E2E;line-height:1;margin-bottom:4px;}
+    .pm-price.gradient{background:linear-gradient(135deg,#7C3AED,#EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .pm-price-sub{font-size:.82rem;color:#9CA3AF;margin-bottom:24px;font-family:'Inter',sans-serif;}
+    .pm-divider{height:1.5px;background:#F3F4F6;margin:20px 0;}
+    .pm-list{list-style:none;margin-bottom:28px;display:flex;flex-direction:column;gap:10px;}
+    .pm-list li{display:flex;align-items:flex-start;gap:10px;font-size:.88rem;color:#374151;line-height:1.5;}
+    .pm-list li.off{color:#9CA3AF;}
+    .pm-check{
+      width:20px;height:20px;border-radius:6px;flex-shrink:0;margin-top:1px;
+      display:flex;align-items:center;justify-content:center;font-size:.68rem;
+    }
+    .pm-check.yes{background:#EDE9FE;color:#7C3AED;}
+    .pm-check.no {background:#F3F4F6;color:#D1D5DB;}
+    .pm-plan-btn{
+      display:flex;align-items:center;justify-content:center;gap:9px;
+      padding:14px;border-radius:14px;font-weight:700;font-size:.92rem;
+      font-family:'Poppins',sans-serif;text-decoration:none;transition:.25s;width:100%;
+    }
+    .pm-plan-btn.outline{border:2px solid #EDE9FE;color:#7C3AED;background:#fff;}
+    .pm-plan-btn.outline:hover{background:#F5F3FF;border-color:#C4B5FD;}
+    .pm-plan-btn.filled{background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;box-shadow:0 5px 20px rgba(124,58,237,.35);}
+    .pm-plan-btn.filled:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(124,58,237,.48);}
+
+    /* ── FEATURE SHOWCASE ── */
+    .pm-features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    @media(max-width:900px){.pm-features-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:560px){.pm-features-grid{grid-template-columns:1fr;}}
+    .pm-feat{
+      background:#fff;border:1.5px solid #EDE9FE;border-radius:20px;padding:28px 24px;
+      transition:.3s;position:relative;overflow:hidden;
+    }
+    .pm-feat::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:3px;
+      background:linear-gradient(90deg,#7C3AED,#EC4899);
+      transform:scaleX(0);transform-origin:left;transition:.3s;
+    }
+    .pm-feat:hover::before{transform:scaleX(1);}
+    .pm-feat:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(124,58,237,.12);}
+    .pm-feat-icon{
+      width:52px;height:52px;border-radius:14px;
+      background:linear-gradient(135deg,#7C3AED,#EC4899);
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.2rem;color:white;margin-bottom:18px;
+      box-shadow:0 6px 20px rgba(124,58,237,.3);
+    }
+    .pm-feat h4{font-family:'Poppins',sans-serif;font-weight:700;font-size:.96rem;color:#1A0E2E;margin-bottom:8px;}
+    .pm-feat p{font-size:.84rem;color:#6B7280;line-height:1.6;}
+    .pm-feat-cmd{
+      display:inline-flex;align-items:center;gap:5px;margin-top:12px;
+      background:#F5F3FF;color:#7C3AED;padding:4px 10px;border-radius:7px;
+      font-size:.75rem;font-weight:700;font-family:'Poppins',sans-serif;
+    }
+
+    /* ── HOW TO GET PREMIUM STEPS ── */
+    .pm-steps{display:flex;flex-direction:column;gap:0;max-width:560px;margin:0 auto;}
+    .pm-step{display:flex;align-items:flex-start;gap:20px;padding:24px 0;border-bottom:1.5px dashed #EDE9FE;}
+    .pm-step:last-child{border-bottom:none;}
+    .pm-step-num{
+      width:44px;height:44px;border-radius:50%;flex-shrink:0;
+      background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Poppins',sans-serif;font-weight:800;font-size:1rem;
+      box-shadow:0 4px 14px rgba(124,58,237,.3);
+    }
+    .pm-step h4{font-family:'Poppins',sans-serif;font-weight:700;font-size:.96rem;color:#1A0E2E;margin-bottom:5px;}
+    .pm-step p{font-size:.84rem;color:#6B7280;line-height:1.6;}
+
+    /* ── FAQ ── */
+    .pm-faq{max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+    .pm-faq-item{
+      background:#fff;border:1.5px solid #EDE9FE;border-radius:16px;overflow:hidden;
+    }
+    .pm-faq-q{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 22px;cursor:pointer;font-family:'Poppins',sans-serif;
+      font-weight:700;font-size:.92rem;color:#1A0E2E;user-select:none;
+      transition:.2s;gap:14px;
+    }
+    .pm-faq-q:hover{background:#F9F5FF;}
+    .pm-faq-icon{
+      width:28px;height:28px;border-radius:8px;background:#F5F3FF;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.72rem;color:#7C3AED;flex-shrink:0;transition:.3s;
+    }
+    .pm-faq-item.open .pm-faq-icon{background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;transform:rotate(45deg);}
+    .pm-faq-a{
+      max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s;
+      font-size:.86rem;color:#6B7280;line-height:1.7;padding:0 22px;
+    }
+    .pm-faq-item.open .pm-faq-a{max-height:200px;padding:0 22px 18px;}
+    .pm-faq-a a{color:#7C3AED;font-weight:600;text-decoration:none;}
+
+    /* ── CTA BOX ── */
+    .pm-cta{
+      background:linear-gradient(135deg,#1A0E2E 0%,#2D1B69 100%);
+      border-radius:28px;padding:56px 40px;text-align:center;
+      position:relative;overflow:hidden;
+    }
+    .pm-cta::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse at 30% 50%,rgba(124,58,237,.4) 0%,transparent 60%),
+                 radial-gradient(ellipse at 70% 30%,rgba(236,72,153,.3) 0%,transparent 55%);
+      pointer-events:none;
+    }
+    .pm-cta h3{font-family:'Poppins',sans-serif;font-weight:900;font-size:clamp(1.4rem,3vw,2rem);color:white;margin-bottom:12px;position:relative;}
+    .pm-cta p{color:rgba(255,255,255,.72);font-size:.95rem;max-width:460px;margin:0 auto 28px;line-height:1.65;position:relative;}
+    .pm-cta-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;position:relative;}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/"><img src="/aimo-char.jpg" alt="Aimo" loading="eager" style="border-radius:50%;object-fit:cover;width:34px;height:34px;"/> Aimo</a>
+    <div class="nav-links" id="navLinks">
+      <a href="/">Home</a>
+      <a href="/commands">Commands</a>
+      <a href="/premium" class="active">Premium</a>
+      <a href="/status">Status</a>
+      <a href="/changelogs">Changelog</a>
+      <a href="/privacy">Privacy</a>
+    </div>
+    <div class="nav-right">
+      <a class="nav-cta nav-cta-hide-mobile" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener"><i class="fa fa-plus"></i> Invite Aimo</a>
+      <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu" id="navToggleBtn">
+        <span class="nav-icon-wrap" aria-hidden="true">
+          <span class="nav-icon-bar" id="nib1"></span>
+          <span class="nav-icon-bar" id="nib2"></span>
+          <span class="nav-icon-bar" id="nib3"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="pm-hero">
+  <div class="pm-hero-glow"></div>
+  <div class="pm-floating-cards">
+    <div class="pm-float-card pm-float-card-a"><i class="fas fa-wand-magic-sparkles"></i> AI Image Generation</div>
+    <div class="pm-float-card pm-float-card-b"><i class="fas fa-gauge-high"></i> Speed Control 0.5×–3×</div>
+    <div class="pm-float-card pm-float-card-c"><i class="fas fa-water"></i> Reverb &amp; Echo Effect</div>
+    <div class="pm-float-card pm-float-card-d"><i class="fas fa-moon"></i> Nightcore Mode</div>
+  </div>
+  <div style="position:relative;">
+    <div class="pm-star-badge"><i class="fas fa-star"></i> Aimo Premium</div>
+    <h1>Unlock the<br><span>Full Power of Aimo</span></h1>
+    <p>Six exclusive features built for the most dedicated music lovers and power users. AI art, speed control, premium audio effects, and more.</p>
+    <div class="pm-hero-btns">
+      <a class="pm-btn-primary" href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Get Premium — Join Discord</a>
+      <a class="pm-btn-ghost" href="#pricing"><i class="fas fa-arrow-down"></i> See Plans</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pm-section" id="pricing">
+  <div class="pm-container">
+    <div class="pm-section-header">
+      <h2>Choose Your <span class="gradient-text">Plan</span></h2>
+      <p>Start free with everything you need. Upgrade to Premium when you want the full experience.</p>
+    </div>
+    <div class="pm-pricing-grid">
+      <!-- FREE -->
+      <div class="pm-plan">
+        <div class="pm-tier">For Everyone</div>
+        <div class="pm-plan-name">Free</div>
+        <div class="pm-price">$0</div>
+        <div class="pm-price-sub">Forever free · No credit card needed</div>
+        <div class="pm-divider"></div>
+        <ul class="pm-list">
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> High-quality music streaming</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> YouTube, Spotify, SoundCloud &amp; more</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Full queue management</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Custom playlists &amp; favourites</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> 10+ audio filters</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> AI chat — /ask</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> All 6 mini games</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Live lyrics &amp; utilities</li>
+          <li class="off"><span class="pm-check no"><i class="fas fa-times"></i></span> AI image generation</li>
+          <li class="off"><span class="pm-check no"><i class="fas fa-times"></i></span> Speed control</li>
+          <li class="off"><span class="pm-check no"><i class="fas fa-times"></i></span> Premium audio effects</li>
+        </ul>
+        <a class="pm-plan-btn outline" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener"><i class="fa fa-plus"></i> Add for Free</a>
+      </div>
+      <!-- PREMIUM -->
+      <div class="pm-plan featured">
+        <div class="pm-plan-ribbon"><i class="fas fa-star"></i> Most Popular</div>
+        <div class="pm-tier">For Power Users</div>
+        <div class="pm-plan-name gradient">Premium</div>
+        <div class="pm-price gradient">Custom</div>
+        <div class="pm-price-sub">Contact us on Discord to get access</div>
+        <div class="pm-divider"></div>
+        <ul class="pm-list">
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> <strong>Everything in Free, plus:</strong></li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> <strong>AI image generation — /imagine</strong></li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Speed control 0.5× to 3× — /speed</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Advanced bass boost — /boost</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Reverb &amp; echo effect — /reverb</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Stereo widening — /stereo</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Nightcore mode — /nightcore</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Priority support response</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Early access to new features</li>
+          <li><span class="pm-check yes"><i class="fas fa-check"></i></span> Premium badge on your profile</li>
+        </ul>
+        <a class="pm-plan-btn filled" href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Get Premium — Join Discord</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="pm-section-alt">
+  <div class="pm-container">
+    <div class="pm-section-header">
+      <h2>What Premium <span class="gradient-text">Unlocks</span></h2>
+      <p>Six powerful features designed for the most dedicated Aimo users.</p>
+    </div>
+    <div class="pm-features-grid">
+      <div class="pm-feat">
+        <div class="pm-feat-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+        <h4>AI Image Generation</h4>
+        <p>Generate stunning AI images with automatic prompt enhancement. Auto-selects Flux Realism or Flux Anime based on your input. 30-second cooldown.</p>
+        <div class="pm-feat-cmd"><i class="fas fa-terminal"></i> /imagine [prompt]</div>
+      </div>
+      <div class="pm-feat">
+        <div class="pm-feat-icon"><i class="fas fa-gauge-high"></i></div>
+        <h4>Speed Control</h4>
+        <p>Change playback speed from 0.5× to 3.0× without affecting pitch. Perfect for studying, podcasts, slowing down complex solos, or turbo listening.</p>
+        <div class="pm-feat-cmd"><i class="fas fa-terminal"></i> /speed [0.5–3.0]</div>
+      </div>
+      <div class="pm-feat">
+        <div class="pm-feat-icon"><i class="fas fa-wave-square"></i></div>
+        <h4>Advanced Bass Boost</h4>
+        <p>A deep, powerful bass boost that far surpasses the standard filter options. Feel every beat with punchy, room-shaking low frequencies.</p>
+        <div class="pm-feat-cmd"><i class="fas fa-terminal"></i> /boost</div>
+      </div>
+      <div class="pm-feat">
+        <div class="pm-feat-icon"><i class="fas fa-water"></i></div>
+        <h4>Reverb &amp; Echo</h4>
+        <p>Transform any track into a spacious concert-hall experience. A cinematic, dreamy echo effect that makes every song feel massive.</p>
+        <div class="pm-feat-cmd"><i class="fas fa-terminal"></i> /reverb</div>
+      </div>
+      <div class="pm-feat">
+        <div class="pm-feat-icon"><i class="fas fa-headphones"></i></div>
+        <h4>Stereo Widening</h4>
+        <p>Expand the audio field with spatial stereo widening. Makes every track feel like it surrounds you — ideal for headphones and immersive listening.</p>
+        <div class="pm-feat-cmd"><i class="fas fa-terminal"></i> /stereo</div>
+      </div>
+      <div class="pm-feat">
+        <div class="pm-feat-icon"><i class="fas fa-moon"></i></div>
+        <h4>Nightcore Mode</h4>
+        <p>Enable the classic Nightcore effect — sped-up tempo and raised pitch. The signature anime AMV sound, one command away.</p>
+        <div class="pm-feat-cmd"><i class="fas fa-terminal"></i> /nightcore</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO GET -->
+<section class="pm-section">
+  <div class="pm-container">
+    <div class="pm-section-header">
+      <h2>How to Get <span class="gradient-text">Premium</span></h2>
+      <p>Premium is granted manually and tied to your Discord User ID — no subscriptions, no recurring payments.</p>
+    </div>
+    <div class="pm-steps">
+      <div class="pm-step">
+        <div class="pm-step-num">1</div>
+        <div>
+          <h4>Join the Support Server</h4>
+          <p>Click the button below to join our Discord support server. This is where all Premium requests are handled by the team.</p>
+        </div>
+      </div>
+      <div class="pm-step">
+        <div class="pm-step-num">2</div>
+        <div>
+          <h4>Open a Ticket or Message an Admin</h4>
+          <p>Use the ticket channel or send a direct message to an admin to request Premium access. Let them know your Discord username and User ID.</p>
+        </div>
+      </div>
+      <div class="pm-step">
+        <div class="pm-step-num">3</div>
+        <div>
+          <h4>Get Activated</h4>
+          <p>Once approved, Premium is activated on your Discord User ID. Use <code>/speed</code>, <code>/imagine</code>, and all other Premium commands immediately — no bot restart needed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="pm-section-alt">
+  <div class="pm-container">
+    <div class="pm-section-header">
+      <h2>Frequently Asked <span class="gradient-text">Questions</span></h2>
+      <p>Everything you need to know about Aimo Premium.</p>
+    </div>
+    <div class="pm-faq">
+      <div class="pm-faq-item">
+        <div class="pm-faq-q" onclick="toggleFaq(this)">
+          <span>Is Premium per-server or per-user?</span>
+          <div class="pm-faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="pm-faq-a">Premium is linked to your Discord User ID, so it follows you across every server where Aimo is present. You don't need to purchase it separately for each server.</div>
+      </div>
+      <div class="pm-faq-item">
+        <div class="pm-faq-q" onclick="toggleFaq(this)">
+          <span>How much does Premium cost?</span>
+          <div class="pm-faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="pm-faq-a">Premium pricing is custom and handled directly through our Discord server. <a href="https://discord.gg/wd8ZQTftx" target="_blank">Join the support server</a> and speak to an admin to find out the current pricing.</div>
+      </div>
+      <div class="pm-faq-item">
+        <div class="pm-faq-q" onclick="toggleFaq(this)">
+          <span>Does Premium expire?</span>
+          <div class="pm-faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="pm-faq-a">Premium duration depends on the agreement made through our Discord. Some users receive lifetime access, others receive time-limited access. Details are discussed during the request process.</div>
+      </div>
+      <div class="pm-faq-item">
+        <div class="pm-faq-q" onclick="toggleFaq(this)">
+          <span>Can I use /imagine without a cooldown?</span>
+          <div class="pm-faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="pm-faq-a">Premium users have a 30-second cooldown per image generation. This is in place because /imagine uses paid AI APIs with per-request costs. The cooldown ensures fair use for all Premium members.</div>
+      </div>
+      <div class="pm-faq-item">
+        <div class="pm-faq-q" onclick="toggleFaq(this)">
+          <span>Can Premium be transferred to another user?</span>
+          <div class="pm-faq-icon"><i class="fas fa-plus"></i></div>
+        </div>
+        <div class="pm-faq-a">Premium is non-transferable — it's linked to your specific Discord User ID and cannot be shared or transferred to another account. Contact an admin if you need to change the associated account.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="pm-section">
+  <div class="pm-container">
+    <div class="pm-cta">
+      <h3>Ready to Unlock <span class="gradient-text">Premium?</span></h3>
+      <p>Join our Discord support server to request Premium access. Our team will get you set up quickly.</p>
+      <div class="pm-cta-btns">
+        <a class="pm-btn-primary" href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Join Support Server</a>
+        <a class="pm-btn-ghost" href="mailto:aimo-bot@protone.me"><i class="fas fa-envelope"></i> Email Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-row"><img src="/aimo-char.jpg" alt="Aimo" style="border-radius:50%;object-fit:cover;"/> Aimo</div>
+        <p>High-quality Discord music bot with AI features, custom playlists, and advanced audio filters.</p>
+        <div class="footer-social">
+          <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i></a>
+          <a href="https://top.gg/bot/1483826024520089710" target="_blank" rel="noopener"><i class="fas fa-star"></i></a>
+          <a href="mailto:aimo-bot@protone.me"><i class="fa fa-envelope"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Navigation</h5><a href="/">Home</a><a href="/commands">Commands</a><a href="/premium">Premium</a><a href="/changelogs">Changelog</a><a href="/status">Status</a></div>
+      <div class="footer-col"><h5>Legal</h5><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></div>
+      <div class="footer-col"><h5>Links</h5><a href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">Invite Bot</a><a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">Support Server</a><a href="https://top.gg/bot/1483826024520089710/vote" target="_blank" rel="noopener">Vote on top.gg</a><a href="mailto:aimo-bot@protone.me">Contact</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 Aimo Music Bot. All rights reserved. Made with <i class="fas fa-heart" style="color:#EC4899"></i> for Discord communities.</p><div class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/status">Status</a><a href="/changelogs">Changelog</a></div></div>
+  </div>
+</footer>
+
+<script>
+function toggleNav(){
+  const nl=document.getElementById('navLinks');
+  const open=nl.classList.toggle('open');
+  ['nib1','nib2','nib3'].forEach((id,i)=>{
+    const b=document.getElementById(id);
+    if(b)b.classList.toggle(['open-1','open-2','open-3'][i],open);
+  });
+}
+(function(){
+  let lastY=0,ticking=false;const nav=document.querySelector('.nav');
+  window.addEventListener('scroll',function(){
+    if(!ticking){requestAnimationFrame(function(){
+      const y=window.scrollY;
+      if(y>80){nav.classList.toggle('nav-hidden',y>lastY&&y>180);nav.classList.add('nav-scrolled');}
+      else{nav.classList.remove('nav-hidden','nav-scrolled');}
+      lastY=y;ticking=false;
+    });ticking=true;}
+  });
+})();
+(function(){
+  function addRipple(el){
+    el.classList.add('ripple-host');
+    el.addEventListener('click',function(e){
+      const r=el.getBoundingClientRect(),size=Math.max(r.width,r.height)*1.8;
+      const w=document.createElement('span');w.className='ripple-wave';
+      w.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(e.clientX-r.left-size/2)+'px;top:'+(e.clientY-r.top-size/2)+'px';
+      el.appendChild(w);setTimeout(()=>w.remove(),580);
+    });
+  }
+  document.querySelectorAll('.btn,.nav-cta,.pm-btn-primary,.pm-btn-ghost,.pm-plan-btn').forEach(addRipple);
+})();
+function toggleFaq(el){
+  const item=el.closest('.pm-faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.pm-faq-item').forEach(f=>f.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('revealed'),i*60);revObs.unobserve(e.target);}});
+},{threshold:0.08});
+document.querySelectorAll('.pm-feat,.pm-step,.pm-plan,.pm-faq-item').forEach(el=>{
+  el.classList.add('reveal');revObs.observe(el);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Changelog — Aimo Music Bot</title>
+  <meta name="description" content="Every update, fix, and improvement to Aimo Music Bot — all in one place. Version history, new features, bug fixes, and more."/>
+  <meta property="og:title" content="Aimo Changelog — What's New"/>
+  <meta property="og:description" content="Every update, fix, and new feature added to Aimo Music Bot. See what changed in each version."/>
+  <meta property="og:image" content="/aimo-char.jpg"/>
+  <link rel="icon" type="image/jpeg" href="/aimo-char.jpg"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    .cl-page { background: #fff; padding-bottom: 80px; }
+
+    .cl-hero { text-align: center; padding: 72px 20px 52px; background: linear-gradient(160deg,#F9F7FF 0%,#FDF2F8 100%); border-bottom: 1.5px solid #F0EBFF; }
+    .cl-hero-badge { display:inline-flex;align-items:center;gap:7px;padding:7px 18px;background:var(--gradient);color:white;border-radius:100px;font-size:.75rem;font-weight:700;font-family:'Poppins',sans-serif;margin-bottom:18px;box-shadow:0 4px 16px rgba(124,58,237,.3); }
+    .cl-hero h1 { font-size:clamp(2rem,5vw,2.8rem);font-family:'Poppins',sans-serif;font-weight:800;color:#1A0E2E;margin-bottom:12px;line-height:1.15; }
+    .cl-hero p { color:#6B7280;font-size:.96rem;max-width:480px;margin:0 auto;font-family:'Inter',sans-serif;line-height:1.65; }
+
+    .cl-filter-wrap { display:flex;justify-content:center;gap:8px;padding:28px 20px 0;flex-wrap:wrap; }
+    .cl-filter-btn { display:inline-flex;align-items:center;gap:5px;padding:7px 16px;border-radius:100px;border:1.5px solid #E5E7EB;background:#fff;font-size:.76rem;font-weight:600;font-family:'Poppins',sans-serif;color:#6B7280;cursor:pointer;transition:all .2s; }
+    .cl-filter-btn:hover,.cl-filter-btn.active { border-color:#7C3AED;color:#7C3AED;background:#F5F3FF; }
+    .cl-dot { width:7px;height:7px;border-radius:50%;display:inline-block; }
+
+    .cl-timeline { max-width:760px;margin:48px auto 0;padding:0 20px; }
+    .cl-month { margin-bottom:48px; }
+    .cl-month-label { font-size:.72rem;font-weight:700;color:#9CA3AF;font-family:'Poppins',sans-serif;text-transform:uppercase;letter-spacing:.12em;margin-bottom:20px;display:flex;align-items:center;gap:10px; }
+    .cl-month-label::after { content:'';flex:1;height:1px;background:#E5E7EB; }
+
+    .cl-entry { display:flex;gap:18px;margin-bottom:20px;animation:cl-fadein .4s ease both; }
+    @keyframes cl-fadein { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+    .cl-entry.hidden { display:none; }
+
+    .cl-entry-left { display:flex;flex-direction:column;align-items:center;flex-shrink:0; }
+    .cl-entry-icon { width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:white;flex-shrink:0;z-index:1; }
+    .cl-entry-icon.feature     { background:linear-gradient(135deg,#7C3AED,#6D28D9); }
+    .cl-entry-icon.fix         { background:linear-gradient(135deg,#f59e0b,#d97706); }
+    .cl-entry-icon.upgrade     { background:linear-gradient(135deg,#3b82f6,#1d4ed8); }
+    .cl-entry-icon.security    { background:linear-gradient(135deg,#22c55e,#16a34a); }
+    .cl-entry-icon.launch      { background:linear-gradient(135deg,#EC4899,#db2777); }
+    .cl-entry-icon.performance { background:linear-gradient(135deg,#14b8a6,#0f766e); }
+    .cl-entry-icon.removal     { background:linear-gradient(135deg,#6B7280,#4B5563); }
+    .cl-entry-line { width:2px;flex:1;background:#E5E7EB;margin:4px 0; }
+    .cl-entry:last-child .cl-entry-line { display:none; }
+
+    .cl-entry-card { flex:1;background:#fff;border:1.5px solid #E5E7EB;border-radius:18px;padding:20px 22px;transition:border-color .2s,box-shadow .2s;margin-bottom:16px; }
+    .cl-entry-card:hover { border-color:#C4B5FD;box-shadow:0 6px 28px rgba(124,58,237,.1); }
+
+    .cl-entry-top { display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap; }
+    .cl-entry-version { font-family:'Poppins',sans-serif;font-weight:800;font-size:.97rem;color:#1A0E2E; }
+    .cl-entry-version span { color:#7C3AED; }
+    .cl-entry-date { font-size:.73rem;color:#9CA3AF;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:4px;margin-top:3px; }
+    .cl-entry-date i { color:#C4B5FD; }
+
+    .cl-entry-badge { display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:100px;font-size:.68rem;font-weight:700;font-family:'Poppins',sans-serif;text-transform:capitalize; }
+    .cl-entry-badge.feature     { background:#EDE9FE;color:#7C3AED; }
+    .cl-entry-badge.fix         { background:#FEF9C3;color:#a16207; }
+    .cl-entry-badge.upgrade     { background:#DBEAFE;color:#1d4ed8; }
+    .cl-entry-badge.security    { background:#DCFCE7;color:#16a34a; }
+    .cl-entry-badge.launch      { background:#FCE7F3;color:#db2777; }
+    .cl-entry-badge.performance { background:#CCFBF1;color:#0f766e; }
+    .cl-entry-badge.removal     { background:#F3F4F6;color:#4B5563; }
+
+    .cl-entry-title { font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;color:#1A0E2E;margin-bottom:10px; }
+    .cl-entry-list { list-style:none;display:flex;flex-direction:column;gap:6px; }
+    .cl-entry-list li { display:flex;align-items:flex-start;gap:8px;font-size:.86rem;color:#4B5563;line-height:1.55;font-family:'Inter',sans-serif; }
+    .cl-entry-list li::before { content:'';width:6px;height:6px;border-radius:50%;background:#C4B5FD;margin-top:7px;flex-shrink:0; }
+
+    @media(max-width:600px){
+      .cl-entry { gap:12px; }
+      .cl-entry-left { display:none; }
+    }
+  </style>
+</head>
+<body class="cl-page">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="/"><img src="/aimo-char.jpg" alt="Aimo" loading="eager" style="border-radius:50%;object-fit:cover;width:34px;height:34px;"/> Aimo</a>
+    <div class="nav-links" id="navLinks">
+      <a href="/">Home</a>
+      <a href="/commands">Commands</a>
+      <a href="/premium">Premium</a>
+      <a href="/status">Status</a>
+      <a href="/changelogs" class="active">Changelog</a>
+      <a href="/privacy">Privacy</a>
+    </div>
+    <a class="nav-cta" href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">
+      <i class="fa fa-plus"></i> Invite Aimo
+    </a>
+    <button class="nav-toggle" onclick="toggleNav()" aria-label="Menu">
+      <span class="nav-icon-wrap" aria-hidden="true">
+        <span class="nav-icon-bar" id="nib1"></span>
+        <span class="nav-icon-bar" id="nib2"></span>
+        <span class="nav-icon-bar" id="nib3"></span>
+      </span>
+    </button>
+  </div>
+</nav>
+
+<div class="cl-hero">
+  <div class="cl-hero-badge"><i class="fas fa-clock-rotate-left"></i> What's New</div>
+  <h1><span class="gradient-text">Aimo</span> Changelog</h1>
+  <p>Every update, fix, and improvement — all in one place. Updated regularly as we ship new features.</p>
+</div>
+
+<div class="cl-filter-wrap">
+  <button class="cl-filter-btn active" onclick="filterCL('all',this)"><i class="fas fa-list"></i> All</button>
+  <button class="cl-filter-btn" onclick="filterCL('feature',this)"><span class="cl-dot" style="background:#7C3AED"></span> Features</button>
+  <button class="cl-filter-btn" onclick="filterCL('fix',this)"><span class="cl-dot" style="background:#f59e0b"></span> Bug Fixes</button>
+  <button class="cl-filter-btn" onclick="filterCL('upgrade',this)"><span class="cl-dot" style="background:#3b82f6"></span> Upgrades</button>
+  <button class="cl-filter-btn" onclick="filterCL('performance',this)"><span class="cl-dot" style="background:#14b8a6"></span> Performance</button>
+  <button class="cl-filter-btn" onclick="filterCL('security',this)"><span class="cl-dot" style="background:#22c55e"></span> Security</button>
+</div>
+
+<div class="cl-timeline">
+
+  <div class="cl-month">
+    <div class="cl-month-label">June 2026</div>
+
+    <div class="cl-entry" data-type="upgrade">
+      <div class="cl-entry-left">
+        <div class="cl-entry-icon upgrade"><i class="fas fa-robot"></i></div>
+        <div class="cl-entry-line"></div>
+      </div>
+      <div class="cl-entry-card">
+        <div class="cl-entry-top">
+          <div>
+            <div class="cl-entry-version"><span>v3.8.0</span> — AI Model Upgrade</div>
+            <div class="cl-entry-date"><i class="fas fa-calendar-alt"></i> June 2, 2026</div>
+          </div>
+          <span class="cl-entry-badge upgrade"><i class="fas fa-arrow-up"></i> Upgrade</span>
+        </div>
+        <div class="cl-entry-title">Upgraded AI to Paid Tier — Dramatically Better Responses</div>
+        <ul class="cl-entry-list">
+          <li>Upgraded AI chat from free tier to paid tier for dramatically improved quality</li>
+          <li>AI now has full conversation memory per user — remembers your chat history</li>
+          <li>Intelligent backup model for automatic failover when primary is unavailable</li>
+          <li>Response quality, depth, and creativity significantly improved</li>
+          <li>Token limits increased — AI can now handle much longer conversations</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-entry" data-type="upgrade">
+      <div class="cl-entry-left">
+        <div class="cl-entry-icon upgrade"><i class="fas fa-globe"></i></div>
+        <div class="cl-entry-line"></div>
+      </div>
+      <div class="cl-entry-card">
+        <div class="cl-entry-top">
+          <div>
+            <div class="cl-entry-version"><span>v3.7.5</span> — Website Overhaul</div>
+            <div class="cl-entry-date"><i class="fas fa-calendar-alt"></i> June 2, 2026</div>
+          </div>
+          <span class="cl-entry-badge upgrade"><i class="fas fa-arrow-up"></i> Upgrade</span>
+        </div>
+        <div class="cl-entry-title">Complete Website Redesign</div>
+        <ul class="cl-entry-list">
+          <li>Redesigned homepage with spinning vinyl disc, live Now Playing card, and animated lyrics demo</li>
+          <li>New announcement modal popup system — info, warning, maintenance, notice types</li>
+          <li>Rebuilt Status page: service grid, provider rows, and maintenance state</li>
+          <li>New Changelog timeline page with filter tabs</li>
+          <li>Better Open Graph and Twitter Card meta tags for richer link previews</li>
+          <li>Changelog and Status added to all page navigation bars and footers</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cl-month">
+    <div class="cl-month-label">May 2026</div>
+
+    <div class="cl-entry" data-type="feature">
+      <div class="cl-entry-left">
+        <div class="cl-entry-icon feature"><i class="fas fa-image"></i></div>
+        <div class="cl-entry-line"></div>
+      </div>
+      <div class="cl-entry-card">
+        <div class="cl-entry-top">
+          <div>
+            <div class="cl-entry-version"><span>v3.7.0</span> — AI Image Generation</div>
+            <div class="cl-entry-date"><i class="fas fa-calendar-alt"></i> May 18, 2026</div>
+          </div>
+          <span class="cl-entry-badge feature"><i class="fas fa-star"></i> Feature</span>
+        </div>
+        <div class="cl-entry-title">New <code>/imagine</code> Command</div>
+        <ul class="cl-entry-list">
+          <li>Generate stunning AI images with <code>/imagine [prompt]</code></li>
+          <li>Smart style detection: auto-picks the best AI model for your prompt</li>
+          <li>Automatic prompt enhancement for better, more detailed results</li>
+          <li>Supports photorealistic and illustration/anime styles</li>
+          <li>Premium users get unlimited generations per day</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-entry" data-type="fix">
+      <div class="cl-entry-left">
+        <div class="cl-entry-icon fix"><i class="fas fa-wrench"></i></div>
+        <div class="cl-entry-line"></div>
+      </div>
+      <div class="cl-entry-card">
+        <div class="cl-entry-top">
+          <div>
+            <div class="cl-entry-version"><span>v3.6.2</span> — 24/7 Mode Fix</div>
+            <div class="cl-entry-date"><i class="fas fa-calendar-alt"></i> May 7, 2026</div>
+          </div>
+          <span class="cl-entry-badge fix"><i class="fas fa-bug"></i> Fix</span>
+        </div>
+        <div class="cl-entry-title">24/7 Mode Reconnection Bug Fixed</div>
+        <ul class="cl-entry-list">
+          <li>Fixed issue where 24/7 mode would not reconnect after voice disconnect</li>
+          <li>Bot now persists in voice channel even when moved to a different channel</li>
+          <li>Fixed edge case where 24/7 mode would deactivate itself after 12 hours</li>
+          <li>Improved stability of long-running sessions</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cl-month">
+    <div class="cl-month-label">April 2026</div>
+
+    <div class="cl-entry" data-type="upgrade">
+      <div class="cl-entry-left">
+        <div class="cl-entry-icon upgrade"><i class="fas fa-microphone-lines"></i></div>
+        <div class="cl-entry-line"></div>
+      </div>
+      <div class="cl-entry-card">
+        <div class="cl-entry-top">
+          <div>
+            <div class="cl-entry-version"><span>v3.5.0</span> — Lyrics Overhaul</div>
+            <div class="cl-entry-date"><i class="fas fa-calendar-alt"></i> April 22, 2026</div>
+          </div>
+          <span class="cl-entry-badge upgrade"><i class="fas fa-arrow-up"></i> Upgrade</span>
+        </div>
+        <div class="cl-entry-title">Multi-Provider Lyrics System</div>
+        <ul class="cl-entry-list">
+          <li>4 lyrics providers: Spotify Lyrics, LRCLib, Musixmatch, and Genius</li>
+          <li>Automatic fallback — if one provider fails, tries the next automatically</li>
+          <li>Time-synced (LRC format) lyrics with highlighted current line</li>
+          <li>Paginated display for songs with very long lyrics</li>
+          <li>Better formatting: verse/chorus separation and artist credits</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-entry" data-type="feature">
+      <div class="cl-entry-left">
+        <div class="cl-entry-icon feature"><i class="fas fa-gamepad"></i></div>
+        <div class="cl-entry-line"></div>
+      </div>
+      <div class="cl-entry-card">
+        <div class="cl-entry-top">
+          <div>
+            <div class="cl-entry-version"><span>v3.4.0</span> — Mini Games</div>
+            <div class="cl-entry-date"><i class="fas fa-calendar-alt"></i> April 8, 2026</div>
+          </div>
+          <span class="cl-entry-badge feature"><i class="fas fa-star"></i> Feature</span>
+        </div>
+        <div class="cl-entry-title">6 Built-in Mini Games</div>
+        <ul class="cl-entry-list">
+          <li>Snake — fully playable in Discord using button controls</li>
+          <li>Minesweeper — grid-reveal game with difficulty settings</li>
+          <li>Trivia — random quiz questions with 4 answer options</li>
+          <li>Rock Paper Scissors — challenge other users or the bot</li>
+          <li>Tic Tac Toe — 2-player game with Discord button interface</li>
+          <li>Hangman — guess the word with letter buttons</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="cl-month">
+    <div class="cl-month-label">March 2026</div>
+
+    <div class="cl-entry" data-type="launch">
+      <div class="cl-entry-left">
+        <div class="cl-entry-icon launch"><i class="fas fa-rocket"></i></div>
+        <div class="cl-entry-line"></div>
+      </div>
+      <div class="cl-entry-card">
+        <div class="cl-entry-top">
+          <div>
+            <div class="cl-entry-version"><span>v3.0.0</span> — Aimo v3 Launch</div>
+            <div class="cl-entry-date"><i class="fas fa-calendar-alt"></i> March 1, 2026</div>
+          </div>
+          <span class="cl-entry-badge launch"><i class="fas fa-rocket"></i> Launch</span>
+        </div>
+        <div class="cl-entry-title">Complete Rewrite — Aimo v3 is Live</div>
+        <ul class="cl-entry-list">
+          <li>Ground-up rewrite with full slash command support</li>
+          <li>New private LavaLink node — crystal-clear audio, near-zero latency</li>
+          <li>Spotify, Apple Music, and Deezer support added</li>
+          <li>Custom playlist system: create, share, import, and manage playlists</li>
+          <li>AI chat with <code>/ask</code> command launched</li>
+          <li>New website, status page, and public changelog</li>
+          <li>67 slash commands across 8 categories</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-entry" data-type="performance">
+      <div class="cl-entry-left">
+        <div class="cl-entry-icon performance"><i class="fas fa-bolt"></i></div>
+        <div class="cl-entry-line"></div>
+      </div>
+      <div class="cl-entry-card">
+        <div class="cl-entry-top">
+          <div>
+            <div class="cl-entry-version"><span>v2.9.8</span> — Performance</div>
+            <div class="cl-entry-date"><i class="fas fa-calendar-alt"></i> March 1, 2026</div>
+          </div>
+          <span class="cl-entry-badge performance"><i class="fas fa-gauge-high"></i> Performance</span>
+        </div>
+        <div class="cl-entry-title">Pre-launch Speed Optimisations</div>
+        <ul class="cl-entry-list">
+          <li>Slash command autocomplete now loads in under 200ms</li>
+          <li>Track metadata caching reduces API calls by 70%</li>
+          <li>Memory usage reduced by 40% through improved data structures</li>
+          <li>Queue operations optimised for instant response on large queues</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<section class="section section-alt" style="margin-top:60px">
+  <div class="container">
+    <div class="cta-box">
+      <img src="/aimo-char.jpg" alt="Aimo" loading="lazy" style="border-radius:50%;object-fit:cover;"/>
+      <h3>Stay up to date with <span class="gradient-text">Aimo</span></h3>
+      <p>Join our Discord for real-time announcements, early access to new features, and community updates.</p>
+      <div class="cta-btns">
+        <a class="btn btn-discord" href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Join Support Server</a>
+        <a class="btn btn-outline" href="/status"><i class="fas fa-server"></i> View Status</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-row"><img src="/aimo-char.jpg" alt="Aimo" style="border-radius:50%;object-fit:cover;"/> Aimo</div>
+        <p>Premium Discord music bot — crystal-clear audio, AI chat, live lyrics, and advanced filters. Free for all servers.</p>
+        <div class="footer-social">
+          <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i></a>
+          <a href="https://top.gg/bot/1483826024520089710" target="_blank" rel="noopener"><i class="fas fa-star"></i></a>
+          <a href="mailto:aimo-bot@protone.me"><i class="fas fa-envelope"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Navigation</h5><a href="/">Home</a><a href="/commands">Commands</a><a href="/premium">Premium</a><a href="/changelogs">Changelog</a><a href="/status">Status</a></div>
+      <div class="footer-col"><h5>Legal</h5><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></div>
+      <div class="footer-col"><h5>Links</h5><a href="https://discord.com/oauth2/authorize?client_id=1466757680311042060&permissions=2151009280&scope=bot%20applications.commands" target="_blank" rel="noopener">Invite Bot</a><a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">Support Server</a><a href="https://top.gg/bot/1483826024520089710/vote" target="_blank" rel="noopener">Vote on top.gg</a><a href="mailto:aimo-bot@protone.me">Contact</a></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 Aimo Music Bot. All rights reserved. Made with <i class="fas fa-heart" style="color:var(--pink)"></i> for Discord communities.</p><div class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/status">Status</a><a href="/changelogs">Changelog</a></div></div>
+  </div>
+</footer>
+
+<script>
+function toggleNav(){
+  const nl=document.getElementById('navLinks');
+  const open=nl.classList.toggle('open');
+  const b1=document.getElementById('nib1'),b2=document.getElementById('nib2'),b3=document.getElementById('nib3');
+  if(b1){b1.classList.toggle('open-1',open);b2.classList.toggle('open-2',open);b3.classList.toggle('open-3',open);}
+}
+(function(){
+  let lastY=0,ticking=false;
+  const nav=document.querySelector('.nav');
+  window.addEventListener('scroll',function(){
+    if(!ticking){requestAnimationFrame(function(){
+      const y=window.scrollY;
+      if(y>80){nav.classList.toggle('nav-hidden',y>lastY&&y>180);nav.classList.add('nav-scrolled');}
+      else{nav.classList.remove('nav-hidden','nav-scrolled');}
+      lastY=y;ticking=false;
+    });ticking=true;}
+  });
+})();
+(function(){
+  function addRipple(el){el.classList.add('ripple-host');el.addEventListener('click',function(e){const r=el.getBoundingClientRect(),size=Math.max(r.width,r.height)*1.8;const w=document.createElement('span');w.className='ripple-wave';w.style.cssText='width:'+size+'px;height:'+size+'px;left:'+(e.clientX-r.left-size/2)+'px;top:'+(e.clientY-r.top-size/2)+'px';el.appendChild(w);setTimeout(()=>w.remove(),580);});}
+  document.querySelectorAll('.btn,.nav-cta').forEach(addRipple);
+})();
+const revealObs=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('revealed'),i*55);revealObs.unobserve(e.target);}});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+function filterCL(type, btn){
+  document.querySelectorAll('.cl-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.cl-entry').forEach(e=>{
+    if(type==='all'||e.dataset.type===type){ e.classList.remove('hidden'); }
+    else { e.classList.add('hidden'); }
+  });
+  document.querySelectorAll('.cl-month').forEach(m=>{
+    const visible=[...m.querySelectorAll('.cl-entry')].some(e=>!e.classList.contains('hidden'));
+    m.style.display=visible?'':'none';
+  });
+}
+</script>
+</body>
+</html>
