@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/commands",  "destination": "/commands.html"  },
+    { "source": "/premium",   "destination": "/premium.html"   },
+    { "source": "/status",    "destination": "/status.html"    },
+    { "source": "/changelog", "destination": "/changelogs.html"},
+    { "source": "/changelogs","destination": "/changelogs.html"},
+    { "source": "/privacy",   "destination": "/privacy.html"   },
+    { "source": "/owner",     "destination": "/owner.html"     },
+    { "source": "/terms",     "destination": "/terms.html"     }
+  ]
+}
