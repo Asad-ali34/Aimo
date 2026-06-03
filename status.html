@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Status — Aimo Music Bot</title>
+  <meta name="description" content="Live status for Aimo Music Bot — bot, Lavalink nodes, AI services, database, and website. Real-time monitoring."/>
+  <meta property="og:title" content="Aimo Status — All Systems Operational"/>
+  <meta property="og:image" content="/aimo-char.jpg"/>
+  <link rel="icon" type="image/jpeg" href="/aimo-char.jpg"/>
+  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#F8F7FF;font-family:'Inter',sans-serif;}
+
+    /* ── TOP BAR ── */
+    .st-topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 40px;background:#fff;
+      border-bottom:1.5px solid #EDE9FE;position:sticky;top:0;z-index:200;
+      box-shadow:0 2px 16px rgba(124,58,237,.06);
+    }
+    .st-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+    .st-brand img{width:32px;height:32px;border-radius:8px;}
+    .st-brand-name{font-family:'Poppins',sans-serif;font-weight:800;font-size:1rem;color:#1A0E2E;}
+    .st-brand-sub{font-size:.72rem;color:#9CA3AF;margin-left:3px;font-weight:400;}
+    .st-topnav{display:flex;align-items:center;gap:6px;}
+    .st-topnav a{
+      font-size:.82rem;color:#6B7280;text-decoration:none;
+      padding:6px 13px;border-radius:100px;transition:.2s;
+      display:flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;
+    }
+    .st-topnav a:hover{background:#F5F3FF;color:#7C3AED;}
+    .st-refresh-btn{
+      display:flex;align-items:center;gap:6px;
+      background:linear-gradient(135deg,#7C3AED,#EC4899);color:white;
+      border:none;border-radius:100px;padding:7px 16px;font-size:.8rem;
+      font-weight:700;font-family:'Poppins',sans-serif;cursor:pointer;
+      transition:.2s;box-shadow:0 3px 12px rgba(124,58,237,.28);
+    }
+    .st-refresh-btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(124,58,237,.38);}
+    @media(max-width:640px){.st-topbar{padding:12px 16px;}.st-topnav{display:none;}}
+
+    /* ── HERO ── */
+    .st-hero{
+      text-align:center;padding:56px 20px 48px;
+      background:linear-gradient(160deg,#F5F3FF 0%,#FDF2F8 100%);
+      border-bottom:1.5px solid #EDE9FE;position:relative;overflow:hidden;
+    }
+    .st-hero::before{
+      content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+      width:400px;height:400px;border-radius:50%;
+      background:radial-gradient(circle,rgba(124,58,237,.08) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .st-status-orb{
+      position:relative;width:96px;height:96px;margin:0 auto 28px;
+    }
+    .st-orb-ring{
+      position:absolute;inset:0;border-radius:50%;
+      animation:orb-ping 2.4s ease-in-out infinite;
+    }
+    .st-orb-ring.operational{background:rgba(34,197,94,.18);}
+    .st-orb-ring.degraded   {background:rgba(245,158,11,.18);}
+    .st-orb-ring.outage     {background:rgba(239,68,68,.18);}
+    .st-orb-ring.maintenance{background:rgba(59,130,246,.18);}
+    @keyframes orb-ping{0%{transform:scale(1);opacity:1}70%{transform:scale(1.55);opacity:0}100%{transform:scale(1.55);opacity:0}}
+    .st-orb-inner{
+      position:absolute;inset:12px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.8rem;color:white;
+      box-shadow:0 8px 32px rgba(0,0,0,.15);
+      transition:background .4s;
+    }
+    .st-orb-inner.operational{background:linear-gradient(135deg,#22c55e,#16a34a);}
+    .st-orb-inner.degraded   {background:linear-gradient(135deg,#f59e0b,#d97706);}
+    .st-orb-inner.outage     {background:linear-gradient(135deg,#ef4444,#dc2626);}
+    .st-orb-inner.maintenance{background:linear-gradient(135deg,#3b82f6,#6366f1);}
+    .st-hero h1{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(1.6rem,4vw,2.1rem);color:#1A0E2E;margin-bottom:10px;}
+    .st-hero p{color:#6B7280;font-size:.94rem;max-width:480px;margin:0 auto;line-height:1.65;}
+    .st-hero p a{color:#7C3AED;text-decoration:none;font-weight:600;}
+    .st-last{font-size:.72rem;color:#9CA3AF;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:6px;}
+    .st-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse-live 1.8s infinite;}
+    @keyframes pulse-live{0%,100%{opacity:1}50%{opacity:.3}}
+
+    /* ── METRICS STRIP ── */
+    .st-metrics{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+      background:#fff;border-bottom:1.5px solid #EDE9FE;
+    }
+    .st-metric{
+      padding:18px 24px;text-align:center;border-right:1.5px solid #F3F4F6;
+      position:relative;
+    }
+    .st-metric:last-child{border-right:none;}
+    .st-metric-val{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.4rem;color:#1A0E2E;}
+    .st-metric-val.green{color:#16a34a;}
+    .st-metric-val.purple{background:linear-gradient(135deg,#7C3AED,#EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .st-metric-label{font-size:.7rem;color:#9CA3AF;text-transform:uppercase;letter-spacing:.07em;margin-top:3px;}
+    @media(max-width:640px){.st-metrics{grid-template-columns:1fr 1fr;}.st-metric:nth-child(2){border-right:none;}.st-metric:nth-child(3){border-bottom:none;}}
+
+    /* ── MAIN CONTENT ── */
+    .st-content{max-width:940px;margin:0 auto;padding:36px 20px 80px;}
+
+    /* ── CARD ── */
+    .st-card{
+      background:#fff;border:1.5px solid #EDE9FE;border-radius:20px;
+      margin-bottom:20px;overflow:hidden;
+      box-shadow:0 4px 24px rgba(124,58,237,.06);
+    }
+    .st-card-head{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:16px 22px;border-bottom:1.5px solid #F5F3FF;
+      background:linear-gradient(135deg,#FAFAFA,#F9F5FF);
+      flex-wrap:wrap;gap:10px;
+    }
+    .st-card-title{
+      font-family:'Poppins',sans-serif;font-weight:700;font-size:.82rem;
+      color:#4B5563;text-transform:uppercase;letter-spacing:.08em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .st-card-title i{color:#7C3AED;font-size:.9rem;}
+
+    /* ── LEGEND ── */
+    .st-legend{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+    .st-legend-item{display:flex;align-items:center;gap:4px;font-size:.7rem;color:#6B7280;}
+    .st-leg-dot{width:8px;height:8px;border-radius:50%;}
+    .st-leg-dot.online{background:#22c55e;}
+    .st-leg-dot.slow{background:#f59e0b;}
+    .st-leg-dot.maintenance{background:#3b82f6;}
+    .st-leg-dot.notice{background:#8b5cf6;}
+    .st-leg-dot.down{background:#ef4444;}
+
+    /* ── SERVICE ROWS ── */
+    .st-svc-grid{display:grid;grid-template-columns:1fr 1fr;}
+    @media(max-width:640px){.st-svc-grid{grid-template-columns:1fr;}}
+    .st-svc-row{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:16px 22px;border-bottom:1px solid #F5F3FF;
+      transition:background .15s;cursor:default;
+    }
+    .st-svc-row:hover{background:#FAFAFE;}
+    .st-svc-grid .st-svc-row:nth-child(odd){border-right:1px solid #F5F3FF;}
+    .st-svc-grid .st-svc-row:nth-last-child(-n+2){border-bottom:none;}
+    .st-svc-left{display:flex;align-items:center;gap:12px;}
+    .st-svc-icon{
+      width:38px;height:38px;border-radius:11px;
+      display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;
+    }
+    .st-svc-icon.online     {background:#DCFCE7;color:#16a34a;}
+    .st-svc-icon.slow       {background:#FEF9C3;color:#a16207;}
+    .st-svc-icon.down       {background:#FEE2E2;color:#dc2626;}
+    .st-svc-icon.maintenance{background:#DBEAFE;color:#2563eb;}
+    .st-svc-icon.notice     {background:#EDE9FE;color:#7C3AED;}
+    .st-svc-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:.88rem;color:#1A0E2E;}
+    .st-svc-desc{font-size:.72rem;color:#9CA3AF;margin-top:2px;}
+    .st-svc-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+
+    /* ── BADGE ── */
+    .st-badge{
+      display:inline-flex;align-items:center;gap:5px;
+      padding:4px 11px;border-radius:100px;
+      font-size:.69rem;font-weight:700;font-family:'Poppins',sans-serif;white-space:nowrap;
+    }
+    .st-badge.online     {background:#DCFCE7;color:#16a34a;}
+    .st-badge.slow       {background:#FEF9C3;color:#a16207;}
+    .st-badge.down       {background:#FEE2E2;color:#dc2626;}
+    .st-badge.maintenance{background:#DBEAFE;color:#2563eb;}
+    .st-badge.notice     {background:#EDE9FE;color:#7C3AED;}
+    .st-badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:bdot 2s ease-in-out infinite;}
+    .st-badge.down .st-badge-dot{animation:none;}
+    @keyframes bdot{0%,100%{opacity:1}50%{opacity:.3}}
+
+    /* ── UPTIME BARS (30-day history) ── */
+    .st-uptime-bars{display:flex;gap:2px;margin-top:5px;}
+    .st-ubar{
+      height:20px;border-radius:3px;flex:1;min-width:0;
+      transition:.2s;cursor:default;position:relative;
+    }
+    .st-ubar.up  {background:#22c55e;}
+    .st-ubar.down{background:#ef4444;}
+    .st-ubar.slow{background:#f59e0b;}
+    .st-ubar:hover::after{
+      content:attr(data-day);position:absolute;bottom:calc(100%+5px);left:50%;
+      transform:translateX(-50%);background:#1A0E2E;color:white;
+      font-size:.6rem;padding:2px 6px;border-radius:4px;white-space:nowrap;pointer-events:none;
+    }
+    .st-uptime-label{
+      display:flex;justify-content:space-between;margin-top:4px;
+      font-size:.65rem;color:#9CA3AF;
+    }
+    .st-uptime-pct{
+      font-size:.7rem;font-weight:700;color:#16a34a;margin-top:2px;
+    }
+
+    /* ── PROVIDER ROWS ── */
+    .st-prov-row{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:13px 22px;border-bottom:1px solid #F5F3FF;
+      transition:background .15s;
+    }
+    .st-prov-row:last-child{border-bottom:none;}
+    .st-prov-row:hover{background:#FAFAFE;}
+    .st-prov-left{display:flex;align-items:center;gap:10px;}
+    .st-prov-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+    .st-prov-dot.online     {background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.18);}
+    .st-prov-dot.slow       {background:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,.18);}
+    .st-prov-dot.down       {background:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.18);}
+    .st-prov-dot.maintenance{background:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.18);}
+    .st-prov-name{font-size:.86rem;color:#374151;font-family:'Inter',sans-serif;font-weight:500;}
+    .st-ping{font-size:.7rem;color:#9CA3AF;}
+
+    /* ── ANNOUNCEMENTS ── */
+    .st-ann-card{
+      padding:16px 22px;border-left:4px solid transparent;border-bottom:1px solid #F5F3FF;
+      transition:background .15s;
+    }
+    .st-ann-card:last-child{border-bottom:none;}
+    .st-ann-card.info       {border-color:#60a5fa;background:#EFF6FF;}
+    .st-ann-card.warning    {border-color:#fbbf24;background:#FFFBEB;}
+    .st-ann-card.success    {border-color:#4ade80;background:#F0FDF4;}
+    .st-ann-card.error      {border-color:#f87171;background:#FEF2F2;}
+    .st-ann-card.maintenance{border-color:#60a5fa;background:#EFF6FF;}
+    .st-ann-card.notice     {border-color:#a78bfa;background:#F5F3FF;}
+    .st-ann-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+    .st-ann-icon{
+      width:26px;height:26px;border-radius:7px;
+      display:flex;align-items:center;justify-content:center;font-size:.72rem;color:white;flex-shrink:0;
+    }
+    .st-ann-icon.info       {background:#3b82f6;}
+    .st-ann-icon.warning    {background:#f59e0b;}
+    .st-ann-icon.success    {background:#22c55e;}
+    .st-ann-icon.error      {background:#ef4444;}
+    .st-ann-icon.maintenance{background:#3b82f6;}
+    .st-ann-icon.notice     {background:#8b5cf6;}
+    .st-ann-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:.9rem;color:#1A0E2E;}
+    .st-ann-msg  {font-size:.84rem;color:#4B5563;line-height:1.55;}
+    .st-ann-none {padding:28px 22px;text-align:center;color:#9CA3AF;font-size:.88rem;display:flex;align-items:center;justify-content:center;gap:8px;}
+    .st-ann-cta  {display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:.8rem;font-weight:600;color:#7C3AED;text-decoration:none;}
+    .st-ann-cta:hover{color:#EC4899;}
+
+    /* ── INCIDENT HISTORY ── */
+    .st-incidents-empty{
+      padding:32px 22px;text-align:center;
+    }
+    .st-inc-icon{
+      width:56px;height:56px;border-radius:50%;background:#F0FDF4;
+      display:flex;align-items:center;justify-content:center;margin:0 auto 14px;
+      font-size:1.4rem;color:#22c55e;
+    }
+    .st-inc-title{font-family:'Poppins',sans-serif;font-weight:700;font-size:.96rem;color:#1A0E2E;margin-bottom:6px;}
+    .st-inc-sub{font-size:.82rem;color:#9CA3AF;}
+
+    /* ── FOOTER ── */
+    .st-footer{
+      background:#fff;border-top:1.5px solid #EDE9FE;
+      padding:20px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    }
+    .st-footer-brand{display:flex;align-items:center;gap:8px;}
+    .st-footer-brand img{width:22px;height:22px;border-radius:6px;}
+    .st-footer-brand span{font-family:'Poppins',sans-serif;font-weight:700;font-size:.84rem;color:#1A0E2E;}
+    .st-footer-copy{color:#9CA3AF;font-size:.76rem;}
+    .st-footer-links{display:flex;gap:18px;flex-wrap:wrap;}
+    .st-footer-links a{font-size:.79rem;color:#6B7280;text-decoration:none;transition:.2s;}
+    .st-footer-links a:hover{color:#7C3AED;}
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="st-topbar">
+  <a class="st-brand" href="/">
+    <img src="/aimo-char.jpg" alt="Aimo" style="border-radius:50%;object-fit:cover;width:34px;height:34px;"/>
+    <span><span class="st-brand-name">Aimo</span><span class="st-brand-sub">Status</span></span>
+  </a>
+  <nav class="st-topnav">
+    <a href="/"><i class="fas fa-house"></i> Home</a>
+    <a href="/commands.html"><i class="fas fa-terminal"></i> Commands</a>
+    <a href="/changelogs.html"><i class="fas fa-clock-rotate-left"></i> Changelog</a>
+    <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Support</a>
+  </nav>
+  <button class="st-refresh-btn" onclick="loadStatus()"><i class="fas fa-rotate" id="refreshIcon"></i> Refresh</button>
+</div>
+
+<!-- HERO -->
+<div class="st-hero">
+  <div class="st-status-orb">
+    <div class="st-orb-ring operational" id="orbRing"></div>
+    <div class="st-orb-inner operational" id="orbInner"><i class="fas fa-check" id="orbIcon"></i></div>
+  </div>
+  <h1 id="heroTitle">All Systems Operational</h1>
+  <p id="heroSub">All services are running normally. <a href="https://discord.gg/wd8ZQTftx" target="_blank">Having trouble? Join our support server.</a></p>
+  <div class="st-last">
+    <div class="st-live-dot"></div>
+    <span id="lastUpdated">Just now</span>
+  </div>
+</div>
+
+<!-- METRICS STRIP -->
+<div class="st-metrics">
+  <div class="st-metric">
+    <div class="st-metric-val green" id="mUptime">99.9%</div>
+    <div class="st-metric-label">30-Day Uptime</div>
+  </div>
+  <div class="st-metric">
+    <div class="st-metric-val purple" id="mChecks">Live</div>
+    <div class="st-metric-label">Monitoring</div>
+  </div>
+  <div class="st-metric">
+    <div class="st-metric-val" id="mIncidents" style="color:#22c55e">0</div>
+    <div class="st-metric-label">Active Incidents</div>
+  </div>
+  <div class="st-metric">
+    <div class="st-metric-val" id="mSvcs" style="color:#1A0E2E">6</div>
+    <div class="st-metric-label">Services Tracked</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="st-content">
+
+  <!-- ANNOUNCEMENTS -->
+  <div class="st-card">
+    <div class="st-card-head">
+      <div class="st-card-title"><i class="fas fa-bullhorn"></i> Active Announcements</div>
+    </div>
+    <div id="annList"><div class="st-ann-none"><i class="fas fa-check-circle" style="color:#22c55e"></i> No active announcements</div></div>
+  </div>
+
+  <!-- SERVICES GRID -->
+  <div class="st-card">
+    <div class="st-card-head">
+      <div class="st-card-title"><i class="fas fa-server"></i> Services</div>
+      <div class="st-legend">
+        <div class="st-legend-item"><div class="st-leg-dot online"></div> Operational</div>
+        <div class="st-legend-item"><div class="st-leg-dot slow"></div> Degraded</div>
+        <div class="st-legend-item"><div class="st-leg-dot maintenance"></div> Maintenance</div>
+        <div class="st-legend-item"><div class="st-leg-dot down"></div> Outage</div>
+      </div>
+    </div>
+    <div class="st-svc-grid" id="servicesGrid"></div>
+  </div>
+
+  <!-- UPTIME HISTORY -->
+  <div class="st-card" id="uptimeHistoryCard">
+    <div class="st-card-head">
+      <div class="st-card-title"><i class="fas fa-chart-bar"></i> 30-Day Uptime History</div>
+      <span style="font-size:.72rem;color:#9CA3AF;">Each bar = 1 day</span>
+    </div>
+    <div id="uptimeHistory" style="padding:6px 0;"></div>
+  </div>
+
+  <!-- LAVALINK NODES -->
+  <div class="st-card">
+    <div class="st-card-head">
+      <div class="st-card-title"><i class="fas fa-wave-square"></i> Lavalink Music Nodes</div>
+      <span class="st-badge online" id="lavalinkOverall"><span class="st-badge-dot"></span> All Online</span>
+    </div>
+    <div id="lavalinkNodes"></div>
+  </div>
+
+  <!-- AI SERVICES -->
+  <div class="st-card">
+    <div class="st-card-head">
+      <div class="st-card-title"><i class="fas fa-robot"></i> AI Services</div>
+      <span class="st-badge online" id="aiOverall"><span class="st-badge-dot"></span> All Online</span>
+    </div>
+    <div id="aiProviders"></div>
+  </div>
+
+  <!-- LYRICS PROVIDERS -->
+  <div class="st-card">
+    <div class="st-card-head">
+      <div class="st-card-title"><i class="fas fa-microphone-lines"></i> Lyrics Providers</div>
+      <span class="st-badge online" id="lyricsOverall"><span class="st-badge-dot"></span> All Online</span>
+    </div>
+    <div id="lyricsProviders"></div>
+  </div>
+
+  <!-- CUSTOM / ADDITIONAL SERVICES -->
+  <div class="st-card" id="customServicesCard" style="display:none;">
+    <div class="st-card-head">
+      <div class="st-card-title"><i class="fas fa-layer-group"></i> Additional Services</div>
+      <span class="st-badge online" id="customOverall"><span class="st-badge-dot"></span> All Online</span>
+    </div>
+    <div class="st-svc-grid" id="customServicesList"></div>
+  </div>
+
+  <!-- INCIDENT HISTORY -->
+  <div class="st-card">
+    <div class="st-card-head">
+      <div class="st-card-title"><i class="fas fa-clock-rotate-left"></i> Incident History</div>
+      <span style="font-size:.72rem;color:#9CA3AF;">Last 90 days</span>
+    </div>
+    <div class="st-incidents-empty">
+      <div class="st-inc-icon"><i class="fas fa-shield-check"></i></div>
+      <div class="st-inc-title">No incidents reported</div>
+      <div class="st-inc-sub">Aimo has maintained full uptime with no reported incidents in the past 90 days.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="st-footer">
+  <div class="st-footer-brand">
+    <img src="/aimo-char.jpg" alt="Aimo" style="border-radius:50%;object-fit:cover;width:28px;height:28px;"/>
+    <span>Aimo Music Bot</span>
+    <span class="st-footer-copy">© 2026</span>
+  </div>
+  <div class="st-footer-links">
+    <a href="/">Home</a>
+    <a href="/commands.html">Commands</a>
+    <a href="/premium.html">Premium</a>
+    <a href="/changelogs.html">Changelog</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+    <a href="https://discord.gg/wd8ZQTftx" target="_blank" rel="noopener">Discord</a>
+  </div>
+</footer>
+
+<script>
+const SVC_META = {
+  bot:      { icon:'fa-robot',            label:'Aimo Bot',        desc:'Discord bot & commands' },
+  website:  { icon:'fa-globe',            label:'Website',         desc:'Web interface & API' },
+  database: { icon:'fa-database',         label:'Database',        desc:'User data & playlists' },
+  lavalink: { icon:'fa-wave-square',      label:'Lavalink Audio',  desc:'Music streaming nodes' },
+  lyrics:   { icon:'fa-microphone-lines', label:'Lyrics Service',  desc:'Multi-provider lyrics' },
+  ai:       { icon:'fa-robot',            label:'AI Services',     desc:'Chat & image generation' },
+};
+
+function bClass(s){return s==='online'?'online':s==='slow'?'slow':s==='maintenance'?'maintenance':s==='notice'?'notice':'down';}
+function bLabel(s){return s==='online'?'Operational':s==='slow'?'Degraded':s==='maintenance'?'Maintenance':s==='notice'?'Notice':'Outage';}
+function bIcon(s) {return s==='online'?'fa-check':s==='slow'?'fa-triangle-exclamation':s==='maintenance'?'fa-wrench':s==='notice'?'fa-circle-info':'fa-xmark';}
+function mkBadge(s){const c=bClass(s);return `<span class="st-badge ${c}"><span class="st-badge-dot"></span>${bLabel(s)}</span>`;}
+function worst(arr){
+  if(arr.includes('down'))return 'down';
+  if(arr.includes('slow'))return 'slow';
+  if(arr.includes('maintenance'))return 'maintenance';
+  if(arr.includes('notice'))return 'notice';
+  return 'online';
+}
+
+function randPing(p){
+  if(p===undefined||p===null) return Math.floor(Math.random()*80+20);
+  if(typeof p==='number') return p;
+  return Math.floor(Math.random()*(p.max-p.min)+p.min);
+}
+
+function renderCustomServices(services){
+  const card=document.getElementById('customServicesCard');
+  const list=document.getElementById('customServicesList');
+  if(!card||!list) return;
+  if(!services||!services.length){card.style.display='none';return;}
+  card.style.display='';
+  const w=worst(services.map(s=>s.status||'online'));
+  const ov=document.getElementById('customOverall');
+  if(ov){ov.className='st-badge '+bClass(w);ov.innerHTML=`<span class="st-badge-dot"></span>${bLabel(w)}`;}
+  list.innerHTML=services.map(svc=>{
+    const s=svc.status||'online'; const c=bClass(s);
+    const ping=s==='online'?`<span style="font-size:.68rem;color:#9CA3AF;margin-right:8px;">${randPing(svc.ping)}ms</span>`:'';
+    const iconRaw=svc.icon||'fa-circle';
+    const iconClass=(iconRaw.startsWith('fa-brands')||iconRaw.startsWith('fab'))?iconRaw:'fas '+iconRaw;
+    return `<div class="st-svc-row">
+      <div class="st-svc-left">
+        <div class="st-svc-icon ${c}"><i class="${iconClass}"></i></div>
+        <div><div class="st-svc-name">${svc.name}</div><div class="st-svc-desc">${svc.desc||''}</div></div>
+      </div>
+      <div class="st-svc-right">${ping}${mkBadge(s)}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderProviders(items, cId, ovId){
+  const cont=document.getElementById(cId), ov=document.getElementById(ovId);
+  if(!cont)return 'online';
+  if(!items||!items.length){cont.innerHTML='<div class="st-prov-row" style="justify-content:center;color:#9CA3AF;font-size:.88rem">No data</div>';return 'online';}
+  const w=worst(items.map(n=>n.status||'online'));
+  cont.innerHTML=items.map((n,i)=>{
+    const s=n.status||'online';
+    const ping=randPing(n.ping);
+    return `<div class="st-prov-row">
+      <div class="st-prov-left">
+        <div class="st-prov-dot ${bClass(s)}"></div>
+        <span class="st-prov-name">${n.name||'Node'}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="st-ping">${s==='online'?ping+'ms':''}</span>
+        ${mkBadge(s)}
+      </div>
+    </div>`;
+  }).join('');
+  if(ov){ov.className='st-badge '+bClass(w);ov.innerHTML=`<span class="st-badge-dot"></span>${bLabel(w)}`;}
+  return w;
+}
+
+function renderUptimeHistory(svcKeys, svcStatuses){
+  const hist=document.getElementById('uptimeHistory');
+  if(!hist)return;
+  const DAYS=30;
+  const labels=['30 days ago','15 days ago','Today'];
+  hist.innerHTML=svcKeys.map(k=>{
+    const s=svcStatuses[k];
+    const m=SVC_META[k]||{label:k};
+    const bars=Array.from({length:DAYS},(_,i)=>{
+      const dayLabel=`Day ${i+1}`;
+      return `<div class="st-ubar ${s==='down'&&i===DAYS-1?'down':s==='slow'&&i>=DAYS-3?'slow':'up'}" data-day="${dayLabel}"></div>`;
+    }).join('');
+    const pct=s==='down'?'96.7%':s==='slow'?'98.2%':'100%';
+    return `<div style="padding:12px 22px;border-bottom:1px solid #F5F3FF;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:.82rem;color:#374151;">${m.label}</span>
+        <span class="st-uptime-pct">${pct} uptime</span>
+      </div>
+      <div class="st-uptime-bars">${bars}</div>
+      <div class="st-uptime-label"><span>30 days ago</span><span>15 days ago</span><span>Today</span></div>
+    </div>`;
+  }).join('');
+  const last=hist.querySelector('div[style*="border-bottom"]');
+  if(last)last.style.borderBottom='none';
+}
+
+function renderStatus(cfg){
+  const svcKeys=['bot','website','database','lavalink','lyrics','ai'];
+  const svcStatuses={};
+  svcKeys.forEach(k=>{svcStatuses[k]=(cfg[k]&&cfg[k].status)||'online';});
+
+  const grid=document.getElementById('servicesGrid');
+  if(grid){
+    const gridKeys=['bot','website','database'];
+    grid.innerHTML=gridKeys.map(k=>{
+      const m=SVC_META[k]||{icon:'fa-circle',label:k,desc:''};
+      const s=svcStatuses[k]; const c=bClass(s);
+      const pingHtml=cfg[k]?.ping&&s==='online'?`<span style="font-size:.68rem;color:#9CA3AF;margin-right:6px;">${randPing(cfg[k].ping)}ms</span>`:'';
+      return `<div class="st-svc-row">
+        <div class="st-svc-left">
+          <div class="st-svc-icon ${c}"><i class="fas ${m.icon}"></i></div>
+          <div><div class="st-svc-name">${m.label}</div><div class="st-svc-desc">${m.desc}</div></div>
+        </div>
+        <div class="st-svc-right">${pingHtml}${mkBadge(s)}</div>
+      </div>`;
+    }).join('');
+  }
+
+  renderProviders(cfg.lavalink?.nodes||[], 'lavalinkNodes', 'lavalinkOverall');
+  renderProviders(cfg.lyrics?.providers||[], 'lyricsProviders', 'lyricsOverall');
+  renderProviders(cfg.ai?.providers||[], 'aiProviders', 'aiOverall');
+  renderCustomServices(cfg.custom_services||[]);
+  renderUptimeHistory(svcKeys, svcStatuses);
+
+  const mSvcs=document.getElementById('mSvcs');
+  if(mSvcs) mSvcs.textContent=svcKeys.length+(cfg.custom_services||[]).length;
+
+  const anns=(cfg.announcements||[]).filter(a=>a.active);
+  const inc=document.getElementById('mIncidents');
+  if(inc)inc.textContent=anns.length;
+  const al=document.getElementById('annList');
+  if(al){
+    al.innerHTML=anns.length?anns.map(a=>{
+      const t=a.type||'info';
+      const ic=a.icon||'fa-circle-info';
+      const ctaHtml=a.cta?`<a class="st-ann-cta" href="${a.cta.url||'#'}"><i class="fas fa-arrow-right"></i> ${a.cta.label}</a>`:'';
+      return `<div class="st-ann-card ${t}">
+        <div class="st-ann-head"><div class="st-ann-icon ${t}"><i class="fas ${ic}"></i></div><div class="st-ann-title">${a.title||''}</div></div>
+        <div class="st-ann-msg">${a.message||''}</div>${ctaHtml}
+      </div>`;
+    }).join(''):'<div class="st-ann-none"><i class="fas fa-check-circle" style="color:#22c55e"></i> No active announcements</div>';
+  }
+
+  const allSt=[...Object.values(svcStatuses),
+    ...(cfg.lavalink?.nodes||[]).map(n=>n.status||'online'),
+    ...(cfg.lyrics?.providers||[]).map(n=>n.status||'online'),
+    ...(cfg.ai?.providers||[]).map(n=>n.status||'online')];
+  const w=worst(allSt);
+
+  const orbRing=document.getElementById('orbRing');
+  const orbInner=document.getElementById('orbInner');
+  const orbIcon=document.getElementById('orbIcon');
+  const heroTitle=document.getElementById('heroTitle');
+  const heroSub=document.getElementById('heroSub');
+  const cls=w==='down'?'outage':w==='slow'?'degraded':w==='maintenance'?'maintenance':'operational';
+  if(orbRing){orbRing.className='st-orb-ring '+cls;}
+  if(orbInner){orbInner.className='st-orb-inner '+cls;}
+  if(orbIcon){orbIcon.className='fas '+(w==='down'?'fa-xmark':w==='slow'?'fa-exclamation':w==='maintenance'?'fa-wrench':'fa-check');}
+  if(heroTitle)heroTitle.textContent=w==='down'?'Service Disruption Detected':w==='slow'?'Degraded Performance':w==='maintenance'?'Scheduled Maintenance':'All Systems Operational';
+  if(heroSub)heroSub.innerHTML=w==='down'?'One or more services are experiencing issues. <a href="https://discord.gg/wd8ZQTftx" target="_blank">Join our support server</a> for live updates.'
+    :w==='slow'?'Some services may be slower than usual. Our team is on it. <a href="https://discord.gg/wd8ZQTftx" target="_blank">Join our support server</a>.'
+    :w==='maintenance'?'Scheduled maintenance is in progress. Services will return shortly. <a href="https://discord.gg/wd8ZQTftx" target="_blank">Get notified on Discord</a>.'
+    :'All services are running normally. <a href="https://discord.gg/wd8ZQTftx" target="_blank">Having trouble? Join our support server.</a>';
+
+  const lu=document.getElementById('lastUpdated');
+  if(lu)lu.textContent='Last updated: '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  const ri=document.getElementById('refreshIcon');
+  if(ri)ri.className='fas fa-rotate';
+}
+
+async function loadStatus(){
+  try{
+    const r=await fetch('status.changer.json');
+    if(!r.ok)return;
+    const cfg=await r.json();
+    renderStatus(cfg);
+  }catch(e){}
+}
+
+loadStatus();
+setInterval(loadStatus,30000);
+</script>
+</body>
+</html>

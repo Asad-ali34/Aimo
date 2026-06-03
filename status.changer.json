@@ -1,0 +1,258 @@
+{
+  "bot": {
+    "status": "online",
+    "ping": {
+      "min": 45,
+      "max": 120
+    },
+    "note": "Status values: 'online' | 'slow' | 'down' | 'maintenance'"
+  },
+  "website": {
+    "status": "online",
+    "ping": {
+      "min": 8,
+      "max": 28
+    }
+  },
+  "database": {
+    "status": "online",
+    "ping": {
+      "min": 10,
+      "max": 32
+    },
+    "nodes": [
+      {
+        "name": "Primary — MongoDB Atlas US-East",
+        "status": "online",
+        "ping": {
+          "min": 10,
+          "max": 32
+        }
+      },
+      {
+        "name": "Replica — MongoDB Atlas EU-West",
+        "status": "online",
+        "ping": {
+          "min": 28,
+          "max": 72
+        }
+      }
+    ]
+  },
+  "lavalink": {
+    "status": "online",
+    "nodes": [
+      {
+        "name": "Node 1 — Singapore",
+        "status": "online",
+        "ping": 85
+      }
+    ]
+  },
+  "lyrics": {
+    "status": "online",
+    "providers": [
+      {
+        "name": "Genius API",
+        "status": "online",
+        "ping": {
+          "min": 44,
+          "max": 120
+        }
+      },
+      {
+        "name": "Spotify Lyrics",
+        "status": "online",
+        "ping": {
+          "min": 28,
+          "max": 85
+        }
+      },
+      {
+        "name": "LRCLib",
+        "status": "online",
+        "ping": {
+          "min": 16,
+          "max": 48
+        }
+      },
+      {
+        "name": "Musixmatch",
+        "status": "online",
+        "ping": {
+          "min": 55,
+          "max": 140
+        }
+      }
+    ]
+  },
+  "ai": {
+    "status": "online",
+    "providers": [
+      {
+        "name": "AI Chat — GPT-4o (Primary)",
+        "status": "online",
+        "ping": {
+          "min": 180,
+          "max": 420
+        }
+      },
+      {
+        "name": "AI Image — DALL·E 3",
+        "status": "online",
+        "ping": {
+          "min": 800,
+          "max": 2200
+        }
+      },
+      {
+        "name": "AI Image — Stable Diffusion XL",
+        "status": "online",
+        "ping": {
+          "min": 650,
+          "max": 1800
+        }
+      }
+    ]
+  },
+  "custom_services": [
+    {
+      "name": "Lyrics Database",
+      "icon": "fa-book-open",
+      "desc": "Synced LRC lyrics storage & search",
+      "status": "online",
+      "ping": {
+        "min": 5,
+        "max": 20
+      }
+    },
+    {
+      "name": "Image CDN",
+      "icon": "fa-image",
+      "desc": "Album art & thumbnail delivery",
+      "status": "online",
+      "ping": {
+        "min": 4,
+        "max": 16
+      }
+    },
+    {
+      "name": "Redis Cache",
+      "icon": "fa-bolt",
+      "desc": "High-speed in-memory caching layer",
+      "status": "online",
+      "ping": {
+        "min": 1,
+        "max": 5
+      }
+    },
+    {
+      "name": "Gateway API",
+      "icon": "fa-door-open",
+      "desc": "Request routing, auth & rate-limiting",
+      "status": "online",
+      "ping": {
+        "min": 10,
+        "max": 35
+      }
+    },
+    {
+      "name": "Queue Worker",
+      "icon": "fa-list-check",
+      "desc": "Background job & task processing",
+      "status": "online",
+      "ping": {
+        "min": 12,
+        "max": 42
+      }
+    },
+    {
+      "name": "Voice Node — Asia-Pacific",
+      "icon": "fa-microphone",
+      "desc": "Asia-Pacific low-latency audio streaming",
+      "status": "online",
+      "ping": {
+        "min": 65,
+        "max": 185
+      }
+    },
+    {
+      "name": "Analytics Engine",
+      "icon": "fa-chart-line",
+      "desc": "Real-time usage tracking & metrics",
+      "status": "online",
+      "ping": {
+        "min": 18,
+        "max": 62
+      }
+    },
+    {
+      "name": "Discord Gateway",
+      "icon": "fa-brands fa-discord",
+      "desc": "Discord WebSocket heartbeat & events",
+      "status": "online",
+      "ping": {
+        "min": 38,
+        "max": 110
+      }
+    }
+  ],
+  "announcements": [
+    {
+      "id": 1,
+      "active": false,
+      "type": "info",
+      "priority": 1,
+      "icon": "fa-circle-info",
+      "title": "Scheduled Maintenance",
+      "message": "We will be performing scheduled maintenance on June 5 from 02:00–04:00 UTC. Expect brief interruptions.",
+      "cta": null
+    },
+    {
+      "id": 2,
+      "active": false,
+      "type": "warning",
+      "priority": 2,
+      "icon": "fa-triangle-exclamation",
+      "title": "Degraded Performance",
+      "message": "Some users may experience slower response times. Our team is investigating.",
+      "cta": null
+    },
+    {
+      "id": 3,
+      "active": false,
+      "type": "success",
+      "priority": 1,
+      "icon": "fa-circle-check",
+      "title": "Incident Resolved",
+      "message": "The earlier issue has been fully resolved. All systems are back to normal.",
+      "cta": null
+    },
+    {
+      "id": 4,
+      "active": false,
+      "type": "maintenance",
+      "priority": 3,
+      "icon": "fa-wrench",
+      "title": "System Maintenance",
+      "message": "Aimo is currently under maintenance. Music commands may be temporarily unavailable.",
+      "cta": {
+        "label": "Check Status",
+        "url": "/status"
+      }
+    },
+    {
+      "id": 5,
+      "active": false,
+      "type": "notice",
+      "priority": 1,
+      "icon": "fa-megaphone",
+      "title": "New Features Available!",
+      "message": "Aimo has been upgraded with new features. Check the changelog to see what's new!",
+      "cta": {
+        "label": "View Changelog",
+        "url": "/changelogs"
+      }
+    }
+  ]
+}
